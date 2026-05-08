@@ -1,7 +1,7 @@
 {
-  "name": "JSON Viewer",
-  "short_name": "JSONViewer",
-  "description": "Fast, private, modern JSON viewer with tree visualization, formatting, diff, search, and export.",
+  "name": "Format JSON",
+  "short_name": "FormatJSON",
+  "description": "Format JSON online for free — beautify, validate, minify, diff, and export JSON entirely in your browser.",
   "start_url": "/",
   "display": "standalone",
   "background_color": "#1e1e2e",

@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://jsonviewer.example.com/sitemap.xml
+Sitemap: https://format-json.net/sitemap.xml
