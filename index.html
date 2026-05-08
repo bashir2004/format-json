@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <!-- Primary SEO -->
+  <title>Online JSON Viewer, Formatter & Validator — Free JSON Beautifier Tool</title>
+  <meta name="description" content="Free online JSON viewer, formatter, validator, and diff tool. Beautify, minify, compare, and export JSON data. 100% client-side — your data never leaves your browser." />
+  <meta name="keywords" content="json viewer, json formatter, json beautifier, json validator, json editor online, json tree viewer, json diff, json compare, json to yaml, json to csv, format json, minify json, online json tool" />
+  <meta name="author" content="JSON Viewer" />
+  <meta name="robots" content="index, follow" />
+  <link rel="canonical" href="https://jsonviewer.example.com/" />
+
+  <!-- Open Graph / Facebook -->
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="Online JSON Viewer, Formatter & Validator — Free Tool" />
+  <meta property="og:description" content="Free online JSON viewer and formatter. Beautify, validate, compare, and export JSON data. Fast, private, no data stored on servers." />
+  <meta property="og:url" content="https://jsonviewer.example.com/" />
+  <meta property="og:site_name" content="JSON Viewer" />
+  <meta property="og:image" content="https://jsonviewer.example.com/og-image.png" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+
+  <!-- Twitter -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Online JSON Viewer, Formatter & Validator" />
+  <meta name="twitter:description" content="Free online JSON viewer and formatter. Beautify, validate, compare, and export JSON. 100% client-side." />
+  <meta name="twitter:image" content="https://jsonviewer.example.com/og-image.png" />
+
+  <!-- Structured Data: WebApplication -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "JSON Viewer",
+    "url": "https://jsonviewer.example.com/",
+    "description": "Free online JSON viewer, formatter, validator, and diff tool. Beautify, minify, compare, and export JSON data entirely client-side.",
+    "applicationCategory": "DeveloperApplication",
+    "operatingSystem": "Any",
+    "browserRequirements": "Requires a modern web browser",
+    "offers": {
+      "@type": "Offer",
+      "price": "0",
+      "priceCurrency": "USD"
+    },
+    "featureList": [
+      "JSON tree viewer with expand/collapse",
+      "JSON formatting and beautification",
+      "JSON minification",
+      "JSON validation with error messages",
+      "JSON diff and comparison",
+      "Export to JSON, CSV, YAML",
+      "Load JSON from URL or file",
+      "Dark and light themes",
+      "Works offline as PWA",
+      "100% client-side processing"
+    ]
+  }
+  </script>
+
+  <!-- Structured Data: FAQPage -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "What is a JSON viewer?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "A JSON viewer is a tool that transforms raw JSON (JavaScript Object Notation) text into a visual, navigable tree structure. It makes it easier to read, explore, and understand complex nested JSON data by allowing you to expand and collapse nodes."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Is this JSON viewer safe to use?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Yes. This JSON viewer processes all data entirely in your browser using client-side JavaScript. No JSON data is ever sent to or stored on any server. Your data stays private on your machine."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "How do I format or beautify JSON?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Paste your JSON into the editor and click the 'Format' button or press Ctrl+Shift+F. The tool will indent and structure your JSON with proper spacing for readability."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Can I compare two JSON files?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Yes. Switch to the Diff tab, paste two JSON documents in the left and right panels, and click Compare. The tool highlights added, removed, and changed keys between the two documents."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "What export formats are supported?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "You can export your JSON as formatted JSON, minified JSON, CSV (for arrays of objects), or YAML. Select the format from the Export dropdown and click Download."
+        }
+      }
+    ]
+  }
+  </script>
+
+  <!-- Structured Data: BreadcrumbList -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      {
+        "@type": "ListItem",
+        "position": 1,
+        "name": "JSON Viewer",
+        "item": "https://jsonviewer.example.com/"
+      },
+      {
+        "@type": "ListItem",
+        "position": 2,
+        "name": "JSON Formatter",
+        "item": "https://jsonviewer.example.com/#formatter"
+      },
+      {
+        "@type": "ListItem",
+        "position": 3,
+        "name": "JSON Diff",
+        "item": "https://jsonviewer.example.com/#diff"
+      }
+    ]
+  }
+  </script>
+
+  <!-- Performance -->
+  <link rel="preload" href="css/styles.css" as="style" />
+  <link rel="preload" href="js/app.js" as="script" />
+  <link rel="dns-prefetch" href="https://fonts.googleapis.com" />
+
+  <!-- Favicon & PWA -->
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>{ }</text></svg>" />
+  <link rel="apple-touch-icon" href="icons/icon-192.png" />
+  <link rel="stylesheet" href="css/styles.css" />
+  <link rel="manifest" href="manifest.json" />
+  <meta name="theme-color" content="#1e1e2e" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+</head>
+<body>
+  <!-- Top toolbar -->
+  <header class="toolbar" role="toolbar" aria-label="Main toolbar">
+    <div class="toolbar-left">
+      <h1 class="logo" aria-label="JSON Viewer">{ } <span>JSON Viewer</span></h1>
+    </div>
+    <div class="toolbar-center">
+      <div class="tab-bar" role="tablist">
+        <button class="tab active" role="tab" aria-selected="true" data-tab="editor">Editor</button>
+        <button class="tab" role="tab" aria-selected="false" data-tab="viewer">Tree Viewer</button>
+        <button class="tab" role="tab" aria-selected="false" data-tab="codegen">Code Gen</button>
+        <button class="tab" role="tab" aria-selected="false" data-tab="diff">Diff</button>
+      </div>
+    </div>
+    <div class="toolbar-right">
+      <a href="#about" id="btn-about" class="about-link" title="About this tool">About</a>
+      <button id="btn-theme" class="icon-btn" title="Toggle dark/light theme" aria-label="Toggle theme">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+      </button>
+    </div>
+  </header>
+
+  <!-- Action bar -->
+  <div class="action-bar">
+    <div class="action-group" id="action-group-editor">
+      <button id="btn-format" class="action-btn" title="Format / Beautify JSON (Ctrl+Shift+F)">Format</button>
+      <button id="btn-minify" class="action-btn" title="Minify JSON">Minify</button>
+      <button id="btn-copy" class="action-btn" title="Copy to clipboard">Copy</button>
+      <button id="btn-clear" class="action-btn" title="Clear editor">Clear</button>
+      <span class="separator"></span>
+      <button id="btn-load-file" class="action-btn" title="Import JSON file">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+        Import
+      </button>
+      <button id="btn-load-url" class="action-btn" title="Load JSON from URL">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
+        URL
+      </button>
+      <input type="file" id="file-input" accept=".json,.txt" hidden />
+    </div>
+    <div class="action-group" id="action-group-tree" hidden>
+      <button id="btn-search-toggle" class="action-btn" title="Search (Ctrl+F)">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+        Search
+      </button>
+      <button id="btn-expand-all" class="action-btn" title="Expand all nodes">Expand All</button>
+      <button id="btn-collapse-all" class="action-btn" title="Collapse all nodes">Collapse All</button>
+    </div>
+    <div class="action-group">
+      <label class="action-label" for="export-select">Export:</label>
+      <select id="export-select" class="action-select">
+        <option value="">— choose —</option>
+        <option value="json">JSON (formatted)</option>
+        <option value="json-min">JSON (minified)</option>
+        <option value="csv">CSV (arrays)</option>
+        <option value="yaml">YAML</option>
+      </select>
+      <button id="btn-export" class="action-btn">Download</button>
+    </div>
+  </div>
+
+  <!-- Main content panels -->
+  <main class="main-content">
+    <!-- Editor panel -->
+    <section id="panel-editor" class="panel active" role="tabpanel" aria-labelledby="tab-editor">
+      <div class="editor-wrap">
+        <div id="line-numbers" class="line-numbers" aria-hidden="true">1</div>
+        <textarea
+          id="json-input"
+          class="json-editor"
+          spellcheck="false"
+          autocomplete="off"
+          autocorrect="off"
+          autocapitalize="off"
+          placeholder="Paste JSON here, drop a file, or load from URL…"
+          aria-label="JSON input editor"
+        ></textarea>
+      </div>
+      <div id="validation-bar" class="validation-bar" hidden>
+        <span id="validation-icon" class="validation-icon"></span>
+        <span id="validation-msg" class="validation-msg"></span>
+        <button id="validation-goto" class="action-btn small" hidden>Go to error</button>
+        <button id="validation-dismiss" class="icon-btn small" title="Dismiss" aria-label="Dismiss">&times;</button>
+      </div>
+    </section>
+
+    <!-- Tree viewer panel -->
+    <section id="panel-viewer" class="panel" role="tabpanel" aria-labelledby="tab-viewer" hidden>
+      <div id="search-bar" class="search-bar" hidden>
+        <input id="search-input" type="text" placeholder="Search keys or values…" aria-label="Search JSON" />
+        <span id="search-count" class="search-count"></span>
+        <button id="search-prev" class="icon-btn small" title="Previous match" aria-label="Previous match">&#9650;</button>
+        <button id="search-next" class="icon-btn small" title="Next match" aria-label="Next match">&#9660;</button>
+        <button id="search-clear" class="icon-btn small" title="Clear search" aria-label="Clear search">&times;</button>
+      </div>
+      <div id="tree-container" class="tree-container" tabindex="0" role="tree" aria-label="JSON tree viewer"></div>
+    </section>
+
+    <!-- Diff panel -->
+    <section id="panel-diff" class="panel" role="tabpanel" aria-labelledby="tab-diff" hidden>
+      <div class="diff-layout">
+        <div class="diff-pane">
+          <h3 class="diff-title">Left</h3>
+          <textarea id="diff-left" class="json-editor diff-editor" spellcheck="false" placeholder="Paste first JSON…" aria-label="Diff left JSON"></textarea>
+        </div>
+        <div class="diff-pane">
+          <h3 class="diff-title">Right</h3>
+          <textarea id="diff-right" class="json-editor diff-editor" spellcheck="false" placeholder="Paste second JSON…" aria-label="Diff right JSON"></textarea>
+        </div>
+      </div>
+      <div class="diff-actions">
+        <button id="btn-diff" class="action-btn primary">Compare</button>
+      </div>
+      <div id="diff-result" class="diff-result" hidden></div>
+    </section>
+
+    <!-- Code Gen panel -->
+    <section id="panel-codegen" class="panel" role="tabpanel" aria-labelledby="tab-codegen" hidden>
+      <div class="codegen-toolbar">
+        <label class="action-label" for="codegen-lang">Language:</label>
+        <select id="codegen-lang" class="action-select">
+          <option value="typescript">TypeScript</option>
+          <option value="csharp">C#</option>
+          <option value="java">Java</option>
+          <option value="python">Python</option>
+          <option value="go">Go</option>
+          <option value="rust">Rust</option>
+          <option value="kotlin">Kotlin</option>
+          <option value="swift">Swift</option>
+        </select>
+        <label class="action-label" for="codegen-rootname">Root class:</label>
+        <input id="codegen-rootname" type="text" class="action-input" value="Root" placeholder="Root" aria-label="Root class name" />
+        <button id="btn-codegen" class="action-btn primary">Generate</button>
+        <button id="btn-codegen-copy" class="action-btn">Copy</button>
+      </div>
+      <div class="codegen-output-wrap">
+        <pre id="codegen-output" class="codegen-output" aria-label="Generated code"></pre>
+      </div>
+    </section>
+  </main>
+
+  <!-- URL modal -->
+  <dialog id="url-dialog" class="modal">
+    <form method="dialog">
+      <h2>Load JSON from URL</h2>
+      <p class="modal-note">The URL must support CORS or be a public API endpoint.</p>
+      <input id="url-input" type="url" class="modal-input" placeholder="https://api.example.com/data.json" required aria-label="JSON URL" />
+      <div class="modal-actions">
+        <button type="button" class="action-btn" id="url-cancel">Cancel</button>
+        <button type="submit" class="action-btn primary" id="url-load">Load</button>
+      </div>
+    </form>
+  </dialog>
+
+  <!-- Drop overlay -->
+  <div id="drop-overlay" class="drop-overlay" hidden>
+    <div class="drop-message">
+      <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+      <p>Drop JSON file here</p>
+    </div>
+  </div>
+
+  <!-- SEO: Crawlable content in <details> — Google fully indexes closed details content -->
+  <article id="about" class="seo-content" aria-label="About this tool">
+    <button id="btn-close-about" class="about-close-btn" title="Close" aria-label="Close about section">&times;</button>
+    <details>
+      <summary>About JSON Viewer — Online JSON Formatter, Validator & Diff Tool</summary>
+      <section>
+        <h2>Online JSON Viewer and Formatter</h2>
+        <p>This free online JSON viewer lets you paste, upload, or fetch JSON data and instantly visualize it as an interactive tree. Format messy JSON into readable, indented code with one click, or minify it for production use. All processing happens in your browser — nothing is sent to a server.</p>
+      </section>
+
+      <section>
+        <h2>JSON Validator</h2>
+        <p>As you type or paste, the editor validates your JSON in real time. Syntax errors are displayed immediately with descriptive messages, helping you quickly locate and fix malformed data like missing commas, unquoted keys, or trailing brackets.</p>
+      </section>
+
+      <section>
+        <h2>JSON Tree Viewer</h2>
+        <p>Switch to the Tree Viewer tab to explore your data as a collapsible hierarchy. Each node shows the key name, value type, and item count. Click any value to copy it to your clipboard. Use the breadcrumb bar to track your position in deeply nested structures.</p>
+      </section>
+
+      <section>
+        <h2>JSON Diff — Compare Two JSON Documents</h2>
+        <p>The Diff tab lets you paste two JSON documents side by side and compare them. Differences are highlighted as added (green), removed (red), or changed (yellow) with full path notation, making it easy to spot what changed between API responses or config files.</p>
+      </section>
+
+      <section>
+        <h2>Export JSON to CSV, YAML, and More</h2>
+        <p>Export your JSON data to multiple formats. Convert arrays of objects to CSV for use in spreadsheets, or transform JSON to YAML for configuration files. Download formatted or minified JSON with one click.</p>
+      </section>
+
+      <section>
+        <h2>Multiple Ways to Load JSON</h2>
+        <p>Paste JSON directly, drag and drop a <code>.json</code> file onto the page, use the file picker to import from disk, or enter a URL to fetch JSON from any public API endpoint that supports CORS.</p>
+      </section>
+    </details>
+
+    <details id="faq">
+      <summary>Frequently Asked Questions</summary>
+      <section>
+        <h3>What is JSON?</h3>
+        <p>JSON (JavaScript Object Notation) is a lightweight, text-based data interchange format. It is easy for humans to read and write, and easy for machines to parse and generate. JSON is widely used for APIs, configuration files, and data storage.</p>
+
+        <h3>Is my data safe?</h3>
+        <p>Yes. This tool runs entirely in your web browser. Your JSON data is never transmitted to any server, stored in any database, or shared with third parties. There is no backend — it is a static HTML, CSS, and JavaScript application.</p>
+
+        <h3>Does it work offline?</h3>
+        <p>Yes. This JSON viewer is a Progressive Web App (PWA). After your first visit, it is cached by a service worker and works without an internet connection. You can even install it as a standalone app on desktop or mobile.</p>
+
+        <h3>What browsers are supported?</h3>
+        <p>All modern browsers: Chrome, Firefox, Safari, Edge, and Opera. The app uses standard web APIs and has no external dependencies.</p>
+
+        <h3>How do I format JSON?</h3>
+        <p>Paste your JSON into the editor and click the <strong>Format</strong> button in the toolbar, or press <kbd>Ctrl+Shift+F</kbd>. The JSON will be reformatted with 2-space indentation.</p>
+
+        <h3>How do I minify JSON?</h3>
+        <p>Click the <strong>Minify</strong> button or press <kbd>Ctrl+Shift+M</kbd> to remove all whitespace and produce the most compact JSON representation.</p>
+
+        <h3>Can I search inside JSON?</h3>
+        <p>Yes. In the Tree Viewer tab, use the search bar to find keys or values. Results are highlighted and you can navigate between matches with the arrow buttons.</p>
+      </section>
+    </details>
+  </article>
+
+  <footer class="site-footer">
+    <p>&copy; 2025 JSON Viewer &middot; Free &amp; open source &middot; 100% client-side</p>
+  </footer>
+
+  <script src="js/app.js"></script>
+</body>
+</html>
