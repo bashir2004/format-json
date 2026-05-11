@@ -88,6 +88,9 @@ body {
   background: var(--bg-primary);
   border-bottom: 1px solid var(--border);
   flex-shrink: 0;
+  position: sticky;
+  top: 0;
+  z-index: 50;
 }
 
 .logo {
@@ -140,6 +143,22 @@ body {
 .icon-btn:hover { background: var(--bg-hover); color: var(--text-primary); }
 .icon-btn.small { width: 26px; height: 26px; font-size: 12px; }
 
+.tool-link,
+.about-link {
+  font-size: 12.5px;
+  font-weight: 600;
+  color: var(--text-secondary);
+  text-decoration: none;
+  padding: 6px 8px;
+  border-radius: var(--radius-sm);
+}
+
+.tool-link:hover,
+.about-link:hover {
+  background: var(--bg-hover);
+  color: var(--text-primary);
+}
+
 /* ---------- Action Bar ---------- */
 .action-bar {
   display: flex;
@@ -151,6 +170,9 @@ body {
   border-bottom: 1px solid var(--border);
   flex-shrink: 0;
   flex-wrap: wrap;
+  position: sticky;
+  top: 48px;
+  z-index: 40;
 }
 
 .action-group {
@@ -243,6 +265,11 @@ body {
   flex-shrink: 0;
 }
 .search-bar[hidden] { display: none; }
+.search-bar.sticky-open {
+  position: sticky;
+  top: 0;
+  z-index: 35;
+}
 .search-bar input {
   flex: 1;
   padding: 6px 10px;

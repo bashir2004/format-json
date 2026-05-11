@@ -55,8 +55,8 @@
 
   let parsedJson = null;
   let currentTab = 'editor';
-  let searchMatches = [];
-  let searchIndex = -1;
+  let treeSearchMatches = [];
+  let treeSearchIndex = -1;
 
   // ── Theme ─────────────────────────────────────────────────────────
   function initTheme() {
@@ -95,6 +95,7 @@
     editorGroup.hidden = (tab === 'viewer');
     treeGroup.hidden = (tab !== 'viewer');
     els.searchBar.hidden = true;
+    els.searchBar.classList.remove('sticky-open');
 
     if (tab === 'viewer') {
       renderTree();
@@ -500,11 +501,11 @@
   }
 
   // ── Search ────────────────────────────────────────────────────────
-  function performSearch(query) {
+  function performTreeSearch(query) {
     // Clear previous highlights
     $$('.tree-row.highlight', els.treeContainer).forEach(r => r.classList.remove('highlight'));
-    searchMatches = [];
-    searchIndex = -1;
+    treeSearchMatches = [];
+    treeSearchIndex = -1;
 
     if (!query.trim()) {
       els.searchCount.textContent = '';
@@ -517,21 +518,21 @@
     rows.forEach(row => {
       const text = row.textContent.toLowerCase();
       if (text.includes(lowerQuery)) {
-        searchMatches.push(row);
+        treeSearchMatches.push(row);
       }
     });
 
-    els.searchCount.textContent = `${searchMatches.length} match${searchMatches.length !== 1 ? 'es' : ''}`;
-    if (searchMatches.length > 0) {
-      searchIndex = 0;
-      highlightMatch();
+    els.searchCount.textContent = `${treeSearchMatches.length} match${treeSearchMatches.length !== 1 ? 'es' : ''}`;
+    if (treeSearchMatches.length > 0) {
+      treeSearchIndex = 0;
+      highlightTreeMatch();
     }
   }
 
-  function highlightMatch() {
+  function highlightTreeMatch() {
     $$('.tree-row.highlight', els.treeContainer).forEach(r => r.classList.remove('highlight'));
-    if (searchMatches.length === 0) return;
-    const row = searchMatches[searchIndex];
+    if (treeSearchMatches.length === 0) return;
+    const row = treeSearchMatches[treeSearchIndex];
     // Expand parents
     let parent = row.closest('.tree-children.collapsed');
     while (parent) {
@@ -541,8 +542,15 @@
       parent = parent.parentElement?.closest('.tree-children.collapsed');
     }
     row.classList.add('highlight');
-    row.scrollIntoView({ behavior: 'smooth', block: 'center' });
-    els.searchCount.textContent = `${searchIndex + 1}/${searchMatches.length}`;
+    row.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    els.searchCount.textContent = `${treeSearchIndex + 1}/${treeSearchMatches.length}`;
+
+    // Keep search UX stable while navigating matches.
+    if (!els.searchBar.hidden) {
+      const caretPos = els.searchInput.value.length;
+      els.searchInput.focus({ preventScroll: true });
+      els.searchInput.setSelectionRange(caretPos, caretPos);
+    }
   }
 
   // ── Diff ──────────────────────────────────────────────────────────
@@ -919,6 +927,15 @@
   // ── Keyboard Shortcuts ────────────────────────────────────────────
   function initShortcuts() {
     document.addEventListener('keydown', e => {
+      if (e.ctrlKey && e.key.toLowerCase() === 'f') {
+        if (currentTab === 'viewer') {
+          e.preventDefault();
+          els.searchBar.hidden = false;
+          els.searchBar.classList.add('sticky-open');
+          els.searchInput.focus();
+        }
+      }
+
       // Ctrl+Shift+F → Format
       if (e.ctrlKey && e.shiftKey && e.key === 'F') {
         e.preventDefault();
@@ -948,7 +965,7 @@
   // ── PWA / Service Worker ──────────────────────────────────────────
   function initPWA() {
     if ('serviceWorker' in navigator) {
-      navigator.serviceWorker.register('sw.js').catch(() => {});
+      navigator.serviceWorker.register('/sw.js').catch(() => {});
     }
   }
 
@@ -1011,32 +1028,54 @@
     els.btnExport.addEventListener('click', exportData);
 
     // Search
-    const debouncedSearch = debounce(q => performSearch(q), 250);
+    const debouncedSearch = debounce(q => performTreeSearch(q), 250);
     els.searchInput.addEventListener('input', () => debouncedSearch(els.searchInput.value));
+    els.searchInput.addEventListener('keydown', e => {
+      if (e.key !== 'Enter') return;
+      e.preventDefault();
+      if (treeSearchMatches.length === 0) return;
+
+      if (e.shiftKey) {
+        treeSearchIndex = (treeSearchIndex - 1 + treeSearchMatches.length) % treeSearchMatches.length;
+      } else {
+        treeSearchIndex = (treeSearchIndex + 1) % treeSearchMatches.length;
+      }
+      highlightTreeMatch();
+
+      // Ensure Enter navigation never collapses/hides the search UI.
+      els.searchBar.hidden = false;
+      els.searchBar.classList.add('sticky-open');
+    });
     els.searchNext.addEventListener('click', () => {
-      if (searchMatches.length === 0) return;
-      searchIndex = (searchIndex + 1) % searchMatches.length;
-      highlightMatch();
+      if (treeSearchMatches.length === 0) return;
+      treeSearchIndex = (treeSearchIndex + 1) % treeSearchMatches.length;
+      highlightTreeMatch();
     });
     els.searchPrev.addEventListener('click', () => {
-      if (searchMatches.length === 0) return;
-      searchIndex = (searchIndex - 1 + searchMatches.length) % searchMatches.length;
-      highlightMatch();
+      if (treeSearchMatches.length === 0) return;
+      treeSearchIndex = (treeSearchIndex - 1 + treeSearchMatches.length) % treeSearchMatches.length;
+      highlightTreeMatch();
     });
     els.searchClear.addEventListener('click', () => {
       els.searchInput.value = '';
-      performSearch('');
+      performTreeSearch('');
       els.searchBar.hidden = true;
+      els.searchBar.classList.remove('sticky-open');
     });
 
     // Search toggle button
     const btnSearchToggle = $('#btn-search-toggle');
-    btnSearchToggle.addEventListener('click', () => {
-      els.searchBar.hidden = !els.searchBar.hidden;
-      if (!els.searchBar.hidden) {
-        els.searchInput.focus();
-      }
-    });
+    if (btnSearchToggle) {
+      btnSearchToggle.addEventListener('click', () => {
+        els.searchBar.hidden = !els.searchBar.hidden;
+        if (!els.searchBar.hidden) {
+          els.searchBar.classList.add('sticky-open');
+          els.searchInput.focus();
+        } else {
+          els.searchBar.classList.remove('sticky-open');
+        }
+      });
+    }
 
     // Expand/Collapse all
     const btnExpandAll = $('#btn-expand-all');
