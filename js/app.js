@@ -51,12 +51,30 @@
     btnCodegen: $('#btn-codegen'),
     btnCodegenCopy: $('#btn-codegen-copy'),
     codegenOutput: $('#codegen-output'),
+    btnFilter: $('#btn-filter'),
+    filterDialog: $('#filter-dialog'),
+    filterTree: $('#filter-tree'),
+    filterSelectAll: $('#filter-select-all'),
+    filterDeselectAll: $('#filter-deselect-all'),
+    filterApply: $('#filter-apply'),
+    filterCancel: $('#filter-cancel'),
+    filterReset: $('#filter-reset'),
+    presetSelect: $('#filter-preset-select'),
+    presetSaveBtn: $('#filter-preset-save'),
+    presetDeleteBtn: $('#filter-preset-delete'),
+    presetNameRow: $('#filter-preset-name-row'),
+    presetNameInput: $('#filter-preset-name'),
+    presetConfirmBtn: $('#filter-preset-confirm'),
+    presetNameCancel: $('#filter-preset-name-cancel'),
+    presetToast: $('#filter-preset-toast'),
   };
 
   let parsedJson = null;
   let currentTab = 'editor';
   let treeSearchMatches = [];
   let treeSearchIndex = -1;
+  let activeFilter = null;   // Set of schema paths or null (no filter)
+  let currentSchema = null;  // Extracted schema nodes for the filter modal
 
   // ── Theme ─────────────────────────────────────────────────────────
   function initTheme() {
@@ -399,8 +417,11 @@
       }
 
       // bracket + size
-      const entries = type === 'array' ? value : Object.entries(value);
-      const count = type === 'array' ? value.length : Object.keys(value).length;
+      let objEntries = type === 'object' ? Object.entries(value) : null;
+      if (activeFilter && type === 'object') {
+        objEntries = objEntries.filter(([k]) => isPathVisible(toSchemaPath([...path, k])));
+      }
+      const count = type === 'array' ? value.length : objEntries.length;
       const bracket = document.createElement('span');
       bracket.className = 'tree-bracket';
       bracket.textContent = type === 'array' ? '[' : '{';
@@ -418,7 +439,7 @@
           childrenDiv.appendChild(buildTreeNode(i, item, depth + 1, [...path, i]));
         });
       } else {
-        Object.entries(value).forEach(([k, v]) => {
+        objEntries.forEach(([k, v]) => {
           childrenDiv.appendChild(buildTreeNode(k, v, depth + 1, [...path, k]));
         });
       }
@@ -618,6 +639,355 @@
     const div = document.createElement('div');
     div.textContent = str;
     return div.innerHTML;
+  }
+
+  // ── Field Filter ──────────────────────────────────────────────────
+  // Check if a schema path (or any descendant) is in the active filter
+  function isPathVisible(schemaPath) {
+    if (!activeFilter) return true;
+    if (activeFilter.has(schemaPath)) return true;
+    const dotPrefix = schemaPath + '.';
+    const arrPrefix = schemaPath + '[]';
+    for (const p of activeFilter) {
+      if (p.startsWith(dotPrefix) || p.startsWith(arrPrefix)) return true;
+    }
+    return false;
+  }
+
+  // Convert actual path array (e.g. ["users",0,"name"]) to schema path ("users[].name")
+  function toSchemaPath(pathArray) {
+    const parts = [];
+    for (let i = 0; i < pathArray.length; i++) {
+      if (typeof pathArray[i] === 'number') {
+        if (i === 0) parts.push('[]');
+        // Consecutive numbers = nested arrays; append [] for each extra level
+        else if (i > 0 && typeof pathArray[i - 1] === 'number' && parts.length > 0) {
+          parts[parts.length - 1] += '[]';
+        }
+        continue;
+      }
+      let part = pathArray[i];
+      if (i + 1 < pathArray.length && typeof pathArray[i + 1] === 'number') {
+        part += '[]';
+      }
+      parts.push(part);
+    }
+    return parts.join('.');
+  }
+
+  // Extract schema structure — arrays appear once (first element), objects enumerate keys
+  function extractSchema(obj, parentPath) {
+    const nodes = [];
+    for (const [key, val] of Object.entries(obj)) {
+      const childType = getType(val);
+      const path = parentPath ? parentPath + '.' + key : key;
+      if (childType === 'array') {
+        let children = [];
+        // Unwrap nested arrays (e.g. array of arrays) to find object items
+        let inner = val;
+        let suffix = '[]';
+        while (inner.length > 0 && getType(inner[0]) === 'array') {
+          inner = inner[0];
+          suffix += '[]';
+        }
+        if (inner.length > 0 && getType(inner[0]) === 'object') {
+          children = extractSchema(inner[0], path + suffix);
+        }
+        nodes.push({ key, path, type: 'array', children });
+      } else if (childType === 'object') {
+        nodes.push({ key, path, type: 'object', children: extractSchema(val, path) });
+      } else {
+        nodes.push({ key, path, type: 'leaf', children: [] });
+      }
+    }
+    return nodes;
+  }
+
+  function extractSchemaFromData(data) {
+    const type = getType(data);
+    if (type === 'array' && data.length > 0 && getType(data[0]) === 'object') {
+      return extractSchema(data[0], '[]');
+    }
+    if (type === 'object') {
+      return extractSchema(data, '');
+    }
+    return [];
+  }
+
+  function collectAllPaths(nodes) {
+    const paths = new Set();
+    (function walk(list) {
+      list.forEach(n => { paths.add(n.path); walk(n.children); });
+    })(nodes);
+    return paths;
+  }
+
+  // Open filter dialog — build schema tree with checkboxes
+  function openFilterDialog() {
+    let data = parsedJson;
+    if (!data) {
+      try { data = JSON.parse(els.input.value); } catch (_) { return; }
+    }
+    currentSchema = extractSchemaFromData(data);
+    if (currentSchema.length === 0) return;
+
+    els.filterTree.innerHTML = '';
+    renderFilterTree(currentSchema, els.filterTree, activeFilter);
+    populatePresetDropdown();
+    hidePresetNameInput();
+    els.filterDialog.showModal();
+  }
+
+  function renderFilterTree(nodes, container, currentFilter) {
+    nodes.forEach(node => {
+      const item = document.createElement('div');
+      item.className = 'filter-node';
+
+      const row = document.createElement('div');
+      row.className = 'filter-row';
+
+      let childrenDiv;
+      if (node.children.length > 0) {
+        const toggle = document.createElement('button');
+        toggle.className = 'filter-toggle';
+        toggle.type = 'button';
+        toggle.innerHTML = '&#9660;';
+        childrenDiv = document.createElement('div');
+        childrenDiv.className = 'filter-children';
+        toggle.addEventListener('click', () => {
+          toggle.classList.toggle('collapsed');
+          childrenDiv.classList.toggle('collapsed');
+        });
+        row.appendChild(toggle);
+      } else {
+        const ph = document.createElement('span');
+        ph.className = 'filter-toggle-placeholder';
+        row.appendChild(ph);
+      }
+
+      const checkbox = document.createElement('input');
+      checkbox.type = 'checkbox';
+      checkbox.className = 'filter-checkbox';
+      checkbox.dataset.path = node.path;
+      checkbox.checked = currentFilter ? currentFilter.has(node.path) : true;
+
+      checkbox.addEventListener('change', () => {
+        const checked = checkbox.checked;
+        item.querySelectorAll('.filter-checkbox').forEach(cb => {
+          cb.checked = checked;
+          cb.indeterminate = false;
+        });
+        updateFilterAncestors(item);
+      });
+
+      row.appendChild(checkbox);
+
+      const label = document.createElement('span');
+      label.className = 'filter-label';
+      label.textContent = node.key;
+      label.addEventListener('click', () => {
+        checkbox.checked = !checkbox.checked;
+        checkbox.dispatchEvent(new Event('change'));
+      });
+      row.appendChild(label);
+
+      if (node.type === 'array' || node.type === 'object') {
+        const badge = document.createElement('span');
+        badge.className = 'filter-type-badge';
+        badge.textContent = node.type === 'array' ? '[ ]' : '{ }';
+        row.appendChild(badge);
+      }
+
+      item.appendChild(row);
+
+      if (childrenDiv) {
+        renderFilterTree(node.children, childrenDiv, currentFilter);
+        item.appendChild(childrenDiv);
+      }
+
+      container.appendChild(item);
+    });
+
+    // Set indeterminate states after rendering
+    updateFilterIndeterminate(container);
+  }
+
+  function updateFilterIndeterminate(container) {
+    // Process innermost nodes first — querySelectorAll returns document order,
+    // so reverse to get bottom-up
+    const allNodes = [...container.querySelectorAll('.filter-node')].reverse();
+    allNodes.forEach(node => {
+      const childCbs = node.querySelectorAll(':scope > .filter-children .filter-checkbox');
+      if (childCbs.length === 0) return;
+      const parentCb = node.querySelector(':scope > .filter-row > .filter-checkbox');
+      if (!parentCb) return;
+      const total = childCbs.length;
+      const checked = [...childCbs].filter(cb => cb.checked).length;
+      if (checked === 0) { parentCb.checked = false; parentCb.indeterminate = false; }
+      else if (checked === total) { parentCb.checked = true; parentCb.indeterminate = false; }
+      else { parentCb.checked = false; parentCb.indeterminate = true; }
+    });
+  }
+
+  function updateFilterAncestors(element) {
+    const parent = element.parentElement?.closest('.filter-node');
+    if (!parent) return;
+    const parentCb = parent.querySelector(':scope > .filter-row > .filter-checkbox');
+    if (!parentCb) return;
+    const childCbs = parent.querySelectorAll(':scope > .filter-children .filter-checkbox');
+    const total = childCbs.length;
+    const checked = [...childCbs].filter(cb => cb.checked).length;
+    if (checked === 0) { parentCb.checked = false; parentCb.indeterminate = false; }
+    else if (checked === total) { parentCb.checked = true; parentCb.indeterminate = false; }
+    else { parentCb.checked = false; parentCb.indeterminate = true; }
+    updateFilterAncestors(parent);
+  }
+
+  function applyFilter() {
+    const allPaths = collectAllPaths(currentSchema);
+    const checkedPaths = new Set();
+    els.filterTree.querySelectorAll('.filter-checkbox').forEach(cb => {
+      if (cb.checked) checkedPaths.add(cb.dataset.path);
+    });
+    activeFilter = checkedPaths.size === allPaths.size ? null : checkedPaths;
+    els.filterDialog.close();
+    renderTree();
+    updateFilterBtnState();
+  }
+
+  function resetFilter() {
+    activeFilter = null;
+    els.filterDialog.close();
+    renderTree();
+    updateFilterBtnState();
+  }
+
+  function updateFilterBtnState() {
+    if (activeFilter) {
+      els.btnFilter.classList.add('active-filter');
+      els.btnFilter.title = 'Filter active (' + activeFilter.size + ' fields selected)';
+    } else {
+      els.btnFilter.classList.remove('active-filter');
+      els.btnFilter.title = 'Filter fields to simplify tree';
+    }
+  }
+
+  // ── Filter Presets (localStorage) ─────────────────────────────────
+  const PRESET_STORAGE_KEY = 'jv_filter_presets';
+
+  function loadPresets() {
+    try {
+      return JSON.parse(localStorage.getItem(PRESET_STORAGE_KEY)) || [];
+    } catch (_) { return []; }
+  }
+
+  function savePresetsToStorage(presets) {
+    localStorage.setItem(PRESET_STORAGE_KEY, JSON.stringify(presets));
+  }
+
+  function populatePresetDropdown() {
+    const presets = loadPresets();
+    const sel = els.presetSelect;
+    sel.innerHTML = '<option value="">-- Saved Presets --</option>';
+    // Sort by most recently saved first
+    const sorted = presets.map((p, i) => ({ ...p, _idx: i })).sort((a, b) => b.ts - a.ts);
+    sorted.forEach(p => {
+      const opt = document.createElement('option');
+      opt.value = p._idx;
+      const date = new Date(p.ts).toLocaleDateString();
+      opt.textContent = p.name + ' (' + date + ')';
+      sel.appendChild(opt);
+    });
+    els.presetDeleteBtn.disabled = true;
+  }
+
+  function showPresetNameInput() {
+    // If a preset is already selected, save directly under that name
+    const idx = parseInt(els.presetSelect.value, 10);
+    if (!isNaN(idx)) {
+      const presets = loadPresets();
+      if (presets[idx]) {
+        savePresetByName(presets[idx].name);
+        return;
+      }
+    }
+    els.presetNameRow.hidden = false;
+    els.presetNameInput.value = '';
+    els.presetNameInput.focus();
+  }
+
+  function hidePresetNameInput() {
+    els.presetNameRow.hidden = true;
+    els.presetNameInput.value = '';
+  }
+
+  function saveCurrentAsPreset() {
+    const name = els.presetNameInput.value.trim();
+    if (!name) { els.presetNameInput.focus(); return; }
+    savePresetByName(name);
+    hidePresetNameInput();
+  }
+
+  function savePresetByName(name) {
+    const excluded = [];
+    els.filterTree.querySelectorAll('.filter-checkbox').forEach(cb => {
+      if (!cb.checked) excluded.push(cb.dataset.path);
+    });
+
+    const presets = loadPresets();
+    const existing = presets.findIndex(p => p.name === name);
+    const preset = { name, excluded, ts: Date.now() };
+    if (existing >= 0) {
+      presets[existing] = preset;
+    } else {
+      presets.push(preset);
+    }
+    savePresetsToStorage(presets);
+    populatePresetDropdown();
+    const savedIdx = existing >= 0 ? existing : presets.length - 1;
+    els.presetSelect.value = savedIdx;
+    els.presetDeleteBtn.disabled = false;
+    showPresetToast('\u2713 Saved "' + name + '"');
+  }
+
+  function showPresetToast(msg) {
+    els.presetToast.textContent = msg;
+    els.presetToast.hidden = false;
+    // Re-trigger animation
+    els.presetToast.style.animation = 'none';
+    els.presetToast.offsetHeight; // force reflow
+    els.presetToast.style.animation = '';
+    clearTimeout(showPresetToast._timer);
+    showPresetToast._timer = setTimeout(() => { els.presetToast.hidden = true; }, 2500);
+  }
+
+  function deleteSelectedPreset() {
+    const idx = parseInt(els.presetSelect.value, 10);
+    if (isNaN(idx)) return;
+    const presets = loadPresets();
+    const name = presets[idx]?.name;
+    if (!name) return;
+    presets.splice(idx, 1);
+    savePresetsToStorage(presets);
+    populatePresetDropdown();
+  }
+
+  function applySelectedPreset() {
+    const idx = parseInt(els.presetSelect.value, 10);
+    els.presetDeleteBtn.disabled = isNaN(idx);
+    if (isNaN(idx)) return;
+    const presets = loadPresets();
+    const preset = presets[idx];
+    if (!preset) return;
+
+    const excludedSet = new Set(preset.excluded);
+    // Set checkboxes: checked = not in excluded list
+    els.filterTree.querySelectorAll('.filter-checkbox').forEach(cb => {
+      cb.checked = !excludedSet.has(cb.dataset.path);
+      cb.indeterminate = false;
+    });
+    // Fix indeterminate states for parent nodes
+    updateFilterIndeterminate(els.filterTree);
   }
 
   // ── Code Generation ───────────────────────────────────────────────
@@ -1092,6 +1462,29 @@
         t.closest('.tree-node').querySelector(':scope > .tree-children')?.classList.add('collapsed');
       });
     });
+
+    // Filter
+    els.btnFilter.addEventListener('click', openFilterDialog);
+    els.filterApply.addEventListener('click', applyFilter);
+    els.filterCancel.addEventListener('click', () => { hidePresetNameInput(); els.filterDialog.close(); });
+    els.filterReset.addEventListener('click', resetFilter);
+    els.filterSelectAll.addEventListener('click', () => {
+      els.filterTree.querySelectorAll('.filter-checkbox').forEach(cb => { cb.checked = true; cb.indeterminate = false; });
+    });
+    els.filterDeselectAll.addEventListener('click', () => {
+      els.filterTree.querySelectorAll('.filter-checkbox').forEach(cb => { cb.checked = false; cb.indeterminate = false; });
+    });
+
+    // Filter Presets
+    els.presetSaveBtn.addEventListener('click', showPresetNameInput);
+    els.presetConfirmBtn.addEventListener('click', saveCurrentAsPreset);
+    els.presetNameCancel.addEventListener('click', hidePresetNameInput);
+    els.presetNameInput.addEventListener('keydown', e => {
+      if (e.key === 'Enter') { e.preventDefault(); saveCurrentAsPreset(); }
+      if (e.key === 'Escape') hidePresetNameInput();
+    });
+    els.presetDeleteBtn.addEventListener('click', deleteSelectedPreset);
+    els.presetSelect.addEventListener('change', applySelectedPreset);
 
     // Diff
     els.btnDiff.addEventListener('click', computeDiff);

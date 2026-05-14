@@ -200,6 +200,10 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       <input type="file" id="file-input" accept=".json,.txt" hidden />
     </div>
     <div class="action-group" id="action-group-tree" hidden>
+      <button id="btn-filter" class="action-btn" title="Filter fields to simplify tree">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"/></svg>
+        Filter Fields
+      </button>
       <button id="btn-search-toggle" class="action-btn" title="Search (Ctrl+F)">
         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
         Search
@@ -303,6 +307,37 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       <div class="modal-actions">
         <button type="button" class="action-btn" id="url-cancel">Cancel</button>
         <button type="submit" class="action-btn primary" id="url-load">Load</button>
+      </div>
+    </form>
+  </dialog>
+
+  <!-- Filter Fields modal -->
+  <dialog id="filter-dialog" class="modal filter-modal">
+    <form method="dialog">
+      <h2>Filter Fields</h2>
+      <p class="modal-note">Uncheck fields to hide them from the tree view. Arrays appear once.</p>
+      <div class="filter-preset-bar">
+        <select id="filter-preset-select" title="Saved filter presets">
+          <option value="">-- Saved Presets --</option>
+        </select>
+        <button type="button" id="filter-preset-save" class="action-btn small" title="Save current selection as preset">💾 Save</button>
+        <button type="button" id="filter-preset-delete" class="action-btn small" title="Delete selected preset" disabled>🗑 Delete</button>
+        <span id="filter-preset-toast" class="preset-toast" hidden></span>
+      </div>
+      <div id="filter-preset-name-row" class="filter-preset-name-row" hidden>
+        <input type="text" id="filter-preset-name" placeholder="Enter preset name…" maxlength="50" autocomplete="off" />
+        <button type="button" id="filter-preset-confirm" class="action-btn small primary">Save</button>
+        <button type="button" id="filter-preset-name-cancel" class="action-btn small">Cancel</button>
+      </div>
+      <div class="filter-actions-top">
+        <button type="button" id="filter-select-all" class="action-btn small">Select All</button>
+        <button type="button" id="filter-deselect-all" class="action-btn small">Deselect All</button>
+      </div>
+      <div id="filter-tree" class="filter-tree-container"></div>
+      <div class="modal-actions">
+        <button type="button" id="filter-reset" class="action-btn">Reset</button>
+        <button type="button" id="filter-cancel" class="action-btn">Cancel</button>
+        <button type="button" id="filter-apply" class="action-btn primary">Apply</button>
       </div>
     </form>
   </dialog>
