@@ -67,12 +67,15 @@
     presetConfirmBtn: $('#filter-preset-confirm'),
     presetNameCancel: $('#filter-preset-name-cancel'),
     presetToast: $('#filter-preset-toast'),
+    tableContainer: $('#table-container'),
+    btnTableView: $('#btn-table-view'),
   };
 
   let parsedJson = null;
   let currentTab = 'editor';
   let treeSearchMatches = [];
   let treeSearchIndex = -1;
+  let tableViewActive = false;
   let activeFilter = null;   // Set of schema paths or null (no filter)
   let currentSchema = null;  // Extracted schema nodes for the filter modal
 
@@ -116,7 +119,15 @@
     els.searchBar.classList.remove('sticky-open');
 
     if (tab === 'viewer') {
-      renderTree();
+      if (tableViewActive) {
+        renderTableView();
+      } else {
+        renderTree();
+      }
+      // Keep tree-only controls in sync with current view mode
+      ['#btn-filter', '#btn-search-toggle', '#btn-expand-all', '#btn-collapse-all'].forEach(id => {
+        const el = $(id); if (el) el.hidden = tableViewActive;
+      });
     }
     if (tab === 'diff') {
       els.diffLeft.value = els.input.value;
@@ -519,6 +530,345 @@
         setTimeout(() => row.classList.remove('highlight'), 1500);
       }
     }
+  }
+
+  // ── Table View ────────────────────────────────────────────────────
+  function toggleTableView() {
+    tableViewActive = !tableViewActive;
+    els.treeContainer.hidden = tableViewActive;
+    els.tableContainer.hidden = !tableViewActive;
+
+    const treeOnlyIds = ['#btn-filter', '#btn-search-toggle', '#btn-expand-all', '#btn-collapse-all'];
+    treeOnlyIds.forEach(id => { const el = $(id); if (el) el.hidden = tableViewActive; });
+
+    if (tableViewActive) {
+      els.searchBar.hidden = true;
+      els.searchBar.classList.remove('sticky-open');
+      renderTableView();
+    } else {
+      renderTree();
+    }
+
+    els.btnTableView.classList.toggle('active-filter', tableViewActive);
+    els.btnTableView.title = tableViewActive ? 'Switch to tree view' : 'Switch to table view';
+  }
+
+  function renderTableView() {
+    els.tableContainer.innerHTML = '';
+    let data = parsedJson;
+    if (!data) {
+      try { data = JSON.parse(els.input.value); }
+      catch (_) {
+        els.tableContainer.innerHTML = '<div class="jt-empty-msg" style="color:var(--danger);">Cannot render table: invalid JSON.</div>';
+        return;
+      }
+    }
+    if (data === null || data === undefined) {
+      els.tableContainer.innerHTML = '<div class="jt-empty-msg">No JSON data to display.</div>';
+      return;
+    }
+    const wrap = document.createElement('div');
+    wrap.className = 'jt-wrap';
+    wrap.appendChild(buildTableView(data, []));
+    els.tableContainer.appendChild(wrap);
+  }
+
+  function buildTableView(data, path) {
+    const type = getType(data);
+    if (type === 'array') {
+      if (data.length === 0) return jtEmptyNode('Empty array');
+      const allObjs = data.every(item => getType(item) === 'object');
+      if (allObjs) return buildObjectArrayTable(data, path);
+      const allPrim = data.every(item => getType(item) !== 'object' && getType(item) !== 'array');
+      if (allPrim) return buildPrimitiveArrayTable(data, path);
+      return buildMixedArrayTable(data, path);
+    }
+    if (type === 'object') return buildObjectTable(data, path);
+    const div = document.createElement('div');
+    div.className = 'jt-scalar-root';
+    renderCellValue(div, data, path);
+    return div;
+  }
+
+  function buildObjectArrayTable(data, path) {
+    // Collect union of all keys preserving first-seen order
+    const seen = new Map();
+    data.forEach(item => {
+      if (item && typeof item === 'object' && !Array.isArray(item)) {
+        Object.keys(item).forEach(k => { if (!seen.has(k)) seen.set(k, true); });
+      }
+    });
+    const keys = [...seen.keys()];
+
+    const wrapper = document.createElement('div');
+    wrapper.className = 'jt-overflow-wrap';
+    const table = document.createElement('table');
+    table.className = 'jt-table';
+
+    const thead = document.createElement('thead');
+    const hr = document.createElement('tr');
+    hr.appendChild(jtTh('#', 'jt-th-index'));
+    keys.forEach(k => hr.appendChild(jtTh(k)));
+    thead.appendChild(hr);
+    table.appendChild(thead);
+
+    const tbody = document.createElement('tbody');
+    data.forEach((item, i) => {
+      const row = document.createElement('tr');
+      row.className = 'jt-row';
+
+      const idxTd = document.createElement('td');
+      idxTd.className = 'jt-td jt-td-index';
+      idxTd.textContent = i;
+      row.appendChild(idxTd);
+
+      keys.forEach(k => {
+        const td = document.createElement('td');
+        td.className = 'jt-td';
+        if (!item || !(k in item)) {
+          td.classList.add('jt-missing');
+          td.textContent = '—';
+        } else {
+          renderCellValue(td, item[k], [...path, i, k]);
+        }
+        row.appendChild(td);
+      });
+      tbody.appendChild(row);
+    });
+    table.appendChild(tbody);
+    wrapper.appendChild(table);
+    return wrapper;
+  }
+
+  function buildObjectTable(data, path) {
+    const keys = Object.keys(data);
+    const wrapper = document.createElement('div');
+    wrapper.className = 'jt-overflow-wrap';
+    const table = document.createElement('table');
+    table.className = 'jt-table';
+
+    // Keys become column headers
+    const thead = document.createElement('thead');
+    const hr = document.createElement('tr');
+    keys.forEach(k => hr.appendChild(jtTh(k)));
+    thead.appendChild(hr);
+    table.appendChild(thead);
+
+    // Values fill a single row
+    const tbody = document.createElement('tbody');
+    const row = document.createElement('tr');
+    row.className = 'jt-row';
+    keys.forEach(k => {
+      const td = document.createElement('td');
+      td.className = 'jt-td';
+      renderCellValue(td, data[k], [...path, k]);
+      row.appendChild(td);
+    });
+    tbody.appendChild(row);
+    table.appendChild(tbody);
+    wrapper.appendChild(table);
+    return wrapper;
+  }
+
+  function buildPrimitiveArrayTable(data, path) {
+    const wrapper = document.createElement('div');
+    wrapper.className = 'jt-overflow-wrap';
+    const table = document.createElement('table');
+    table.className = 'jt-table';
+
+    const thead = document.createElement('thead');
+    const hr = document.createElement('tr');
+    hr.appendChild(jtTh('#', 'jt-th-index'));
+    hr.appendChild(jtTh('Value'));
+    thead.appendChild(hr);
+    table.appendChild(thead);
+
+    const tbody = document.createElement('tbody');
+    data.forEach((v, i) => {
+      const row = document.createElement('tr');
+      row.className = 'jt-row';
+
+      const idxTd = document.createElement('td');
+      idxTd.className = 'jt-td jt-td-index';
+      idxTd.textContent = i;
+      row.appendChild(idxTd);
+
+      const valTd = document.createElement('td');
+      valTd.className = 'jt-td';
+      renderCellValue(valTd, v, [...path, i]);
+      row.appendChild(valTd);
+
+      tbody.appendChild(row);
+    });
+    table.appendChild(tbody);
+    wrapper.appendChild(table);
+    return wrapper;
+  }
+
+  function buildMixedArrayTable(data, path) {
+    const wrapper = document.createElement('div');
+    wrapper.className = 'jt-overflow-wrap';
+    const table = document.createElement('table');
+    table.className = 'jt-table';
+
+    const thead = document.createElement('thead');
+    const hr = document.createElement('tr');
+    hr.appendChild(jtTh('#', 'jt-th-index'));
+    hr.appendChild(jtTh('Type'));
+    hr.appendChild(jtTh('Value / Preview'));
+    thead.appendChild(hr);
+    table.appendChild(thead);
+
+    const tbody = document.createElement('tbody');
+    data.forEach((v, i) => {
+      const row = document.createElement('tr');
+      row.className = 'jt-row';
+
+      const idxTd = document.createElement('td');
+      idxTd.className = 'jt-td jt-td-index';
+      idxTd.textContent = i;
+      row.appendChild(idxTd);
+
+      const typeTd = document.createElement('td');
+      typeTd.className = 'jt-td jt-type-cell';
+      const typeBadge = document.createElement('span');
+      typeBadge.className = `jt-type-badge jt-type-${getType(v)}`;
+      typeBadge.textContent = getType(v);
+      typeTd.appendChild(typeBadge);
+      row.appendChild(typeTd);
+
+      const valTd = document.createElement('td');
+      valTd.className = 'jt-td';
+      renderCellValue(valTd, v, [...path, i]);
+      row.appendChild(valTd);
+
+      tbody.appendChild(row);
+    });
+    table.appendChild(tbody);
+    wrapper.appendChild(table);
+    return wrapper;
+  }
+
+  function renderCellValue(container, value, path) {
+    const type = getType(value);
+    if (type === 'null') {
+      const s = document.createElement('span');
+      s.className = 'jt-null';
+      s.textContent = 'null';
+      container.appendChild(s);
+    } else if (type === 'string') {
+      const s = document.createElement('span');
+      s.className = 'jt-string';
+      s.textContent = value.length > 120 ? value.slice(0, 120) + '\u2026' : value;
+      if (value.length > 120) s.title = value;
+      container.appendChild(s);
+    } else if (type === 'number') {
+      const s = document.createElement('span');
+      s.className = 'jt-number';
+      s.textContent = value;
+      container.appendChild(s);
+    } else if (type === 'boolean') {
+      const s = document.createElement('span');
+      s.className = `jt-boolean jt-bool-${value}`;
+      s.textContent = String(value);
+      container.appendChild(s);
+    } else if (type === 'array') {
+      if (value.length === 0) {
+        const s = document.createElement('span');
+        s.className = 'jt-empty';
+        s.textContent = '[ ]';
+        container.appendChild(s);
+      } else {
+        const allPrim = value.every(v => getType(v) !== 'object' && getType(v) !== 'array');
+        if (allPrim && value.length <= 7) {
+          const pillsWrap = document.createElement('div');
+          pillsWrap.className = 'jt-pills';
+          value.forEach(v => {
+            const pill = document.createElement('span');
+            pill.className = `jt-pill jt-pill-${getType(v)}`;
+            pill.textContent = String(v);
+            pillsWrap.appendChild(pill);
+          });
+          container.appendChild(pillsWrap);
+        } else {
+          container.appendChild(createExpandBadge(`[ ${value.length} ]`, value, path));
+        }
+      }
+    } else if (type === 'object') {
+      const keys = Object.keys(value);
+      if (keys.length === 0) {
+        const s = document.createElement('span');
+        s.className = 'jt-empty';
+        s.textContent = '{ }';
+        container.appendChild(s);
+      } else {
+        container.appendChild(createExpandBadge(`{ ${keys.length} }`, value, path));
+      }
+    }
+  }
+
+  function createExpandBadge(label, value, path) {
+    const badge = document.createElement('button');
+    badge.className = 'jt-badge';
+    badge.type = 'button';
+    badge.innerHTML = `<span>${escapeHtml(label)}</span><span class="jt-badge-icon">&#9658;</span>`;
+
+    badge.addEventListener('click', () => {
+      const row = badge.closest('tr');
+      if (!row) return;
+      const colspan = row.children.length;
+      const pathKey = JSON.stringify(path);
+
+      const next = row.nextElementSibling;
+      if (next && next.classList.contains('jt-expand-row') && next.dataset.expandPath === pathKey) {
+        next.remove();
+        badge.classList.remove('jt-badge-open');
+        badge.querySelector('.jt-badge-icon').innerHTML = '&#9658;';
+        return;
+      }
+
+      badge.classList.add('jt-badge-open');
+      badge.querySelector('.jt-badge-icon').innerHTML = '&#9660;';
+
+      const expandRow = document.createElement('tr');
+      expandRow.className = 'jt-expand-row';
+      expandRow.dataset.expandPath = pathKey;
+
+      const expandTd = document.createElement('td');
+      expandTd.className = 'jt-expand-td';
+      expandTd.colSpan = colspan;
+
+      if (path.length > 0) {
+        const bc = document.createElement('div');
+        bc.className = 'jt-expand-bc';
+        bc.textContent = path.map(p => typeof p === 'number' ? `[${p}]` : p).join(' \u203a ');
+        expandTd.appendChild(bc);
+      }
+
+      const nested = document.createElement('div');
+      nested.className = 'jt-nested-wrap';
+      nested.appendChild(buildTableView(value, path));
+      expandTd.appendChild(nested);
+
+      expandRow.appendChild(expandTd);
+      row.insertAdjacentElement('afterend', expandRow);
+    });
+
+    return badge;
+  }
+
+  function jtTh(text, extraClass) {
+    const th = document.createElement('th');
+    th.className = 'jt-th' + (extraClass ? ' ' + extraClass : '');
+    th.textContent = text;
+    return th;
+  }
+
+  function jtEmptyNode(msg) {
+    const div = document.createElement('div');
+    div.className = 'jt-empty-msg';
+    div.textContent = msg;
+    return div;
   }
 
   // ── Search ────────────────────────────────────────────────────────
@@ -1462,6 +1812,9 @@
         t.closest('.tree-node').querySelector(':scope > .tree-children')?.classList.add('collapsed');
       });
     });
+
+    // Table View toggle
+    els.btnTableView.addEventListener('click', toggleTableView);
 
     // Filter
     els.btnFilter.addEventListener('click', openFilterDialog);
