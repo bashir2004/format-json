@@ -505,7 +505,9 @@
       valSpan.textContent = formatValue(value, type);
       valSpan.title = window.i18n ? window.i18n.t('tree.copy_title') : 'Click to copy value';
       valSpan.addEventListener('click', () => {
-        navigator.clipboard.writeText(type === 'string' ? value : JSON.stringify(value));
+        if (navigator.clipboard) {
+          navigator.clipboard.writeText(type === 'string' ? value : JSON.stringify(value)).catch(() => {});
+        }
         valSpan.style.outline = '1px solid var(--accent)';
         setTimeout(() => { valSpan.style.outline = ''; }, 600);
       });
