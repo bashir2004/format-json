@@ -122,7 +122,7 @@ body {
 .tab:hover { background: var(--bg-hover); color: var(--text-primary); }
 .tab.active {
   background: var(--bg-secondary);
-  color: var(--accent);
+  color: var(--accent-hover);
   font-weight: 600;
 }
 
@@ -1125,7 +1125,7 @@ body {
   padding: 8px 24px;
   text-align: center;
   font-size: 12px;
-  color: var(--text-muted);
+  color: var(--text-secondary);
   border-top: 1px solid var(--border);
   background: var(--bg-secondary);
 }
