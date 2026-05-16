@@ -86,6 +86,21 @@
     setTheme(saved || prefer);
   }
 
+  function initLang() {
+    // i18n.js is loaded before app.js; apply translations and wire language selector
+    if (!window.i18n) return;
+    window.i18n.applyTranslations();
+    const sel = document.getElementById('lang-select');
+    if (sel) {
+      sel.value = window.i18n.getLang();
+      sel.addEventListener('change', () => {
+        window.i18n.setLang(sel.value);
+        // Re-apply dynamic text that is built at runtime
+        updateFilterBtnState();
+      });
+    }
+  }
+
   function setTheme(theme) {
     document.documentElement.setAttribute('data-theme', theme);
     localStorage.setItem('jv-theme', theme);
@@ -215,13 +230,14 @@
     if (result.valid) {
       els.validationBar.className = 'validation-bar valid';
       els.validationIcon.textContent = '\u2713';
-      els.validationMsg.textContent = 'Valid JSON';
+      els.validationMsg.textContent = window.i18n ? window.i18n.t('validation.valid') : 'Valid JSON';
       els.validationGoto.hidden = true;
       els.validationGoto.style.display = 'none';
     } else {
       els.validationBar.className = 'validation-bar invalid';
       els.validationIcon.textContent = '\u2717';
-      const loc = result.error.line ? ` (line ${result.error.line}, col ${result.error.column || '?'})` : '';
+      const locTpl = window.i18n ? window.i18n.t('validation.error_loc') : ' (line {line}, col {col})';
+      const loc = result.error.line ? locTpl.replace('{line}', result.error.line).replace('{col}', result.error.column || '?') : '';
       els.validationMsg.textContent = `${result.error.message}${loc}`;
       els.validationGoto.hidden = !result.error.line;
       els.validationGoto.style.display = result.error.line ? '' : 'none';
@@ -288,15 +304,16 @@
     if (!els.input.value) return;
     try {
       await navigator.clipboard.writeText(els.input.value);
-      flashButton(els.btnCopy, 'Copied!');
+      flashButton(els.btnCopy, 'flash.copied');
     } catch (_) {
       els.input.select();
       document.execCommand('copy');
-      flashButton(els.btnCopy, 'Copied!');
+      flashButton(els.btnCopy, 'flash.copied');
     }
   }
 
-  function flashButton(btn, msg) {
+  function flashButton(btn, msgKey) {
+    const msg = window.i18n ? window.i18n.t(msgKey) : msgKey;
     const orig = btn.textContent;
     btn.textContent = msg;
     setTimeout(() => { btn.textContent = orig; }, 1200);
@@ -321,11 +338,11 @@
     try {
       parsed = new URL(url);
     } catch (_) {
-      alert('Please enter a valid URL.');
+      alert(window.i18n ? window.i18n.t('alert.invalid_url') : 'Please enter a valid URL.');
       return;
     }
     if (parsed.protocol !== 'http:' && parsed.protocol !== 'https:') {
-      alert('Only HTTP and HTTPS URLs are supported.');
+      alert(window.i18n ? window.i18n.t('alert.https_only') : 'Only HTTP and HTTPS URLs are supported.');
       return;
     }
     try {
@@ -337,7 +354,8 @@
       validate(els.input.value);
       switchTab('editor');
     } catch (e) {
-      alert(`Failed to load URL: ${e.message}\n\nMake sure the URL supports CORS.`);
+      const msg = window.i18n ? window.i18n.t('alert.load_failed', { msg: e.message }) : `Failed to load URL: ${e.message}\n\nMake sure the URL supports CORS.`;
+      alert(msg);
     }
   }
 
@@ -377,7 +395,7 @@
       try {
         parsedJson = JSON.parse(els.input.value);
       } catch (_) {
-        els.treeContainer.innerHTML = '<div style="padding:24px;color:var(--danger);">Cannot render tree: invalid JSON.</div>';
+        els.treeContainer.innerHTML = `<div style="padding:24px;color:var(--danger);">${window.i18n ? window.i18n.t('tree.invalid') : 'Cannot render tree: invalid JSON.'}</div>`;
         return;
       }
     }
@@ -439,7 +457,10 @@
       row.appendChild(bracket);
       const size = document.createElement('span');
       size.className = 'tree-size';
-      size.textContent = `${count} ${count === 1 ? 'item' : 'items'}`;
+      const itemWord = count === 1
+        ? (window.i18n ? window.i18n.t('tree.items_one') : 'item')
+        : (window.i18n ? window.i18n.t('tree.items_many') : 'items');
+      size.textContent = `${count} ${itemWord}`;
       row.appendChild(size);
 
       node.appendChild(row);
@@ -482,7 +503,7 @@
       const valSpan = document.createElement('span');
       valSpan.className = `tree-value tree-${type}`;
       valSpan.textContent = formatValue(value, type);
-      valSpan.title = 'Click to copy value';
+      valSpan.title = window.i18n ? window.i18n.t('tree.copy_title') : 'Click to copy value';
       valSpan.addEventListener('click', () => {
         navigator.clipboard.writeText(type === 'string' ? value : JSON.stringify(value));
         valSpan.style.outline = '1px solid var(--accent)';
@@ -550,7 +571,8 @@
     }
 
     els.btnTableView.classList.toggle('active-filter', tableViewActive);
-    els.btnTableView.title = tableViewActive ? 'Switch to tree view' : 'Switch to table view';
+    const tblKey = tableViewActive ? 'btn.table_tree_title' : 'btn.table_title';
+    els.btnTableView.title = window.i18n ? window.i18n.t(tblKey) : (tableViewActive ? 'Switch to tree view' : 'Switch to table view');
   }
 
   function renderTableView() {
@@ -559,12 +581,12 @@
     if (!data) {
       try { data = JSON.parse(els.input.value); }
       catch (_) {
-        els.tableContainer.innerHTML = '<div class="jt-empty-msg" style="color:var(--danger);">Cannot render table: invalid JSON.</div>';
+        els.tableContainer.innerHTML = `<div class="jt-empty-msg" style="color:var(--danger);">${window.i18n ? window.i18n.t('table.invalid') : 'Cannot render table: invalid JSON.'}</div>`;
         return;
       }
     }
     if (data === null || data === undefined) {
-      els.tableContainer.innerHTML = '<div class="jt-empty-msg">No JSON data to display.</div>';
+      els.tableContainer.innerHTML = `<div class="jt-empty-msg">${window.i18n ? window.i18n.t('table.empty') : 'No JSON data to display.'}</div>`;
       return;
     }
     const wrap = document.createElement('div');
@@ -576,7 +598,7 @@
   function buildTableView(data, path) {
     const type = getType(data);
     if (type === 'array') {
-      if (data.length === 0) return jtEmptyNode('Empty array');
+      if (data.length === 0) return jtEmptyNode(window.i18n ? window.i18n.t('table.empty_array') : 'Empty array');
       const allObjs = data.every(item => getType(item) === 'object');
       if (allObjs) return buildObjectArrayTable(data, path);
       const allPrim = data.every(item => getType(item) !== 'object' && getType(item) !== 'array');
@@ -607,7 +629,7 @@
 
     const thead = document.createElement('thead');
     const hr = document.createElement('tr');
-    hr.appendChild(jtTh('#', 'jt-th-index'));
+    hr.appendChild(jtTh(window.i18n ? window.i18n.t('table.col_index') : '#', 'jt-th-index'));
     keys.forEach(k => hr.appendChild(jtTh(k)));
     thead.appendChild(hr);
     table.appendChild(thead);
@@ -678,8 +700,8 @@
 
     const thead = document.createElement('thead');
     const hr = document.createElement('tr');
-    hr.appendChild(jtTh('#', 'jt-th-index'));
-    hr.appendChild(jtTh('Value'));
+    hr.appendChild(jtTh(window.i18n ? window.i18n.t('table.col_index') : '#', 'jt-th-index'));
+    hr.appendChild(jtTh(window.i18n ? window.i18n.t('table.col_value') : 'Value'));
     thead.appendChild(hr);
     table.appendChild(thead);
 
@@ -713,9 +735,9 @@
 
     const thead = document.createElement('thead');
     const hr = document.createElement('tr');
-    hr.appendChild(jtTh('#', 'jt-th-index'));
-    hr.appendChild(jtTh('Type'));
-    hr.appendChild(jtTh('Value / Preview'));
+    hr.appendChild(jtTh(window.i18n ? window.i18n.t('table.col_index') : '#', 'jt-th-index'));
+    hr.appendChild(jtTh(window.i18n ? window.i18n.t('table.col_type') : 'Type'));
+    hr.appendChild(jtTh(window.i18n ? window.i18n.t('table.col_preview') : 'Value / Preview'));
     thead.appendChild(hr);
     table.appendChild(thead);
 
@@ -893,7 +915,7 @@
       }
     });
 
-    els.searchCount.textContent = `${treeSearchMatches.length} match${treeSearchMatches.length !== 1 ? 'es' : ''}`;
+    els.searchCount.textContent = `${treeSearchMatches.length} ${treeSearchMatches.length !== 1 ? (window.i18n ? window.i18n.t('search.match_many') : 'matches') : (window.i18n ? window.i18n.t('search.match_one') : 'match')}`;
     if (treeSearchMatches.length > 0) {
       treeSearchIndex = 0;
       highlightTreeMatch();
@@ -930,19 +952,19 @@
     try {
       left = JSON.parse(els.diffLeft.value);
     } catch (_) {
-      alert('Left JSON is invalid.');
+      alert(window.i18n ? window.i18n.t('diff.left_invalid') : 'Left JSON is invalid.');
       return;
     }
     try {
       right = JSON.parse(els.diffRight.value);
     } catch (_) {
-      alert('Right JSON is invalid.');
+      alert(window.i18n ? window.i18n.t('diff.right_invalid') : 'Right JSON is invalid.');
       return;
     }
     const diffs = diffObjects(left, right, '');
     els.diffResult.hidden = false;
     if (diffs.length === 0) {
-      els.diffResult.innerHTML = '<div style="padding:8px;color:var(--success);font-weight:600;">Documents are identical.</div>';
+      els.diffResult.innerHTML = `<div style="padding:8px;color:var(--success);font-weight:600;">${window.i18n ? window.i18n.t('diff.identical') : 'Documents are identical.'}</div>`;
     } else {
       els.diffResult.innerHTML = diffs.map(d => {
         const cls = d.type === 'added' ? 'added' : d.type === 'removed' ? 'removed' : 'changed';
@@ -1215,10 +1237,11 @@
   function updateFilterBtnState() {
     if (activeFilter) {
       els.btnFilter.classList.add('active-filter');
-      els.btnFilter.title = 'Filter active (' + activeFilter.size + ' fields selected)';
+      const msg = window.i18n ? window.i18n.t('filter.btn_active', { n: activeFilter.size }) : `Filter active (${activeFilter.size} fields selected)`;
+      els.btnFilter.title = msg;
     } else {
       els.btnFilter.classList.remove('active-filter');
-      els.btnFilter.title = 'Filter fields to simplify tree';
+      els.btnFilter.title = window.i18n ? window.i18n.t('filter.btn_default') : 'Filter fields to simplify tree';
     }
   }
 
@@ -1348,7 +1371,7 @@
     let data = parsedJson;
     if (!data) {
       try { data = JSON.parse(els.input.value); }
-      catch (_) { els.codegenOutput.textContent = '// Error: No valid JSON in editor. Paste JSON in the Editor tab first.'; return; }
+      catch (_) { els.codegenOutput.textContent = window.i18n ? window.i18n.t('codegen.no_json') : '// Error: No valid JSON in editor. Paste JSON in the Editor tab first.'; return; }
     }
 
     const classes = [];
@@ -1544,7 +1567,7 @@
     const format = els.exportSelect.value;
     if (!format) return;
     if (!parsedJson) {
-      alert('No valid JSON to export.');
+      alert(window.i18n ? window.i18n.t('alert.no_valid_json') : 'No valid JSON to export.');
       return;
     }
 
@@ -1563,7 +1586,7 @@
         break;
       case 'csv':
         content = jsonToCsv(parsedJson);
-        if (!content) { alert('CSV export works best with arrays of objects.'); return; }
+        if (!content) { alert(window.i18n ? window.i18n.t('alert.csv_note') : 'CSV export works best with arrays of objects.'); return; }
         filename = 'data.csv';
         mime = 'text/csv';
         break;
@@ -1692,6 +1715,7 @@
   // ── Init ──────────────────────────────────────────────────────────
   function init() {
     initTheme();
+    initLang();
     initDragDrop();
     initShortcuts();
     initPWA();
@@ -1855,9 +1879,9 @@
       if (!text) return;
       try {
         await navigator.clipboard.writeText(text);
-        flashButton(els.btnCodegenCopy, 'Copied!');
+        flashButton(els.btnCodegenCopy, 'flash.copied');
       } catch (_) {
-        flashButton(els.btnCodegenCopy, 'Failed');
+        flashButton(els.btnCodegenCopy, 'flash.failed');
       }
     });
 
