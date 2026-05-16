@@ -167,16 +167,22 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     </div>
     <div class="toolbar-center">
       <div class="tab-bar" role="tablist">
-        <button class="tab active" role="tab" aria-selected="true" data-tab="editor">Editor</button>
-        <button class="tab" role="tab" aria-selected="false" data-tab="viewer">Tree Viewer</button>
-        <button class="tab" role="tab" aria-selected="false" data-tab="codegen">Code Gen</button>
-        <button class="tab" role="tab" aria-selected="false" data-tab="diff">Diff</button>
+        <button class="tab active" role="tab" aria-selected="true" data-tab="editor" data-i18n="tab.editor">Editor</button>
+        <button class="tab" role="tab" aria-selected="false" data-tab="viewer" data-i18n="tab.viewer">Tree Viewer</button>
+        <button class="tab" role="tab" aria-selected="false" data-tab="codegen" data-i18n="tab.codegen">Code Gen</button>
+        <button class="tab" role="tab" aria-selected="false" data-tab="diff" data-i18n="tab.diff">Diff</button>
       </div>
     </div>
     <div class="toolbar-right">
+      <select id="lang-select" class="lang-select" title="Select language" aria-label="Select language">
+        <option value="en">EN</option>
+        <option value="nl">NL</option>
+        <option value="de">DE</option>
+        <option value="ru">RU</option>
+      </select>
       <a href="https://www.format-json.net" class="tool-link" title="Open Format JSON">Format JSON</a>
-      <a href="#about" id="btn-about" class="about-link" title="About this tool">About</a>
-      <button id="btn-theme" class="icon-btn" title="Toggle dark/light theme" aria-label="Toggle theme">
+      <a href="#about" id="btn-about" class="about-link" title="About this tool" data-i18n="nav.about">About</a>
+      <button id="btn-theme" class="icon-btn" data-i18n-title="nav.toggle_theme" data-i18n-aria="nav.toggle_theme_label" title="Toggle dark/light theme" aria-label="Toggle theme">
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
       </button>
     </div>
@@ -184,48 +190,48 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
   <div class="action-bar">
     <div class="action-group" id="action-group-editor">
-      <button id="btn-format" class="action-btn" title="Format / Beautify JSON (Ctrl+Shift+F)">Format</button>
-      <button id="btn-minify" class="action-btn" title="Minify JSON">Minify</button>
-      <button id="btn-copy" class="action-btn" title="Copy to clipboard">Copy</button>
-      <button id="btn-clear" class="action-btn" title="Clear editor">Clear</button>
+      <button id="btn-format" class="action-btn" data-i18n="btn.format" data-i18n-title="btn.format_title" title="Format / Beautify JSON (Ctrl+Shift+F)">Format</button>
+      <button id="btn-minify" class="action-btn" data-i18n="btn.minify" data-i18n-title="btn.minify_title" title="Minify JSON">Minify</button>
+      <button id="btn-copy" class="action-btn" data-i18n="btn.copy" data-i18n-title="btn.copy_title" title="Copy to clipboard">Copy</button>
+      <button id="btn-clear" class="action-btn" data-i18n="btn.clear" data-i18n-title="btn.clear_title" title="Clear editor">Clear</button>
       <span class="separator"></span>
-      <button id="btn-load-file" class="action-btn" title="Import JSON file">
+      <button id="btn-load-file" class="action-btn" data-i18n-title="btn.import_title" title="Import JSON file">
         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
-        Import
+        <span data-i18n="btn.import">Import</span>
       </button>
-      <button id="btn-load-url" class="action-btn" title="Load JSON from URL">
+      <button id="btn-load-url" class="action-btn" data-i18n-title="btn.url_title" title="Load JSON from URL">
         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
-        URL
+        <span data-i18n="btn.url">URL</span>
       </button>
       <input type="file" id="file-input" accept=".json,.txt" hidden />
     </div>
     <div class="action-group" id="action-group-tree" hidden>
-      <button id="btn-filter" class="action-btn" title="Filter fields to simplify tree">
+      <button id="btn-filter" class="action-btn" data-i18n-title="btn.filter_fields_title" title="Filter fields to simplify tree">
         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"/></svg>
-        Filter Fields
+        <span data-i18n="btn.filter_fields">Filter Fields</span>
       </button>
-      <button id="btn-search-toggle" class="action-btn" title="Search (Ctrl+F)">
+      <button id="btn-search-toggle" class="action-btn" data-i18n-title="btn.search_title" title="Search (Ctrl+F)">
         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-        Search
+        <span data-i18n="btn.search">Search</span>
       </button>
-      <button id="btn-expand-all" class="action-btn" title="Expand all nodes">Expand All</button>
-      <button id="btn-collapse-all" class="action-btn" title="Collapse all nodes">Collapse All</button>
+      <button id="btn-expand-all" class="action-btn" data-i18n="btn.expand_all" data-i18n-title="btn.expand_all_title" title="Expand all nodes">Expand All</button>
+      <button id="btn-collapse-all" class="action-btn" data-i18n="btn.collapse_all" data-i18n-title="btn.collapse_all_title" title="Collapse all nodes">Collapse All</button>
       <span class="separator"></span>
-      <button id="btn-table-view" class="action-btn" title="Switch to table view">
+      <button id="btn-table-view" class="action-btn" data-i18n-title="btn.table_title" title="Switch to table view">
         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><line x1="3" y1="9" x2="21" y2="9"/><line x1="3" y1="15" x2="21" y2="15"/><line x1="9" y1="9" x2="9" y2="21"/><line x1="15" y1="9" x2="15" y2="21"/></svg>
-        Table
+        <span data-i18n="btn.table">Table</span>
       </button>
     </div>
     <div class="action-group">
-      <label class="action-label" for="export-select">Export:</label>
+      <label class="action-label" for="export-select" data-i18n="label.export">Export:</label>
       <select id="export-select" class="action-select">
-        <option value="">— choose —</option>
-        <option value="json">JSON (formatted)</option>
-        <option value="json-min">JSON (minified)</option>
-        <option value="csv">CSV (arrays)</option>
-        <option value="yaml">YAML</option>
+        <option value="" data-i18n="export.choose">— choose —</option>
+        <option value="json" data-i18n="export.json">JSON (formatted)</option>
+        <option value="json-min" data-i18n="export.json_min">JSON (minified)</option>
+        <option value="csv" data-i18n="export.csv">CSV (arrays)</option>
+        <option value="yaml" data-i18n="export.yaml">YAML</option>
       </select>
-      <button id="btn-export" class="action-btn">Download</button>
+      <button id="btn-export" class="action-btn" data-i18n="btn.download">Download</button>
     </div>
   </div>
 
@@ -240,6 +246,8 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
           autocomplete="off"
           autocorrect="off"
           autocapitalize="off"
+          data-i18n-placeholder="editor.placeholder"
+          data-i18n-aria="editor.aria"
           placeholder="Paste JSON here, drop a file, or load from URL…"
           aria-label="JSON input editor"
         ></textarea>
@@ -247,43 +255,43 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       <div id="validation-bar" class="validation-bar" hidden>
         <span id="validation-icon" class="validation-icon"></span>
         <span id="validation-msg" class="validation-msg"></span>
-        <button id="validation-goto" class="action-btn small" hidden>Go to error</button>
-        <button id="validation-dismiss" class="icon-btn small" title="Dismiss" aria-label="Dismiss">&times;</button>
+        <button id="validation-goto" class="action-btn small" data-i18n="validation.goto" hidden>Go to error</button>
+        <button id="validation-dismiss" class="icon-btn small" data-i18n-title="validation.dismiss_title" data-i18n-aria="validation.dismiss_label" title="Dismiss" aria-label="Dismiss">&times;</button>
       </div>
     </section>
 
     <section id="panel-viewer" class="panel" role="tabpanel" aria-labelledby="tab-viewer" hidden>
       <div id="search-bar" class="search-bar" hidden>
-        <input id="search-input" type="text" placeholder="Search keys or values…" aria-label="Search JSON" />
+        <input id="search-input" type="text" data-i18n-placeholder="search.placeholder" data-i18n-aria="search.aria" placeholder="Search keys or values…" aria-label="Search JSON" />
         <span id="search-count" class="search-count"></span>
-        <button id="search-prev" class="icon-btn small" title="Previous match" aria-label="Previous match">&#9650;</button>
-        <button id="search-next" class="icon-btn small" title="Next match" aria-label="Next match">&#9660;</button>
-        <button id="search-clear" class="icon-btn small" title="Clear search" aria-label="Clear search">&times;</button>
+        <button id="search-prev" class="icon-btn small" data-i18n-title="search.prev_title" data-i18n-aria="search.prev_label" title="Previous match" aria-label="Previous match">&#9650;</button>
+        <button id="search-next" class="icon-btn small" data-i18n-title="search.next_title" data-i18n-aria="search.next_label" title="Next match" aria-label="Next match">&#9660;</button>
+        <button id="search-clear" class="icon-btn small" data-i18n-title="search.clear_title" data-i18n-aria="search.clear_label" title="Clear search" aria-label="Clear search">&times;</button>
       </div>
-      <div id="tree-container" class="tree-container" tabindex="0" role="tree" aria-label="JSON tree viewer"></div>
+      <div id="tree-container" class="tree-container" tabindex="0" role="tree" data-i18n-aria="tree.aria" aria-label="JSON tree viewer"></div>
       <div id="table-container" class="table-container" hidden></div>
     </section>
 
     <section id="panel-diff" class="panel" role="tabpanel" aria-labelledby="tab-diff" hidden>
       <div class="diff-layout">
         <div class="diff-pane">
-          <h3 class="diff-title">Left</h3>
-          <textarea id="diff-left" class="json-editor diff-editor" spellcheck="false" placeholder="Paste first JSON…" aria-label="Diff left JSON"></textarea>
+          <h3 class="diff-title" data-i18n="diff.left">Left</h3>
+          <textarea id="diff-left" class="json-editor diff-editor" spellcheck="false" data-i18n-placeholder="diff.left_placeholder" data-i18n-aria="diff.left_aria" placeholder="Paste first JSON…" aria-label="Diff left JSON"></textarea>
         </div>
         <div class="diff-pane">
-          <h3 class="diff-title">Right</h3>
-          <textarea id="diff-right" class="json-editor diff-editor" spellcheck="false" placeholder="Paste second JSON…" aria-label="Diff right JSON"></textarea>
+          <h3 class="diff-title" data-i18n="diff.right">Right</h3>
+          <textarea id="diff-right" class="json-editor diff-editor" spellcheck="false" data-i18n-placeholder="diff.right_placeholder" data-i18n-aria="diff.right_aria" placeholder="Paste second JSON…" aria-label="Diff right JSON"></textarea>
         </div>
       </div>
       <div class="diff-actions">
-        <button id="btn-diff" class="action-btn primary">Compare</button>
+        <button id="btn-diff" class="action-btn primary" data-i18n="btn.compare">Compare</button>
       </div>
       <div id="diff-result" class="diff-result" hidden></div>
     </section>
 
     <section id="panel-codegen" class="panel" role="tabpanel" aria-labelledby="tab-codegen" hidden>
       <div class="codegen-toolbar">
-        <label class="action-label" for="codegen-lang">Language:</label>
+        <label class="action-label" for="codegen-lang" data-i18n="codegen.label_lang">Language:</label>
         <select id="codegen-lang" class="action-select">
           <option value="typescript">TypeScript</option>
           <option value="csharp">C#</option>
@@ -294,25 +302,25 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
           <option value="kotlin">Kotlin</option>
           <option value="swift">Swift</option>
         </select>
-        <label class="action-label" for="codegen-rootname">Root class:</label>
-        <input id="codegen-rootname" type="text" class="action-input" value="Root" placeholder="Root" aria-label="Root class name" />
-        <button id="btn-codegen" class="action-btn primary">Generate</button>
-        <button id="btn-codegen-copy" class="action-btn">Copy</button>
+        <label class="action-label" for="codegen-rootname" data-i18n="codegen.label_root">Root class:</label>
+        <input id="codegen-rootname" type="text" class="action-input" value="Root" data-i18n-placeholder="codegen.root_placeholder" placeholder="Root" aria-label="Root class name" />
+        <button id="btn-codegen" class="action-btn primary" data-i18n="btn.generate">Generate</button>
+        <button id="btn-codegen-copy" class="action-btn" data-i18n="btn.codegen_copy">Copy</button>
       </div>
       <div class="codegen-output-wrap">
-        <pre id="codegen-output" class="codegen-output" aria-label="Generated code"></pre>
+        <pre id="codegen-output" class="codegen-output" data-i18n-aria="codegen.aria" aria-label="Generated code"></pre>
       </div>
     </section>
   </main>
 
   <dialog id="url-dialog" class="modal">
     <form method="dialog">
-      <h2>Load JSON from URL</h2>
-      <p class="modal-note">The URL must support CORS or be a public API endpoint.</p>
-      <input id="url-input" type="url" class="modal-input" placeholder="https://api.example.com/data.json" required aria-label="JSON URL" />
+      <h2 data-i18n="dialog.url_title">Load JSON from URL</h2>
+      <p class="modal-note" data-i18n="dialog.url_note">The URL must support CORS or be a public API endpoint.</p>
+      <input id="url-input" type="url" class="modal-input" data-i18n-placeholder="dialog.url_placeholder" data-i18n-aria="dialog.url_aria" placeholder="https://api.example.com/data.json" required aria-label="JSON URL" />
       <div class="modal-actions">
-        <button type="button" class="action-btn" id="url-cancel">Cancel</button>
-        <button type="submit" class="action-btn primary" id="url-load">Load</button>
+        <button type="button" class="action-btn" id="url-cancel" data-i18n="btn.cancel">Cancel</button>
+        <button type="submit" class="action-btn primary" id="url-load" data-i18n="btn.load">Load</button>
       </div>
     </form>
   </dialog>
@@ -320,30 +328,30 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   <!-- Filter Fields modal -->
   <dialog id="filter-dialog" class="modal filter-modal">
     <form method="dialog">
-      <h2>Filter Fields</h2>
-      <p class="modal-note">Uncheck fields to hide them from the tree view. Arrays appear once.</p>
+      <h2 data-i18n="dialog.filter_title">Filter Fields</h2>
+      <p class="modal-note" data-i18n="dialog.filter_note">Uncheck fields to hide them from the tree view. Arrays appear once.</p>
       <div class="filter-preset-bar">
         <select id="filter-preset-select" title="Saved filter presets">
           <option value="">-- Saved Presets --</option>
         </select>
-        <button type="button" id="filter-preset-save" class="action-btn small" title="Save current selection as preset">💾 Save</button>
-        <button type="button" id="filter-preset-delete" class="action-btn small" title="Delete selected preset" disabled>🗑 Delete</button>
+        <button type="button" id="filter-preset-save" class="action-btn small" data-i18n-title="filter.save_title" title="Save current selection as preset">💾 Save</button>
+        <button type="button" id="filter-preset-delete" class="action-btn small" data-i18n-title="filter.delete_title" title="Delete selected preset" disabled>🗑 Delete</button>
         <span id="filter-preset-toast" class="preset-toast" hidden></span>
       </div>
       <div id="filter-preset-name-row" class="filter-preset-name-row" hidden>
-        <input type="text" id="filter-preset-name" placeholder="Enter preset name…" maxlength="50" autocomplete="off" />
-        <button type="button" id="filter-preset-confirm" class="action-btn small primary">Save</button>
-        <button type="button" id="filter-preset-name-cancel" class="action-btn small">Cancel</button>
+        <input type="text" id="filter-preset-name" data-i18n-placeholder="filter.preset_name_placeholder" placeholder="Enter preset name…" maxlength="50" autocomplete="off" />
+        <button type="button" id="filter-preset-confirm" class="action-btn small primary" data-i18n="btn.save">Save</button>
+        <button type="button" id="filter-preset-name-cancel" class="action-btn small" data-i18n="btn.cancel">Cancel</button>
       </div>
       <div class="filter-actions-top">
-        <button type="button" id="filter-select-all" class="action-btn small">Select All</button>
-        <button type="button" id="filter-deselect-all" class="action-btn small">Deselect All</button>
+        <button type="button" id="filter-select-all" class="action-btn small" data-i18n="btn.select_all">Select All</button>
+        <button type="button" id="filter-deselect-all" class="action-btn small" data-i18n="btn.deselect_all">Deselect All</button>
       </div>
       <div id="filter-tree" class="filter-tree-container"></div>
       <div class="modal-actions">
-        <button type="button" id="filter-reset" class="action-btn">Reset</button>
-        <button type="button" id="filter-cancel" class="action-btn">Cancel</button>
-        <button type="button" id="filter-apply" class="action-btn primary">Apply</button>
+        <button type="button" id="filter-reset" class="action-btn" data-i18n="btn.reset">Reset</button>
+        <button type="button" id="filter-cancel" class="action-btn" data-i18n="btn.cancel">Cancel</button>
+        <button type="button" id="filter-apply" class="action-btn primary" data-i18n="btn.apply">Apply</button>
       </div>
     </form>
   </dialog>
@@ -351,7 +359,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   <div id="drop-overlay" class="drop-overlay" hidden>
     <div class="drop-message">
       <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-      <p>Drop JSON file here</p>
+      <p data-i18n="drop.message">Drop JSON file here</p>
     </div>
   </div>
 
@@ -418,9 +426,10 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   </article>
 
   <footer class="site-footer">
-    <p>&copy; 2026 JSON Prettier &middot; Free &amp; open source &middot; 100% client-side</p>
+    <p>&copy; 2026 JSON Prettier &middot; Free &amp; open source &middot; 100% client-side &middot; <a href="http://format-json.net/privacy-policy" style="color:inherit;">Privacy Policy</a></p>
   </footer>
 
+  <script src="../js/i18n.js"></script>
   <script src="../js/app.js"></script>
 </body>
 </html>
