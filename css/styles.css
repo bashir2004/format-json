@@ -708,6 +708,8 @@ body {
   color: #16a34a;
   font-weight: 600;
   white-space: nowrap;
+}
+.preset-toast.is-visible {
   animation: presetFadeIn 0.2s ease;
 }
 .preset-toast[hidden] { display: none; }

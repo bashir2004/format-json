@@ -1328,10 +1328,9 @@
   function showPresetToast(msg) {
     els.presetToast.textContent = msg;
     els.presetToast.hidden = false;
-    // Re-trigger animation
-    els.presetToast.style.animation = 'none';
-    els.presetToast.offsetHeight; // force reflow
-    els.presetToast.style.animation = '';
+    // Re-trigger animation without forced reflow
+    els.presetToast.classList.remove('is-visible');
+    requestAnimationFrame(() => els.presetToast.classList.add('is-visible'));
     clearTimeout(showPresetToast._timer);
     showPresetToast._timer = setTimeout(() => { els.presetToast.hidden = true; }, 2500);
   }
