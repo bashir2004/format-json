@@ -78,6 +78,7 @@
   let tableViewActive = false;
   let activeFilter = null;   // Set of schema paths or null (no filter)
   let currentSchema = null;  // Extracted schema nodes for the filter modal
+  let treeExpandState = null; // saved expand/collapse state when switching to table view
 
   // ── Theme ─────────────────────────────────────────────────────────
   function initTheme() {
@@ -140,7 +141,7 @@
         renderTree();
       }
       // Keep tree-only controls in sync with current view mode
-      ['#btn-filter', '#btn-search-toggle', '#btn-expand-all', '#btn-collapse-all'].forEach(id => {
+      ['#btn-search-toggle'].forEach(id => {
         const el = $(id); if (el) el.hidden = tableViewActive;
       });
     }
@@ -390,6 +391,8 @@
   const INITIAL_EXPAND_DEPTH = 3;
 
   function renderTree() {
+    const stateToRestore = treeExpandState;
+    treeExpandState = null;
     els.treeContainer.innerHTML = '';
     if (parsedJson === null) {
       try {
@@ -402,6 +405,35 @@
     const root = buildTreeNode('root', parsedJson, 0, []);
     root.classList.add('root');
     els.treeContainer.appendChild(root);
+    if (stateToRestore) restoreTreeState(stateToRestore);
+  }
+
+  // Snapshot the current expand/collapse state of every node keyed by its data-path
+  function captureTreeState() {
+    const state = new Map();
+    $$('.tree-node', els.treeContainer).forEach(node => {
+      const ch = node.querySelector(':scope > .tree-children');
+      if (ch) state.set(node.dataset.path, !ch.classList.contains('collapsed'));
+    });
+    return state;
+  }
+
+  // Replay a previously captured state onto a freshly-rendered tree
+  function restoreTreeState(state) {
+    $$('.tree-node', els.treeContainer).forEach(node => {
+      if (!state.has(node.dataset.path)) return;
+      const expanded = state.get(node.dataset.path);
+      const ch = node.querySelector(':scope > .tree-children');
+      const toggle = node.querySelector(':scope > .tree-row > .tree-toggle');
+      if (!ch) return;
+      if (expanded) {
+        ch.classList.remove('collapsed');
+        if (toggle) toggle.classList.remove('collapsed');
+      } else {
+        ch.classList.add('collapsed');
+        if (toggle) toggle.classList.add('collapsed');
+      }
+    });
   }
 
   function buildTreeNode(key, value, depth, path) {
@@ -557,11 +589,13 @@
 
   // ── Table View ────────────────────────────────────────────────────
   function toggleTableView() {
+    // Capture tree expand/collapse state before hiding the tree
+    if (!tableViewActive) treeExpandState = captureTreeState();
     tableViewActive = !tableViewActive;
     els.treeContainer.hidden = tableViewActive;
     els.tableContainer.hidden = !tableViewActive;
 
-    const treeOnlyIds = ['#btn-filter', '#btn-search-toggle', '#btn-expand-all', '#btn-collapse-all'];
+    const treeOnlyIds = ['#btn-search-toggle'];
     treeOnlyIds.forEach(id => { const el = $(id); if (el) el.hidden = tableViewActive; });
 
     if (tableViewActive) {
@@ -569,7 +603,7 @@
       els.searchBar.classList.remove('sticky-open');
       renderTableView();
     } else {
-      renderTree();
+      renderTree(); // treeExpandState set above; renderTree will consume and restore it
     }
 
     els.btnTableView.classList.toggle('active-filter', tableViewActive);
@@ -578,6 +612,7 @@
   }
 
   function renderTableView() {
+    const savedExpansions = captureTableExpansions();
     els.tableContainer.innerHTML = '';
     let data = parsedJson;
     if (!data) {
@@ -595,6 +630,26 @@
     wrap.className = 'jt-wrap';
     wrap.appendChild(buildTableView(data, []));
     els.tableContainer.appendChild(wrap);
+    if (savedExpansions.size) restoreTableExpansions(savedExpansions);
+  }
+
+  // Collect the path keys of every currently-open badge expansion row
+  function captureTableExpansions() {
+    const paths = new Set();
+    $$('.jt-expand-row', els.tableContainer).forEach(r => {
+      if (r.dataset.expandPath) paths.add(r.dataset.expandPath);
+    });
+    return paths;
+  }
+
+  // Re-open badge rows that were open before a re-render.
+  // Process shortest paths first so parents are open before children are looked up.
+  function restoreTableExpansions(openPaths) {
+    const sorted = [...openPaths].sort((a, b) => JSON.parse(a).length - JSON.parse(b).length);
+    for (const pathKey of sorted) {
+      const badge = $$('.jt-badge', els.tableContainer).find(b => b.dataset.expandPath === pathKey);
+      if (badge && !badge.classList.contains('jt-badge-open')) badge.click();
+    }
   }
 
   function buildTableView(data, path) {
@@ -623,6 +678,10 @@
       }
     });
     const keys = [...seen.keys()];
+    // Apply active filter: drop columns whose schema path is excluded
+    const filteredKeys = activeFilter
+      ? keys.filter(k => isPathVisible(toSchemaPath([...path, 0, k])))
+      : keys;
 
     const wrapper = document.createElement('div');
     wrapper.className = 'jt-overflow-wrap';
@@ -632,7 +691,7 @@
     const thead = document.createElement('thead');
     const hr = document.createElement('tr');
     hr.appendChild(jtTh(window.i18n ? window.i18n.t('table.col_index') : '#', 'jt-th-index'));
-    keys.forEach(k => hr.appendChild(jtTh(k)));
+    filteredKeys.forEach(k => hr.appendChild(jtTh(k)));
     thead.appendChild(hr);
     table.appendChild(thead);
 
@@ -646,7 +705,7 @@
       idxTd.textContent = i;
       row.appendChild(idxTd);
 
-      keys.forEach(k => {
+      filteredKeys.forEach(k => {
         const td = document.createElement('td');
         td.className = 'jt-td';
         if (!item || !(k in item)) {
@@ -666,6 +725,10 @@
 
   function buildObjectTable(data, path) {
     const keys = Object.keys(data);
+    // Apply active filter: drop columns whose schema path is excluded
+    const filteredKeys = activeFilter
+      ? keys.filter(k => isPathVisible(toSchemaPath([...path, k])))
+      : keys;
     const wrapper = document.createElement('div');
     wrapper.className = 'jt-overflow-wrap';
     const table = document.createElement('table');
@@ -674,7 +737,7 @@
     // Keys become column headers
     const thead = document.createElement('thead');
     const hr = document.createElement('tr');
-    keys.forEach(k => hr.appendChild(jtTh(k)));
+    filteredKeys.forEach(k => hr.appendChild(jtTh(k)));
     thead.appendChild(hr);
     table.appendChild(thead);
 
@@ -682,7 +745,7 @@
     const tbody = document.createElement('tbody');
     const row = document.createElement('tr');
     row.className = 'jt-row';
-    keys.forEach(k => {
+    filteredKeys.forEach(k => {
       const td = document.createElement('td');
       td.className = 'jt-td';
       renderCellValue(td, data[k], [...path, k]);
@@ -836,6 +899,8 @@
     badge.className = 'jt-badge';
     badge.type = 'button';
     badge.innerHTML = `<span>${escapeHtml(label)}</span><span class="jt-badge-icon">&#9658;</span>`;
+    // Store the path so restoreTableExpansions can find this badge by its path key
+    badge.dataset.expandPath = JSON.stringify(path);
 
     badge.addEventListener('click', () => {
       const row = badge.closest('tr');
@@ -1225,14 +1290,14 @@
     });
     activeFilter = checkedPaths.size === allPaths.size ? null : checkedPaths;
     els.filterDialog.close();
-    renderTree();
+    if (tableViewActive) renderTableView(); else renderTree();
     updateFilterBtnState();
   }
 
   function resetFilter() {
     activeFilter = null;
     els.filterDialog.close();
-    renderTree();
+    if (tableViewActive) renderTableView(); else renderTree();
     updateFilterBtnState();
   }
 
@@ -1826,16 +1891,35 @@
     const btnExpandAll = $('#btn-expand-all');
     const btnCollapseAll = $('#btn-collapse-all');
     btnExpandAll.addEventListener('click', () => {
-      $$('.tree-toggle.collapsed', els.treeContainer).forEach(t => {
-        t.classList.remove('collapsed');
-        t.closest('.tree-node').querySelector(':scope > .tree-children')?.classList.remove('collapsed');
-      });
+      if (tableViewActive) {
+        // Expand all badge rows in the table (loop to catch newly revealed nested badges)
+        let limit = 20;
+        let badges = $$('.jt-badge:not(.jt-badge-open)', els.tableContainer);
+        while (badges.length > 0 && limit-- > 0) {
+          badges.forEach(b => b.click());
+          badges = $$('.jt-badge:not(.jt-badge-open)', els.tableContainer);
+        }
+      } else {
+        $$('.tree-toggle.collapsed', els.treeContainer).forEach(t => {
+          t.classList.remove('collapsed');
+          t.closest('.tree-node').querySelector(':scope > .tree-children')?.classList.remove('collapsed');
+        });
+      }
     });
     btnCollapseAll.addEventListener('click', () => {
-      $$('.tree-toggle:not(.collapsed)', els.treeContainer).forEach(t => {
-        t.classList.add('collapsed');
-        t.closest('.tree-node').querySelector(':scope > .tree-children')?.classList.add('collapsed');
-      });
+      if (tableViewActive) {
+        // Remove all expanded rows and reset badge states
+        $$('.jt-expand-row', els.tableContainer).forEach(r => r.remove());
+        $$('.jt-badge-open', els.tableContainer).forEach(b => {
+          b.classList.remove('jt-badge-open');
+          b.querySelector('.jt-badge-icon').innerHTML = '&#9658;';
+        });
+      } else {
+        $$('.tree-toggle:not(.collapsed)', els.treeContainer).forEach(t => {
+          t.classList.add('collapsed');
+          t.closest('.tree-node').querySelector(':scope > .tree-children')?.classList.add('collapsed');
+        });
+      }
     });
 
     // Table View toggle
