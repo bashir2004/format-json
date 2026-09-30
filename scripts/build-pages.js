@@ -39,7 +39,7 @@ const pages = [
         <li>Replaces <code>True</code>, <code>False</code>, <code>None</code>, <code>undefined</code>, <code>NaN</code>, and <code>Infinity</code> with valid JSON values (<code>true</code>, <code>false</code>, or <code>null</code>).</li>
       </ul>
       <p>Repair cannot guess missing brackets or lost data. If the result still does not parse, your text is left as it was so you can fix it by hand using the error position.</p>`],
-      ['Why JSON is invalid: common errors', `<p><strong>Unexpected token</strong> usually means a stray character, a trailing comma, or a single quote. <strong>Unexpected end of JSON input</strong> means a closing brace or bracket is missing. <strong>Unterminated string</strong> means a quote was never closed, often because of an unescaped line break or a backslash. Paste the JSON here and the error position tells you where to look.</p>`],
+      ['Why JSON is invalid: common errors', `<p><strong>Unexpected token</strong> usually means a stray character, a trailing comma, or a single quote. <strong>Unexpected end of JSON input</strong> means a closing brace or bracket is missing. <strong>Unterminated string</strong> means a quote was never closed, often because of an unescaped line break or a backslash. Paste the JSON here and the error position tells you where to look. The full list, with examples, is in <a href="/blog/common-json-errors/">Common JSON Errors and How to Fix Them</a>.</p>`],
       ['Beyond pretty printing', `<p>Explore the result in the collapsible tree viewer, compare two documents in the Diff tab, or export to CSV or YAML. For a full overview of every feature, see the <a href="/">JSON formatter, validator and diff tool</a>. Working with tokens? Try the <a href="/json-web-token/">JWT Decoder</a>.</p>`],
     ],
     faq: [
@@ -77,7 +77,7 @@ const pages = [
         <li><strong>Unterminated string</strong>: a string was opened but never closed, often from a raw line break or an unescaped quote inside it.</li>
         <li><strong>Bad control character</strong>: a tab or newline inside a string that should be written as <code>\\t</code> or <code>\\n</code>.</li>
       </ul>
-      <p>Exact wording varies by browser, because each engine writes its own messages.</p>`],
+      <p>Exact wording varies by browser, because each engine writes its own messages. For causes and fixes with examples, read <a href="/blog/common-json-errors/">Common JSON Errors and How to Fix Them</a>.</p>`],
       ['Repair invalid JSON', `<p>The <strong>Repair JSON</strong> button removes comments and trailing commas, quotes bare keys, converts single quotes, and replaces <code>True</code>, <code>False</code>, <code>None</code>, <code>undefined</code>, <code>NaN</code>, and <code>Infinity</code>. It cannot recover missing brackets or lost data, and it leaves your text unchanged if the result still is not valid. Once your JSON is valid, <strong>Format</strong> re-indents it and the tree viewer lets you inspect it.</p>`],
     ],
     faq: [
@@ -382,6 +382,7 @@ ${sections}
         <li><a href="/">Format JSON</a>: formatter, validator, tree viewer and diff.</li>
 ${related}
         <li><a href="/json-web-token/">JWT Decoder</a>: decode and inspect JSON Web Tokens.</li>
+        <li><a href="/blog/common-json-errors/">Common JSON Errors</a>: causes and fixes for invalid JSON.</li>
       </ul>
     </section>
 

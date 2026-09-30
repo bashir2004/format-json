@@ -45,7 +45,7 @@ Based on the SEO audit (health score **58/100**, target **80+**). `PLAN.md` is u
 
 Create one page per intent, each with a working tool state, 500+ words of unique copy, worked examples, an FAQ, and its own title/description/canonical/JSON-LD (`WebApplication` or `HowTo`).
 
-**Status:** pages 1–5 are built. Copy lives in `scripts/build-pages.js`; run `node scripts/build-pages.js` after editing it or the tool shell in `index.html`. Pages 6–7 are open: #6 needs the escape/unescape feature, #7 is a long-form article. Pages 4–5 are ~400–450 words, below the 500 target; they are short intents and were not padded.
+**Status:** pages 1–5 and 7 are built. Copy lives in `scripts/build-pages.js`; run `node scripts/build-pages.js` after editing it or the tool shell in `index.html`. Page 7 (hand-written article, not generated) is done. Page 6 is open: it needs the escape/unescape feature first. Pages 4–5 are ~400–450 words, below the 500 target; they are short intents and were not padded.
 
 | # | URL | Target query | Notes |
 |---|---|---|---|
@@ -55,7 +55,7 @@ Create one page per intent, each with a working tool state, 500+ words of unique
 | 4 ✅ | `/json-to-yaml/` | json to yaml | Existing export feature |
 | 5 ✅ | `/json-minify/` | minify json | Short, focused page |
 | 6 | `/json-escape/` | json escape / unescape | Needs a new escape/unescape feature first |
-| 7 | `/blog/common-json-errors/` | fix invalid json, unexpected token | Long-form guide |
+| 7 ✅ | `/blog/common-json-errors/` | fix invalid json, unexpected token | Long-form guide |
 
 For each new page:
 - [x] Add to `sitemap.xml`, `sw.js` precache, and the site nav/footer. (pages 1–5; via `scripts/build-pages.js`, which also rebuilds `/json-prettier/`)
