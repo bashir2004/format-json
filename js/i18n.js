@@ -148,6 +148,63 @@
       // Search count
       'search.match_one': 'match',
       'search.match_many': 'matches',
+
+      // Sort & Indent
+      'btn.sort_keys': 'Sort Keys',
+      'btn.sort_keys_title': 'Sort JSON keys alphabetically (Ctrl+Shift+S)',
+      'label.indent': 'Indent:',
+      'indent.2': '2 spaces',
+      'indent.4': '4 spaces',
+      'indent.tab': 'Tab',
+
+      // Undo / Redo
+      'btn.undo': 'Undo',
+      'btn.undo_title': 'Undo (Ctrl+Z)',
+      'btn.redo': 'Redo',
+      'btn.redo_title': 'Redo (Ctrl+Y)',
+
+      // Shortcuts modal
+      'nav.shortcuts': 'Keyboard Shortcuts',
+      'nav.shortcuts_title': 'Keyboard shortcuts (?)',
+      'shortcuts.title': 'Keyboard Shortcuts',
+      'shortcuts.close': 'Close',
+      'shortcuts.open_hint': 'Open this shortcuts list',
+
+      // URL content-type warning
+      'alert.html_response': 'Warning: the server returned HTML instead of JSON. The URL may require login or redirect.',
+
+      // Phase 2 — Repair
+      'btn.repair': 'Repair JSON',
+      'btn.repair_title': 'Attempt to auto-fix invalid JSON',
+      'alert.repair_failed': 'Could not auto-repair this JSON. Please fix it manually.',
+
+      // Phase 2 — CSV import
+      'btn.import_csv': 'CSV',
+      'btn.import_csv_title': 'Import CSV file as JSON',
+      'alert.csv_import_ok': 'CSV imported and converted to JSON.',
+      'alert.csv_parse_error': 'Could not parse the CSV file.',
+
+      // Phase 2 — Stats bar
+      'stats.keys': 'keys',
+      'stats.depth': 'depth',
+      'stats.size': 'size',
+      'stats.types': 'types',
+
+      // Phase 2 — JWT
+      'btn.decode_jwt': 'Decode JWT',
+      'btn.decode_jwt_title': 'Decode this JSON Web Token',
+      'validation.jwt': 'JWT detected',
+      'jwt.title': 'JWT Decoder',
+      'jwt.header': 'Header',
+      'jwt.payload': 'Payload',
+      'jwt.signature': 'Signature',
+      'jwt.signature_note': 'Signature is not verified — you need the secret key to verify it.',
+      'jwt.close': 'Close',
+      'jwt.invalid': 'Could not decode JWT.',
+
+      // Phase 2 — New export formats
+      'export.toml': 'TOML',
+      'export.sql': 'SQL INSERT',
     },
 
     nl: {
@@ -291,6 +348,63 @@
       // Search count
       'search.match_one': 'overeenkomst',
       'search.match_many': 'overeenkomsten',
+
+      // Sort & Indent
+      'btn.sort_keys': 'Sleutels sorteren',
+      'btn.sort_keys_title': 'JSON-sleutels alfabetisch sorteren (Ctrl+Shift+S)',
+      'label.indent': 'Inspringing:',
+      'indent.2': '2 spaties',
+      'indent.4': '4 spaties',
+      'indent.tab': 'Tab',
+
+      // Undo / Redo
+      'btn.undo': 'Ongedaan maken',
+      'btn.undo_title': 'Ongedaan maken (Ctrl+Z)',
+      'btn.redo': 'Opnieuw',
+      'btn.redo_title': 'Opnieuw (Ctrl+Y)',
+
+      // Shortcuts modal
+      'nav.shortcuts': 'Sneltoetsen',
+      'nav.shortcuts_title': 'Sneltoetsen (?)',
+      'shortcuts.title': 'Sneltoetsen',
+      'shortcuts.close': 'Sluiten',
+      'shortcuts.open_hint': 'Deze lijst openen',
+
+      // URL content-type warning
+      'alert.html_response': 'Waarschuwing: de server stuurde HTML terug in plaats van JSON. De URL vereist mogelijk inloggen of een omleiding.',
+
+      // Phase 2 — Repair
+      'btn.repair': 'JSON repareren',
+      'btn.repair_title': 'Ongeldige JSON automatisch herstellen',
+      'alert.repair_failed': 'Kon deze JSON niet automatisch repareren. Herstel het handmatig.',
+
+      // Phase 2 — CSV import
+      'btn.import_csv': 'CSV',
+      'btn.import_csv_title': 'CSV-bestand importeren als JSON',
+      'alert.csv_import_ok': 'CSV geïmporteerd en omgezet naar JSON.',
+      'alert.csv_parse_error': 'Kon het CSV-bestand niet verwerken.',
+
+      // Phase 2 — Stats bar
+      'stats.keys': 'sleutels',
+      'stats.depth': 'diepte',
+      'stats.size': 'grootte',
+      'stats.types': 'typen',
+
+      // Phase 2 — JWT
+      'btn.decode_jwt': 'JWT decoderen',
+      'btn.decode_jwt_title': 'Dit JSON Web Token decoderen',
+      'validation.jwt': 'JWT gedetecteerd',
+      'jwt.title': 'JWT Decoder',
+      'jwt.header': 'Header',
+      'jwt.payload': 'Payload',
+      'jwt.signature': 'Handtekening',
+      'jwt.signature_note': 'Handtekening is niet geverifieerd — je hebt de geheime sleutel nodig.',
+      'jwt.close': 'Sluiten',
+      'jwt.invalid': 'Kon JWT niet decoderen.',
+
+      // Phase 2 — New export formats
+      'export.toml': 'TOML',
+      'export.sql': 'SQL INSERT',
     },
 
     de: {
@@ -434,6 +548,63 @@
       // Search count
       'search.match_one': 'Treffer',
       'search.match_many': 'Treffer',
+
+      // Sort & Indent
+      'btn.sort_keys': 'Schlüssel sortieren',
+      'btn.sort_keys_title': 'JSON-Schlüssel alphabetisch sortieren (Ctrl+Shift+S)',
+      'label.indent': 'Einzug:',
+      'indent.2': '2 Leerzeichen',
+      'indent.4': '4 Leerzeichen',
+      'indent.tab': 'Tab',
+
+      // Undo / Redo
+      'btn.undo': 'Rückgängig',
+      'btn.undo_title': 'Rückgängig (Ctrl+Z)',
+      'btn.redo': 'Wiederholen',
+      'btn.redo_title': 'Wiederholen (Ctrl+Y)',
+
+      // Shortcuts modal
+      'nav.shortcuts': 'Tastenkürzel',
+      'nav.shortcuts_title': 'Tastenkürzel (?)',
+      'shortcuts.title': 'Tastenkürzel',
+      'shortcuts.close': 'Schließen',
+      'shortcuts.open_hint': 'Diese Liste öffnen',
+
+      // URL content-type warning
+      'alert.html_response': 'Warnung: Der Server hat HTML statt JSON zurückgegeben. Die URL erfordert möglicherweise eine Anmeldung oder Weiterleitung.',
+
+      // Phase 2 — Repair
+      'btn.repair': 'JSON reparieren',
+      'btn.repair_title': 'Ungültiges JSON automatisch korrigieren',
+      'alert.repair_failed': 'Dieses JSON konnte nicht automatisch repariert werden. Bitte manuell korrigieren.',
+
+      // Phase 2 — CSV import
+      'btn.import_csv': 'CSV',
+      'btn.import_csv_title': 'CSV-Datei als JSON importieren',
+      'alert.csv_import_ok': 'CSV importiert und in JSON konvertiert.',
+      'alert.csv_parse_error': 'Die CSV-Datei konnte nicht verarbeitet werden.',
+
+      // Phase 2 — Stats bar
+      'stats.keys': 'Schlüssel',
+      'stats.depth': 'Tiefe',
+      'stats.size': 'Größe',
+      'stats.types': 'Typen',
+
+      // Phase 2 — JWT
+      'btn.decode_jwt': 'JWT dekodieren',
+      'btn.decode_jwt_title': 'Dieses JSON Web Token dekodieren',
+      'validation.jwt': 'JWT erkannt',
+      'jwt.title': 'JWT-Decoder',
+      'jwt.header': 'Header',
+      'jwt.payload': 'Payload',
+      'jwt.signature': 'Signatur',
+      'jwt.signature_note': 'Die Signatur wird nicht überprüft — dazu wird der geheime Schlüssel benötigt.',
+      'jwt.close': 'Schließen',
+      'jwt.invalid': 'JWT konnte nicht dekodiert werden.',
+
+      // Phase 2 — New export formats
+      'export.toml': 'TOML',
+      'export.sql': 'SQL INSERT',
     },
 
     ru: {
@@ -577,6 +748,63 @@
       // Search count
       'search.match_one': 'совпадение',
       'search.match_many': 'совпадений',
+
+      // Sort & Indent
+      'btn.sort_keys': 'Сортировать ключи',
+      'btn.sort_keys_title': 'Сортировать ключи JSON по алфавиту (Ctrl+Shift+S)',
+      'label.indent': 'Отступ:',
+      'indent.2': '2 пробела',
+      'indent.4': '4 пробела',
+      'indent.tab': 'Таб',
+
+      // Undo / Redo
+      'btn.undo': 'Отменить',
+      'btn.undo_title': 'Отменить (Ctrl+Z)',
+      'btn.redo': 'Повторить',
+      'btn.redo_title': 'Повторить (Ctrl+Y)',
+
+      // Shortcuts modal
+      'nav.shortcuts': 'Горячие клавиши',
+      'nav.shortcuts_title': 'Горячие клавиши (?)',
+      'shortcuts.title': 'Горячие клавиши',
+      'shortcuts.close': 'Закрыть',
+      'shortcuts.open_hint': 'Открыть этот список',
+
+      // URL content-type warning
+      'alert.html_response': 'Предупреждение: сервер вернул HTML вместо JSON. URL может требовать входа или перенаправления.',
+
+      // Phase 2 — Repair
+      'btn.repair': 'Починить JSON',
+      'btn.repair_title': 'Попытаться автоматически исправить JSON',
+      'alert.repair_failed': 'Не удалось автоматически восстановить JSON. Исправьте вручную.',
+
+      // Phase 2 — CSV import
+      'btn.import_csv': 'CSV',
+      'btn.import_csv_title': 'Импортировать CSV-файл как JSON',
+      'alert.csv_import_ok': 'CSV импортирован и преобразован в JSON.',
+      'alert.csv_parse_error': 'Не удалось разобрать CSV-файл.',
+
+      // Phase 2 — Stats bar
+      'stats.keys': 'ключей',
+      'stats.depth': 'глубина',
+      'stats.size': 'размер',
+      'stats.types': 'типы',
+
+      // Phase 2 — JWT
+      'btn.decode_jwt': 'Декодировать JWT',
+      'btn.decode_jwt_title': 'Декодировать этот JSON Web Token',
+      'validation.jwt': 'Обнаружен JWT',
+      'jwt.title': 'JWT Декодер',
+      'jwt.header': 'Заголовок',
+      'jwt.payload': 'Содержимое',
+      'jwt.signature': 'Подпись',
+      'jwt.signature_note': 'Подпись не проверяется — для этого нужен секретный ключ.',
+      'jwt.close': 'Закрыть',
+      'jwt.invalid': 'Не удалось декодировать JWT.',
+
+      // Phase 2 — New export formats
+      'export.toml': 'TOML',
+      'export.sql': 'SQL INSERT',
     },
   };
 
