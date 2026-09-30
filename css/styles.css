@@ -1269,3 +1269,30 @@ kbd {
   align-items: center;
   gap: 6px;
 }
+
+/* ---------- SEO content: headings, lists, links ---------- */
+.modal-title { font-size: 16px; font-weight: 700; margin-bottom: 8px; }
+.jwt-modal .modal-title, .shortcuts-modal .modal-title { margin-bottom: 16px; }
+
+.seo-content h1 {
+  font-size: 26px;
+  font-weight: 700;
+  line-height: 1.25;
+  margin: 0 40px 12px 0;
+  color: var(--text-primary);
+}
+.seo-content .lead {
+  font-size: 16px;
+  color: var(--text-primary);
+  margin-bottom: 24px;
+}
+.seo-content section { margin-bottom: 28px; }
+.seo-content ul,
+.seo-content ol {
+  margin: 0 0 12px 22px;
+  font-size: 14px;
+  color: var(--text-secondary);
+}
+.seo-content li { margin-bottom: 6px; }
+.seo-content a { color: var(--accent); }
+.seo-content a:hover { text-decoration: underline; }

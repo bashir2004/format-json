@@ -28,18 +28,18 @@ Based on the SEO audit (health score **58/100**, target **80+**). `PLAN.md` is u
 
 ## Phase 2: On-page fixes (Week 1) — High priority
 
-- [ ] **2.1 Homepage H1**: change from the brand name to a descriptive one, e.g. `Online JSON Formatter, Validator & Diff Tool`. Keep the logo as a non-heading element.
-- [ ] **2.2 Heading hygiene**: change hidden-dialog `<h2>` (shortcuts, JWT, filter, URL) to non-heading elements or `role="dialog"` with `aria-label`, so the outline reflects real content.
-- [ ] **2.3 Differentiate `/` vs `/json-prettier/`** (keyword cannibalization)
+- [x] **2.1 Homepage H1**: change from the brand name to a descriptive one, e.g. `Online JSON Formatter, Validator & Diff Tool`. Keep the logo as a non-heading element.
+- [x] **2.2 Heading hygiene**: change hidden-dialog `<h2>` (shortcuts, JWT, filter, URL) to non-heading elements or `role="dialog"` with `aria-label`, so the outline reflects real content.
+- [x] **2.3 Differentiate `/` vs `/json-prettier/`** (keyword cannibalization)
   - `/` → format / beautify / validate / diff (main tool).
   - `/json-prettier/` → pretty print + fix invalid JSON + error explanations.
   - Rewrite titles, descriptions, H1s and intro copy to match. Or canonicalize one to the other if they can't be made distinct.
-- [ ] **2.4 Move keyword content out of the collapsed `<details>`**: show about 800 words of visible copy below the tool (how to format, common errors, examples). Keep the FAQ, but make sure the FAQ JSON-LD matches visible text.
-- [ ] **2.5 Internal linking**
+- [x] **2.4 Move keyword content out of the collapsed `<details>`**: show about 800 words of visible copy below the tool (how to format, common errors, examples). Keep the FAQ, but make sure the FAQ JSON-LD matches visible text.
+- [x] **2.5 Internal linking**
   - Add a "Tools" nav (Formatter, JSON Prettier, JWT Decoder, and new pages).
   - Contextual links between tool pages in body copy.
   - Add breadcrumbs plus `BreadcrumbList` JSON-LD on sub-pages.
-- [ ] **2.6 Keep the About/content section rendered**: verify the close button (`btn-close-about`) doesn't leave Googlebot with hidden content, and that closing is per-user only.
+- [x] **2.6 Keep the About/content section rendered**: verify the close button (`btn-close-about`) doesn't leave Googlebot with hidden content, and that closing is per-user only.
 
 ## Phase 3: Content expansion (Weeks 2–5) — High/Medium priority
 

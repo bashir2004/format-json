@@ -75,42 +75,58 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
     "mainEntity": [
       {
         "@type": "Question",
-        "name": "What is a JSON viewer?",
+        "name": "What is JSON?",
         "acceptedAnswer": {
           "@type": "Answer",
-          "text": "A JSON viewer is a tool that transforms raw JSON (JavaScript Object Notation) text into a visual, navigable tree structure. It makes it easier to read, explore, and understand complex nested JSON data by allowing you to expand and collapse nodes."
+          "text": "JSON (JavaScript Object Notation) is a lightweight, text-based data interchange format. It is easy for humans to read and write, and easy for machines to parse and generate. JSON is widely used for APIs, configuration files, and data storage."
         }
       },
       {
         "@type": "Question",
-        "name": "Is this JSON viewer safe to use?",
+        "name": "Is my data safe?",
         "acceptedAnswer": {
           "@type": "Answer",
-          "text": "Yes. This JSON viewer processes all data entirely in your browser using client-side JavaScript. No JSON data is ever sent to or stored on any server. Your data stays private on your machine."
+          "text": "Yes. This tool runs entirely in your web browser. Your JSON data is never transmitted to any server, stored in any database, or shared with third parties. There is no backend — it is a static HTML, CSS, and JavaScript application."
         }
       },
       {
         "@type": "Question",
-        "name": "How do I format or beautify JSON?",
+        "name": "Does it work offline?",
         "acceptedAnswer": {
           "@type": "Answer",
-          "text": "Paste your JSON into the editor and click the 'Format' button or press Ctrl+Shift+F. The tool will indent and structure your JSON with proper spacing for readability."
+          "text": "Yes. This JSON viewer is a Progressive Web App (PWA). After your first visit, it is cached by a service worker and works without an internet connection. You can even install it as a standalone app on desktop or mobile."
         }
       },
       {
         "@type": "Question",
-        "name": "Can I compare two JSON files?",
+        "name": "What browsers are supported?",
         "acceptedAnswer": {
           "@type": "Answer",
-          "text": "Yes. Switch to the Diff tab, paste two JSON documents in the left and right panels, and click Compare. The tool highlights added, removed, and changed keys between the two documents."
+          "text": "All modern browsers: Chrome, Firefox, Safari, Edge, and Opera. The app uses standard web APIs and has no external dependencies."
         }
       },
       {
         "@type": "Question",
-        "name": "What export formats are supported?",
+        "name": "How do I format JSON?",
         "acceptedAnswer": {
           "@type": "Answer",
-          "text": "You can export your JSON as formatted JSON, minified JSON, CSV (for arrays of objects), or YAML. Select the format from the Export dropdown and click Download."
+          "text": "Paste your JSON into the editor and click the Format button in the toolbar, or press Ctrl+Shift+F. The JSON will be reformatted with 2-space indentation."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "How do I minify JSON?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Click the Minify button or press Ctrl+Shift+M to remove all whitespace and produce the most compact JSON representation."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Can I search inside JSON?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Yes. In the Tree Viewer tab, use the search bar to find keys or values. Results are highlighted and you can navigate between matches with the arrow buttons."
         }
       }
     ]
@@ -169,7 +185,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   <!-- Top toolbar -->
   <header class="toolbar" role="toolbar" aria-label="Main toolbar">
     <div class="toolbar-left">
-      <h1 class="logo" aria-label="Format JSON">{ } <span>Format JSON</span></h1>
+      <div class="logo">{ } <span>Format JSON</span></div>
     </div>
     <div class="toolbar-center">
       <div class="tab-bar" role="tablist">
@@ -342,7 +358,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
   <!-- Keyboard Shortcuts modal -->
   <dialog id="shortcuts-dialog" class="modal shortcuts-modal">
-    <h2 data-i18n="shortcuts.title">Keyboard Shortcuts</h2>
+    <div class="modal-title" role="heading" aria-level="2" data-i18n="shortcuts.title">Keyboard Shortcuts</div>
     <table class="shortcuts-table">
       <tbody>
         <tr><td><kbd>Ctrl</kbd>+<kbd>Shift</kbd>+<kbd>F</kbd></td><td class="sc-key" data-i18n="btn.format_title">Format / Beautify JSON</td></tr>
@@ -361,7 +377,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
   <!-- JWT Decoder modal -->
   <dialog id="jwt-dialog" class="modal jwt-modal">
-    <h2 data-i18n="jwt.title">JWT Decoder</h2>
+    <div class="modal-title" role="heading" aria-level="2" data-i18n="jwt.title">JWT Decoder</div>
     <div id="jwt-content" class="jwt-content"></div>
     <div class="modal-actions">
       <button id="jwt-close" class="action-btn primary" data-i18n="jwt.close">Close</button>
@@ -371,7 +387,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   <!-- URL modal -->
   <dialog id="url-dialog" class="modal">
     <form method="dialog">
-      <h2 data-i18n="dialog.url_title">Load JSON from URL</h2>
+      <div class="modal-title" role="heading" aria-level="2" data-i18n="dialog.url_title">Load JSON from URL</div>
       <p class="modal-note" data-i18n="dialog.url_note">The URL must support CORS or be a public API endpoint.</p>
       <input id="url-input" type="url" class="modal-input" data-i18n-placeholder="dialog.url_placeholder" data-i18n-aria="dialog.url_aria" placeholder="https://api.example.com/data.json" required aria-label="JSON URL" />
       <div class="modal-actions">
@@ -384,7 +400,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   <!-- Filter Fields modal -->
   <dialog id="filter-dialog" class="modal filter-modal">
     <form method="dialog">
-      <h2 data-i18n="dialog.filter_title">Filter Fields</h2>
+      <div class="modal-title" role="heading" aria-level="2" data-i18n="dialog.filter_title">Filter Fields</div>
       <p class="modal-note" data-i18n="dialog.filter_note">Uncheck fields to hide them from the tree view. Arrays appear once.</p>
       <div class="filter-preset-bar">
         <select id="filter-preset-select" title="Saved filter presets">
@@ -420,71 +436,93 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     </div>
   </div>
 
-  <!-- SEO: Crawlable content in <details> — Google fully indexes closed details content -->
+  <!-- SEO: visible, crawlable content below the tool -->
   <article id="about" class="seo-content" aria-label="About this tool">
     <button id="btn-close-about" class="about-close-btn" title="Close" aria-label="Close about section">&times;</button>
-    <details>
-      <summary>About Format JSON — Online JSON Formatter, Validator & Diff Tool</summary>
-      <section>
-        <h2>Format JSON Online — Free JSON Formatter</h2>
-        <p>Format JSON online for free — paste, upload, or fetch JSON data and instantly beautify it into readable, indented code. Minify JSON for production use with one click. All processing happens in your browser — nothing is sent to a server.</p>
-      </section>
+    <h1>Online JSON Formatter, Validator &amp; Diff Tool</h1>
+    <p class="lead">Format JSON online for free. Paste, upload, or fetch JSON and instantly beautify it into readable, indented code, validate it as you type, compare two documents, or minify it for production. Everything runs in your browser, so your data is never uploaded.</p>
 
-      <section>
-        <h2>JSON Validator</h2>
-        <p>As you type or paste, the editor validates your JSON in real time. Syntax errors are displayed immediately with descriptive messages, helping you quickly locate and fix malformed data like missing commas, unquoted keys, or trailing brackets.</p>
-      </section>
+    <section>
+      <h2>How to format JSON online</h2>
+      <ol>
+        <li>Paste your JSON into the editor, drop a <code>.json</code> file onto the page, or load it from a URL.</li>
+        <li>Pick an indent size: 2 spaces, 4 spaces, or tab.</li>
+        <li>Click <strong>Format</strong> or press <kbd>Ctrl</kbd>+<kbd>Shift</kbd>+<kbd>F</kbd> to beautify. Click <strong>Minify</strong> (<kbd>Ctrl</kbd>+<kbd>Shift</kbd>+<kbd>M</kbd>) to strip all whitespace instead.</li>
+        <li>Use <strong>Copy</strong> or the export menu to take the result with you.</li>
+      </ol>
+      <p>Need to tidy an object for a diff or a config file? <strong>Sort Keys</strong> (<kbd>Ctrl</kbd>+<kbd>Shift</kbd>+<kbd>S</kbd>) orders every key alphabetically.</p>
+    </section>
 
-      <section>
-        <h2>JSON Tree Viewer</h2>
-        <p>Switch to the Tree Viewer tab to explore your data as a collapsible hierarchy. Each node shows the key name, value type, and item count. Click any value to copy it to your clipboard. Use the breadcrumb bar to track your position in deeply nested structures.</p>
-      </section>
+    <section>
+      <h2>JSON validator with clear error messages</h2>
+      <p>As you type or paste, the editor validates your JSON in real time. Syntax errors are shown immediately with the line and column where parsing failed, so you can jump straight to the problem. The most common mistakes are:</p>
+      <ul>
+        <li><strong>Trailing commas</strong> after the last item in an object or array.</li>
+        <li><strong>Single quotes</strong> instead of double quotes around strings.</li>
+        <li><strong>Unquoted keys</strong>, such as <code>{name: "Ada"}</code> instead of <code>{"name": "Ada"}</code>.</li>
+        <li><strong>Comments</strong> (<code>//</code> or <code>/* */</code>), which JSON does not allow.</li>
+        <li><strong>Missing commas or brackets</strong> between items or at the end of a block.</li>
+        <li>Python or JavaScript values like <code>True</code>, <code>None</code>, <code>undefined</code>, or <code>NaN</code>.</li>
+      </ul>
+      <p>When JSON is invalid, a <strong>Repair JSON</strong> button appears. It removes comments and trailing commas, quotes bare keys, converts single quotes, and maps those Python and JavaScript values to valid JSON. If the result still does not parse, it leaves your text untouched. See also <a href="/json-prettier/">JSON Prettier</a>, a page built around pretty printing and fixing broken JSON.</p>
+    </section>
 
-      <section>
-        <h2>JSON Diff — Compare Two JSON Documents</h2>
-        <p>The Diff tab lets you paste two JSON documents side by side and compare them. Differences are highlighted as added (green), removed (red), or changed (yellow) with full path notation, making it easy to spot what changed between API responses or config files.</p>
-      </section>
+    <section>
+      <h2>JSON tree viewer</h2>
+      <p>Switch to the Tree Viewer tab to explore your data as a collapsible hierarchy. Each node shows its key, value type, and item count. Click any value to copy it, use search to find keys or values, and follow the breadcrumb bar through deeply nested structures. A table view is available for arrays of objects, and you can hide fields you do not need with the filter.</p>
+    </section>
 
-      <section>
-        <h2>Export JSON to CSV, YAML, and More</h2>
-        <p>Export your JSON data to multiple formats. Convert arrays of objects to CSV for use in spreadsheets, or transform JSON to YAML for configuration files. Download formatted or minified JSON with one click.</p>
-      </section>
+    <section>
+      <h2>JSON diff: compare two JSON documents</h2>
+      <p>The Diff tab shows two documents side by side and highlights what was added (green), removed (red), or changed (yellow), with the full path to each difference. It is useful for comparing API responses between environments, checking a config change, or reviewing a database export.</p>
+    </section>
 
-      <section>
-        <h2>Multiple Ways to Load JSON</h2>
-        <p>Paste JSON directly, drag and drop a <code>.json</code> file onto the page, use the file picker to import from disk, or enter a URL to fetch JSON from any public API endpoint that supports CORS.</p>
-      </section>
-    </details>
+    <section>
+      <h2>Convert and export JSON</h2>
+      <p>Export JSON as CSV for spreadsheets or as YAML for configuration files, download the formatted or minified result, or import CSV and turn it back into JSON. The Code Gen tab generates model code from your data in TypeScript, C#, Java, Python, Go, Rust, Kotlin, or Swift, so you can go from an API response to a starting type in a few clicks.</p>
+    </section>
 
-    <details id="faq">
-      <summary>Frequently Asked Questions</summary>
-      <section>
-        <h3>What is JSON?</h3>
-        <p>JSON (JavaScript Object Notation) is a lightweight, text-based data interchange format. It is easy for humans to read and write, and easy for machines to parse and generate. JSON is widely used for APIs, configuration files, and data storage.</p>
+    <section>
+      <h2>Private by design</h2>
+      <p>There is no backend. Formatting, validation, diffing, and conversion all happen in your browser, so API responses, tokens, and customer data stay on your device. The app is a Progressive Web App: after your first visit it works offline and can be installed on desktop or mobile.</p>
+    </section>
 
-        <h3>Is my data safe?</h3>
-        <p>Yes. This tool runs entirely in your web browser. Your JSON data is never transmitted to any server, stored in any database, or shared with third parties. There is no backend — it is a static HTML, CSS, and JavaScript application.</p>
+    <section>
+      <h2>More tools</h2>
+      <ul>
+        <li><a href="/json-prettier/">JSON Prettier</a>: pretty print JSON and repair invalid JSON.</li>
+        <li><a href="/json-web-token/">JWT Decoder</a>: decode a JSON Web Token and inspect its header, payload, and expiry.</li>
+        <li><a href="/changelog/">Changelog</a>: what is new in each release.</li>
+      </ul>
+    </section>
 
-        <h3>Does it work offline?</h3>
-        <p>Yes. This JSON viewer is a Progressive Web App (PWA). After your first visit, it is cached by a service worker and works without an internet connection. You can even install it as a standalone app on desktop or mobile.</p>
+    <section id="faq">
+      <h2>Frequently asked questions</h2>
+      <h3>What is JSON?</h3>
+      <p>JSON (JavaScript Object Notation) is a lightweight, text-based data interchange format. It is easy for humans to read and write, and easy for machines to parse and generate. JSON is widely used for APIs, configuration files, and data storage.</p>
 
-        <h3>What browsers are supported?</h3>
-        <p>All modern browsers: Chrome, Firefox, Safari, Edge, and Opera. The app uses standard web APIs and has no external dependencies.</p>
+      <h3>Is my data safe?</h3>
+      <p>Yes. This tool runs entirely in your web browser. Your JSON data is never transmitted to any server, stored in any database, or shared with third parties. There is no backend — it is a static HTML, CSS, and JavaScript application.</p>
 
-        <h3>How do I format JSON?</h3>
-        <p>Paste your JSON into the editor and click the <strong>Format</strong> button in the toolbar, or press <kbd>Ctrl+Shift+F</kbd>. The JSON will be reformatted with 2-space indentation.</p>
+      <h3>Does it work offline?</h3>
+      <p>Yes. This JSON viewer is a Progressive Web App (PWA). After your first visit, it is cached by a service worker and works without an internet connection. You can even install it as a standalone app on desktop or mobile.</p>
 
-        <h3>How do I minify JSON?</h3>
-        <p>Click the <strong>Minify</strong> button or press <kbd>Ctrl+Shift+M</kbd> to remove all whitespace and produce the most compact JSON representation.</p>
+      <h3>What browsers are supported?</h3>
+      <p>All modern browsers: Chrome, Firefox, Safari, Edge, and Opera. The app uses standard web APIs and has no external dependencies.</p>
 
-        <h3>Can I search inside JSON?</h3>
-        <p>Yes. In the Tree Viewer tab, use the search bar to find keys or values. Results are highlighted and you can navigate between matches with the arrow buttons.</p>
-      </section>
-    </details>
+      <h3>How do I format JSON?</h3>
+      <p>Paste your JSON into the editor and click the <strong>Format</strong> button in the toolbar, or press <kbd>Ctrl+Shift+F</kbd>. The JSON will be reformatted with 2-space indentation.</p>
+
+      <h3>How do I minify JSON?</h3>
+      <p>Click the <strong>Minify</strong> button or press <kbd>Ctrl+Shift+M</kbd> to remove all whitespace and produce the most compact JSON representation.</p>
+
+      <h3>Can I search inside JSON?</h3>
+      <p>Yes. In the Tree Viewer tab, use the search bar to find keys or values. Results are highlighted and you can navigate between matches with the arrow buttons.</p>
+    </section>
   </article>
 
   <footer class="site-footer">
-    <p>&copy; 2026 Format JSON &middot; v1.2.0 &middot; Free &amp; open source &middot; 100% client-side &middot; <a href="https://www.format-json.net/changelog/" style="color:inherit;">Changelog</a> &middot; <a href="https://www.format-json.net/json-web-token/" style="color:inherit;">JWT Decoder</a> &middot; <a href="https://www.format-json.net/privacy-policy/" style="color:inherit;">Privacy Policy</a> &middot; <a href="https://www.format-json.net/terms/" style="color:inherit;">Terms of Service</a></p>
+    <p>&copy; 2026 Format JSON &middot; v1.2.0 &middot; Free &amp; open source &middot; 100% client-side &middot; <a href="https://www.format-json.net/json-prettier/" style="color:inherit;">JSON Prettier</a> &middot; <a href="https://www.format-json.net/changelog/" style="color:inherit;">Changelog</a> &middot; <a href="https://www.format-json.net/json-web-token/" style="color:inherit;">JWT Decoder</a> &middot; <a href="https://www.format-json.net/privacy-policy/" style="color:inherit;">Privacy Policy</a> &middot; <a href="https://www.format-json.net/terms/" style="color:inherit;">Terms of Service</a></p>
   </footer>
 
   <script src="js/i18n.js" defer></script>
