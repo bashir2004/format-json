@@ -15,19 +15,18 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
   <!-- Primary SEO -->
   <title>Format JSON Online — Formatter, Beautifier & Validator</title>
   <meta name="description" content="Format JSON online — beautify, validate, minify & compare JSON. Tree viewer, diff tool, code generator. 100% client-side, data never leaves your browser." />
-  <meta name="keywords" content="format json, json formatter, json beautifier, json validator, json editor online, json tree viewer, json diff, json compare, json to yaml, json to csv, minify json, online json tool" />
   <meta name="author" content="format-json.net" />
   <meta name="robots" content="index, follow" />
-  <link rel="canonical" href="https://format-json.net/" />
+  <link rel="canonical" href="https://www.format-json.net/" />
 
   <!-- Open Graph / Facebook -->
   <meta property="og:type" content="website" />
   <meta property="og:title" content="Format JSON Online — Free JSON Formatter & Validator" />
   <meta property="og:description" content="Format JSON online for free. Beautify, validate, compare, and export JSON data. Fast, private, no data stored on servers." />
-  <meta property="og:url" content="https://format-json.net/" />
+  <meta property="og:url" content="https://www.format-json.net/" />
   <meta property="og:site_name" content="Format JSON" />
   <meta property="og:locale" content="en_US" />
-  <meta property="og:image" content="https://format-json.net/og-image.png" />
+  <meta property="og:image" content="https://www.format-json.net/og-image.png" />
   <meta property="og:image:width" content="1200" />
   <meta property="og:image:height" content="630" />
 
@@ -35,7 +34,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:title" content="Format JSON Online — Free JSON Formatter & Validator" />
   <meta name="twitter:description" content="Format JSON online for free. Beautify, validate, compare, and export JSON. 100% client-side." />
-  <meta name="twitter:image" content="https://format-json.net/og-image.png" />
+  <meta name="twitter:image" content="https://www.format-json.net/og-image.png" />
 
   <!-- Structured Data: WebApplication -->
   <script type="application/ld+json">
@@ -43,7 +42,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
     "@context": "https://schema.org",
     "@type": "WebApplication",
     "name": "Format JSON",
-    "url": "https://format-json.net/",
+    "url": "https://www.format-json.net/",
     "description": "Format JSON online for free — beautify, minify, validate, and compare JSON data entirely client-side.",
     "applicationCategory": "DeveloperApplication",
     "operatingSystem": "Any",
@@ -128,19 +127,19 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
         "@type": "ListItem",
         "position": 1,
         "name": "Format JSON",
-        "item": "https://format-json.net/"
+        "item": "https://www.format-json.net/"
       },
       {
         "@type": "ListItem",
         "position": 2,
         "name": "JSON Formatter",
-        "item": "https://format-json.net/#formatter"
+        "item": "https://www.format-json.net/#formatter"
       },
       {
         "@type": "ListItem",
         "position": 3,
         "name": "JSON Diff",
-        "item": "https://format-json.net/#diff"
+        "item": "https://www.format-json.net/#diff"
       }
     ]
   }
@@ -150,10 +149,10 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
   <link rel="preload" href="css/styles.css" as="style" />
   <link rel="preload" href="js/i18n.js" as="script" />
   <link rel="preload" href="js/app.js" as="script" />
-  <link rel="dns-prefetch" href="https://fonts.googleapis.com" />
 
   <!-- Favicon & PWA -->
-  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>{ }</text></svg>" />
+  <link rel="icon" href="/favicon.ico" sizes="48x48" />
+  <link rel="icon" type="image/png" href="/icons/favicon-48.png" sizes="48x48" />
   <link rel="apple-touch-icon" href="icons/icon-192.png" />
   <link rel="stylesheet" href="css/styles.css" />
   <link rel="manifest" href="manifest.json" />
@@ -188,6 +187,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         <option value="ru">RU</option>
       </select>
       <a href="#about" id="btn-about" class="about-link" title="About this tool" data-i18n="nav.about">About</a>
+      <button id="btn-shortcuts" class="icon-btn" data-i18n-title="nav.shortcuts_title" data-i18n-aria="nav.shortcuts" title="Keyboard shortcuts" aria-label="Keyboard shortcuts">&#63;</button>
       <button id="btn-theme" class="icon-btn" data-i18n-title="nav.toggle_theme" data-i18n-aria="nav.toggle_theme_label" title="Toggle dark/light theme" aria-label="Toggle theme">
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
       </button>
@@ -197,8 +197,16 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   <!-- Action bar -->
   <div class="action-bar">
     <div class="action-group" id="action-group-editor">
+      <label class="action-label" for="indent-select" data-i18n="label.indent">Indent:</label>
+      <select id="indent-select" class="action-select" title="Indentation size">
+        <option value="2" data-i18n="indent.2">2 spaces</option>
+        <option value="4" data-i18n="indent.4">4 spaces</option>
+        <option value="tab" data-i18n="indent.tab">Tab</option>
+      </select>
+      <span class="separator"></span>
       <button id="btn-format" class="action-btn" data-i18n="btn.format" data-i18n-title="btn.format_title" title="Format / Beautify JSON (Ctrl+Shift+F)">Format</button>
       <button id="btn-minify" class="action-btn" data-i18n="btn.minify" data-i18n-title="btn.minify_title" title="Minify JSON">Minify</button>
+      <button id="btn-sort-keys" class="action-btn" data-i18n="btn.sort_keys" data-i18n-title="btn.sort_keys_title" title="Sort JSON keys alphabetically (Ctrl+Shift+S)">Sort Keys</button>
       <button id="btn-copy" class="action-btn" data-i18n="btn.copy" data-i18n-title="btn.copy_title" title="Copy to clipboard">Copy</button>
       <button id="btn-clear" class="action-btn" data-i18n="btn.clear" data-i18n-title="btn.clear_title" title="Clear editor">Clear</button>
       <span class="separator"></span>
@@ -211,6 +219,8 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         <span data-i18n="btn.url">URL</span>
       </button>
       <input type="file" id="file-input" accept=".json,.txt" hidden />
+      <input type="file" id="csv-input" accept=".csv" hidden />
+      <button id="btn-import-csv" class="action-btn" data-i18n="btn.import_csv" data-i18n-title="btn.import_csv_title" title="Import CSV file as JSON">CSV</button>
     </div>
     <div class="action-group" id="action-group-tree" hidden>
       <button id="btn-filter" class="action-btn" data-i18n-title="btn.filter_fields_title" title="Filter fields to simplify tree">
@@ -237,6 +247,8 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         <option value="json-min" data-i18n="export.json_min">JSON (minified)</option>
         <option value="csv" data-i18n="export.csv">CSV (arrays)</option>
         <option value="yaml" data-i18n="export.yaml">YAML</option>
+        <option value="toml" data-i18n="export.toml">TOML</option>
+        <option value="sql" data-i18n="export.sql">SQL INSERT</option>
       </select>
       <button id="btn-export" class="action-btn" data-i18n="btn.download">Download</button>
     </div>
@@ -265,8 +277,11 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         <span id="validation-icon" class="validation-icon"></span>
         <span id="validation-msg" class="validation-msg"></span>
         <button id="validation-goto" class="action-btn small" data-i18n="validation.goto" hidden>Go to error</button>
+        <button id="btn-repair" class="action-btn small" data-i18n="btn.repair" data-i18n-title="btn.repair_title" title="Attempt to auto-fix invalid JSON" hidden>Repair JSON</button>
+        <a id="btn-decode-jwt" class="action-btn small" href="https://www.format-json.net/json-web-token/" target="_blank" rel="noopener" data-i18n="btn.decode_jwt" data-i18n-title="btn.decode_jwt_title" title="Open JSON Web Token Decoder" hidden style="text-decoration:none;">Decode JWT</a>
         <button id="validation-dismiss" class="icon-btn small" data-i18n-title="validation.dismiss_title" data-i18n-aria="validation.dismiss_label" title="Dismiss" aria-label="Dismiss">&times;</button>
       </div>
+      <div id="stats-bar" class="stats-bar" hidden></div>
     </section>
 
     <!-- Tree viewer panel -->
@@ -324,6 +339,34 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       </div>
     </section>
   </main>
+
+  <!-- Keyboard Shortcuts modal -->
+  <dialog id="shortcuts-dialog" class="modal shortcuts-modal">
+    <h2 data-i18n="shortcuts.title">Keyboard Shortcuts</h2>
+    <table class="shortcuts-table">
+      <tbody>
+        <tr><td><kbd>Ctrl</kbd>+<kbd>Shift</kbd>+<kbd>F</kbd></td><td class="sc-key" data-i18n="btn.format_title">Format / Beautify JSON</td></tr>
+        <tr><td><kbd>Ctrl</kbd>+<kbd>Shift</kbd>+<kbd>M</kbd></td><td class="sc-key" data-i18n="btn.minify_title">Minify JSON</td></tr>
+        <tr><td><kbd>Ctrl</kbd>+<kbd>Shift</kbd>+<kbd>S</kbd></td><td class="sc-key" data-i18n="btn.sort_keys_title">Sort Keys</td></tr>
+        <tr><td><kbd>Ctrl</kbd>+<kbd>Z</kbd></td><td class="sc-key" data-i18n="btn.undo_title">Undo</td></tr>
+        <tr><td><kbd>Ctrl</kbd>+<kbd>Y</kbd> / <kbd>Ctrl</kbd>+<kbd>Shift</kbd>+<kbd>Z</kbd></td><td class="sc-key" data-i18n="btn.redo_title">Redo</td></tr>
+        <tr><td><kbd>Ctrl</kbd>+<kbd>F</kbd></td><td class="sc-key" data-i18n="btn.search_title">Search (Tree Viewer)</td></tr>
+        <tr><td><kbd>?</kbd></td><td class="sc-key" data-i18n="shortcuts.open_hint">Open this shortcuts list</td></tr>
+      </tbody>
+    </table>
+    <div class="modal-actions">
+      <button id="shortcuts-close" class="action-btn primary" data-i18n="shortcuts.close">Close</button>
+    </div>
+  </dialog>
+
+  <!-- JWT Decoder modal -->
+  <dialog id="jwt-dialog" class="modal jwt-modal">
+    <h2 data-i18n="jwt.title">JWT Decoder</h2>
+    <div id="jwt-content" class="jwt-content"></div>
+    <div class="modal-actions">
+      <button id="jwt-close" class="action-btn primary" data-i18n="jwt.close">Close</button>
+    </div>
+  </dialog>
 
   <!-- URL modal -->
   <dialog id="url-dialog" class="modal">
@@ -441,7 +484,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   </article>
 
   <footer class="site-footer">
-    <p>&copy; 2026 Format JSON &middot; Free &amp; open source &middot; 100% client-side &middot; <a href="http://www.format-json.net/privacy-policy/" style="color:inherit;">Privacy Policy</a> &middot; <a href="http://www.format-json.net/terms/" style="color:inherit;">Terms of Service</a></p>
+    <p>&copy; 2026 Format JSON &middot; v1.2.0 &middot; Free &amp; open source &middot; 100% client-side &middot; <a href="https://www.format-json.net/changelog/" style="color:inherit;">Changelog</a> &middot; <a href="https://www.format-json.net/json-web-token/" style="color:inherit;">JWT Decoder</a> &middot; <a href="https://www.format-json.net/privacy-policy/" style="color:inherit;">Privacy Policy</a> &middot; <a href="https://www.format-json.net/terms/" style="color:inherit;">Terms of Service</a></p>
   </footer>
 
   <script src="js/i18n.js" defer></script>

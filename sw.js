@@ -1,5 +1,5 @@
 // Service Worker for offline PWA support
-const CACHE_NAME = 'json-viewer-v5';
+const CACHE_NAME = 'json-viewer-v6';
 const ASSETS = [
   '/',
   '/index.html',
@@ -9,6 +9,8 @@ const ASSETS = [
   '/privacy-policy/index.html',
   '/terms/',
   '/terms/index.html',
+  '/json-web-token/',
+  '/changelog/',
   '/css/styles.css',
   '/js/app.js',
   '/js/i18n.js',

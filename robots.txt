@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://format-json.net/sitemap.xml
+Sitemap: https://www.format-json.net/sitemap.xml

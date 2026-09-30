@@ -37,6 +37,10 @@
     fileInput: $('#file-input'),
     exportSelect: $('#export-select'),
     btnExport: $('#btn-export'),
+    btnSortKeys: $('#btn-sort-keys'),
+    indentSelect: $('#indent-select'),
+    btnShortcuts: $('#btn-shortcuts'),
+    shortcutsDialog: $('#shortcuts-dialog'),
     urlDialog: $('#url-dialog'),
     urlInput: $('#url-input'),
     urlCancel: $('#url-cancel'),
@@ -69,6 +73,13 @@
     presetToast: $('#filter-preset-toast'),
     tableContainer: $('#table-container'),
     btnTableView: $('#btn-table-view'),
+    // Phase 2
+    btnRepair: $('#btn-repair'),
+    statsBar: $('#stats-bar'),
+    btnDecodeJwt: $('#btn-decode-jwt'),
+    jwtDialog: $('#jwt-dialog'),
+    csvInput: $('#csv-input'),
+    btnImportCsv: $('#btn-import-csv'),
   };
 
   let parsedJson = null;
@@ -80,11 +91,23 @@
   let currentSchema = null;  // Extracted schema nodes for the filter modal
   let treeExpandState = null; // saved expand/collapse state when switching to table view
 
+  // ── Undo / Redo ───────────────────────────────────────────────────
+  const MAX_HISTORY = 50;
+  let editHistory = [];
+  let historyIndex = -1;
+  let themeManuallySet = false;
+
   // ── Theme ─────────────────────────────────────────────────────────
   function initTheme() {
     const saved = localStorage.getItem('jv-theme');
     const prefer = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
     setTheme(saved || prefer);
+    // Follow OS theme changes when the user hasn't manually toggled the theme button
+    window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', e => {
+      if (!themeManuallySet) {
+        document.documentElement.setAttribute('data-theme', e.matches ? 'dark' : 'light');
+      }
+    });
   }
 
   function initLang() {
@@ -108,6 +131,7 @@
   }
 
   function toggleTheme() {
+    themeManuallySet = true;
     const current = document.documentElement.getAttribute('data-theme');
     setTheme(current === 'dark' ? 'light' : 'dark');
   }
@@ -225,6 +249,7 @@
   function showValidation(result) {
     if (!result) {
       els.validationBar.hidden = true;
+      if (els.statsBar) els.statsBar.hidden = true;
       return;
     }
     els.validationBar.hidden = false;
@@ -234,14 +259,31 @@
       els.validationMsg.textContent = window.i18n ? window.i18n.t('validation.valid') : 'Valid JSON';
       els.validationGoto.hidden = true;
       els.validationGoto.style.display = 'none';
+      if (els.btnRepair) { els.btnRepair.hidden = true; els.btnRepair.style.display = 'none'; }
+      if (els.btnDecodeJwt) { els.btnDecodeJwt.hidden = true; els.btnDecodeJwt.style.display = 'none'; }
+      showStats(parsedJson, els.input.value);
     } else {
       els.validationBar.className = 'validation-bar invalid';
       els.validationIcon.textContent = '\u2717';
-      const locTpl = window.i18n ? window.i18n.t('validation.error_loc') : ' (line {line}, col {col})';
-      const loc = result.error.line ? locTpl.replace('{line}', result.error.line).replace('{col}', result.error.column || '?') : '';
-      els.validationMsg.textContent = `${result.error.message}${loc}`;
-      els.validationGoto.hidden = !result.error.line;
-      els.validationGoto.style.display = result.error.line ? '' : 'none';
+      if (els.statsBar) els.statsBar.hidden = true;
+      // JWT detection
+      const rawText = els.input.value.trim();
+      if (isJwt(rawText)) {
+        els.validationMsg.textContent = window.i18n ? window.i18n.t('validation.jwt') : 'JWT detected';
+        els.validationGoto.hidden = true;
+        els.validationGoto.style.display = 'none';
+        if (els.btnRepair) { els.btnRepair.hidden = true; els.btnRepair.style.display = 'none'; }
+        if (els.btnDecodeJwt) { els.btnDecodeJwt.hidden = false; els.btnDecodeJwt.style.display = ''; }
+        els.validationBar.className = 'validation-bar'; // neutral for JWT
+      } else {
+        const locTpl = window.i18n ? window.i18n.t('validation.error_loc') : ' (line {line}, col {col})';
+        const loc = result.error.line ? locTpl.replace('{line}', result.error.line).replace('{col}', result.error.column || '?') : '';
+        els.validationMsg.textContent = `${result.error.message}${loc}`;
+        els.validationGoto.hidden = !result.error.line;
+        els.validationGoto.style.display = result.error.line ? '' : 'none';
+        if (els.btnRepair) { els.btnRepair.hidden = false; els.btnRepair.style.display = ''; }
+        if (els.btnDecodeJwt) { els.btnDecodeJwt.hidden = true; els.btnDecodeJwt.style.display = 'none'; }
+      }
     }
   }
 
@@ -279,14 +321,76 @@
     return `${lines} lines · ${sizeStr}`;
   }
 
+  // ── Indent helper ─────────────────────────────────────────────────
+  function getIndentValue() {
+    const v = els.indentSelect ? els.indentSelect.value : '2';
+    return v === 'tab' ? '\t' : (parseInt(v, 10) || 2);
+  }
+
+  // ── Undo / Redo ───────────────────────────────────────────────────
+  function pushHistory() {
+    const val = els.input.value;
+    editHistory = editHistory.slice(0, historyIndex + 1);
+    if (editHistory.length > 0 && editHistory[editHistory.length - 1] === val) return;
+    editHistory.push(val);
+    if (editHistory.length > MAX_HISTORY) editHistory.shift();
+    historyIndex = editHistory.length - 1;
+  }
+
+  function undoEdit() {
+    // Only intercept when current value matches top of our history
+    // (no unsaved native typing since last programmatic change)
+    if (historyIndex <= 0 || els.input.value !== editHistory[historyIndex]) return false;
+    historyIndex--;
+    els.input.value = editHistory[historyIndex];
+    updateLineNumbers();
+    validate(els.input.value);
+    return true;
+  }
+
+  function redoEdit() {
+    if (historyIndex >= editHistory.length - 1) return false;
+    historyIndex++;
+    els.input.value = editHistory[historyIndex];
+    updateLineNumbers();
+    validate(els.input.value);
+    return true;
+  }
+
+  // ── Sort Keys ─────────────────────────────────────────────────────
+  function sortKeysRecursive(val) {
+    if (Array.isArray(val)) return val.map(sortKeysRecursive);
+    if (typeof val === 'object' && val !== null) {
+      return Object.keys(val).sort().reduce((acc, k) => {
+        acc[k] = sortKeysRecursive(val[k]);
+        return acc;
+      }, {});
+    }
+    return val;
+  }
+
+  function sortJson() {
+    if (!parsedJson && !els.input.value.trim()) return;
+    try {
+      const obj = JSON.parse(els.input.value);
+      const sorted = sortKeysRecursive(obj);
+      parsedJson = sorted;
+      els.input.value = JSON.stringify(sorted, null, getIndentValue());
+      updateLineNumbers();
+      validate(els.input.value);
+      pushHistory();
+    } catch (_) {}
+  }
+
   // ── Format / Minify ───────────────────────────────────────────────
   function formatJson() {
     if (!parsedJson && !els.input.value.trim()) return;
     try {
       const obj = JSON.parse(els.input.value);
-      els.input.value = JSON.stringify(obj, null, 2);
+      els.input.value = JSON.stringify(obj, null, getIndentValue());
       updateLineNumbers();
       validate(els.input.value);
+      pushHistory();
     } catch (_) { /* already flagged invalid */ }
   }
 
@@ -297,6 +401,7 @@
       els.input.value = JSON.stringify(obj);
       updateLineNumbers();
       validate(els.input.value);
+      pushHistory();
     } catch (_) {}
   }
 
@@ -323,11 +428,23 @@
   // ── File Import ───────────────────────────────────────────────────
   function handleFileImport(file) {
     if (!file) return;
+    const isCsv = file.name.toLowerCase().endsWith('.csv') || file.type === 'text/csv';
     const reader = new FileReader();
     reader.onload = () => {
-      els.input.value = reader.result;
+      if (isCsv) {
+        const json = csvToJson(reader.result);
+        if (!json) {
+          alert(window.i18n ? window.i18n.t('alert.csv_parse_error') : 'Could not parse the CSV file.');
+          return;
+        }
+        els.input.value = JSON.stringify(json, null, getIndentValue());
+      } else {
+        els.input.value = reader.result;
+      }
       updateLineNumbers();
       validate(els.input.value);
+      pushHistory();
+      switchTab('editor');
     };
     reader.readAsText(file);
   }
@@ -349,10 +466,16 @@
     try {
       const resp = await fetch(url);
       if (!resp.ok) throw new Error(`HTTP ${resp.status}`);
+      const ct = resp.headers.get('content-type') || '';
       const text = await resp.text();
+      if (ct.includes('text/html')) {
+        const msg = window.i18n ? window.i18n.t('alert.html_response') : 'Warning: the server returned HTML instead of JSON. The URL may require login or redirect.';
+        alert(msg);
+      }
       els.input.value = text;
       updateLineNumbers();
       validate(els.input.value);
+      pushHistory();
       switchTab('editor');
     } catch (e) {
       const msg = window.i18n ? window.i18n.t('alert.load_failed', { msg: e.message }) : `Failed to load URL: ${e.message}\n\nMake sure the URL supports CORS.`;
@@ -1661,6 +1784,18 @@
         filename = 'data.yaml';
         mime = 'text/yaml';
         break;
+      case 'toml':
+        content = jsonToToml(parsedJson, '');
+        if (!content) { alert(window.i18n ? window.i18n.t('alert.no_valid_json') : 'No valid JSON to export.'); return; }
+        filename = 'data.toml';
+        mime = 'application/toml';
+        break;
+      case 'sql':
+        content = jsonToSqlInsert(parsedJson);
+        if (!content) { alert(window.i18n ? window.i18n.t('alert.csv_note') : 'SQL export works best with arrays of objects.'); return; }
+        filename = 'data.sql';
+        mime = 'text/plain';
+        break;
       default: return;
     }
 
@@ -1733,6 +1868,220 @@
     return String(obj);
   }
 
+  // ── Phase 2.1 — JSON Repair ───────────────────────────────────────
+  function repairJson(text) {
+    let s = text;
+    // Remove BOM
+    s = s.replace(/^\uFEFF/, '');
+    // Strip JS single-line and block comments
+    s = s.replace(/\/\/[^\n\r]*/g, '');
+    s = s.replace(/\/\*[\s\S]*?\*\//g, '');
+    // Python / JS constants
+    s = s.replace(/\bTrue\b/g, 'true');
+    s = s.replace(/\bFalse\b/g, 'false');
+    s = s.replace(/\bNone\b/g, 'null');
+    s = s.replace(/\bundefined\b/g, 'null');
+    s = s.replace(/\bNaN\b/g, 'null');
+    s = s.replace(/\bInfinity\b/g, 'null');
+    // Remove trailing commas before ] or }
+    s = s.replace(/,(\s*[\]}])/g, '$1');
+    // Quote unquoted object keys  { foo: → { "foo":
+    s = s.replace(/([{,]\s*)([A-Za-z_$][A-Za-z0-9_$]*)(\s*:(?!\s*:))/g, '$1"$2"$3');
+    // Replace single-quoted strings with double-quoted
+    s = s.replace(/'((?:[^'\\]|\\.)*)'/g, (_, inner) => {
+      const escaped = inner.replace(/\\'/g, "'").replace(/"/g, '\\"');
+      return '"' + escaped + '"';
+    });
+    // Try parsing
+    try {
+      return JSON.stringify(JSON.parse(s), null, getIndentValue());
+    } catch (_) {
+      return null;
+    }
+  }
+
+  // ── Phase 2.2 — CSV → JSON ────────────────────────────────────────
+  function csvToJson(text) {
+    const lines = text.replace(/\r\n/g, '\n').replace(/\r/g, '\n').split('\n').filter(l => l.trim() !== '');
+    if (lines.length < 2) return null;
+
+    const parseRow = row => {
+      const fields = [];
+      let cur = '', inQ = false;
+      for (let i = 0; i < row.length; i++) {
+        const ch = row[i];
+        if (ch === '"') {
+          if (inQ && row[i + 1] === '"') { cur += '"'; i++; }
+          else inQ = !inQ;
+        } else if (ch === ',' && !inQ) {
+          fields.push(cur);
+          cur = '';
+        } else {
+          cur += ch;
+        }
+      }
+      fields.push(cur);
+      return fields;
+    };
+
+    const headers = parseRow(lines[0]).map(h => h.trim());
+    const result = [];
+    for (let i = 1; i < lines.length; i++) {
+      const vals = parseRow(lines[i]);
+      const obj = {};
+      headers.forEach((h, idx) => {
+        let v = vals[idx] !== undefined ? vals[idx].trim() : '';
+        if (v === '' || v.toLowerCase() === 'null') obj[h] = null;
+        else if (v.toLowerCase() === 'true') obj[h] = true;
+        else if (v.toLowerCase() === 'false') obj[h] = false;
+        else if (v !== '' && !isNaN(v)) obj[h] = Number(v);
+        else obj[h] = v;
+      });
+      result.push(obj);
+    }
+    return result;
+  }
+
+  function looksLikeCsv(text) {
+    const first = text.trim().split('\n')[0] || '';
+    return first.includes(',') && !first.trimStart().startsWith('{') && !first.trimStart().startsWith('[');
+  }
+
+  // ── Phase 2.3 — JSON Stats ────────────────────────────────────────
+  function computeJsonStats(data) {
+    let keyCount = 0, maxDepth = 0;
+    const types = { object: 0, array: 0, string: 0, number: 0, boolean: 0, null: 0 };
+    function walk(val, depth) {
+      if (depth > maxDepth) maxDepth = depth;
+      if (val === null) { types.null++; return; }
+      const t = typeof val;
+      if (t === 'string') { types.string++; return; }
+      if (t === 'number') { types.number++; return; }
+      if (t === 'boolean') { types.boolean++; return; }
+      if (Array.isArray(val)) { types.array++; val.forEach(v => walk(v, depth + 1)); }
+      else if (t === 'object') { types.object++; Object.keys(val).forEach(k => { keyCount++; walk(val[k], depth + 1); }); }
+    }
+    walk(data, 0);
+    return { keyCount, maxDepth, types };
+  }
+
+  function showStats(data, rawText) {
+    if (!els.statsBar) return;
+    if (!data) { els.statsBar.hidden = true; return; }
+    const { keyCount, maxDepth, types } = computeJsonStats(data);
+    const bytes = new Blob([rawText]).size;
+    const sizeStr = bytes < 1024 ? `${bytes} B` : bytes < 1048576 ? `${(bytes / 1024).toFixed(1)} KB` : `${(bytes / 1048576).toFixed(1)} MB`;
+    const t = k => window.i18n ? window.i18n.t(k) : k;
+    const typeEntries = Object.entries(types).filter(([, v]) => v > 0);
+    const typeChips = typeEntries.map(([k, v]) => `<span class="stats-type-chip">${k}: ${v}</span>`).join('');
+    els.statsBar.innerHTML = `
+      <span class="stats-item"><strong>${keyCount}</strong>&nbsp;${t('stats.keys')}</span>
+      <span class="stats-item"><strong>${maxDepth}</strong>&nbsp;${t('stats.depth')}</span>
+      <span class="stats-item"><strong>${sizeStr}</strong></span>
+      <span class="stats-types">${typeChips}</span>
+    `;
+    els.statsBar.hidden = false;
+  }
+
+  // ── Phase 2.4 — JWT ───────────────────────────────────────────────
+  function isJwt(text) {
+    return /^[A-Za-z0-9_-]+\.[A-Za-z0-9_-]+\.[A-Za-z0-9_-]*$/.test(text.trim());
+  }
+
+  function decodeJwtPart(part) {
+    try {
+      const pad = part.length % 4 ? part + '='.repeat(4 - part.length % 4) : part;
+      const json = atob(pad.replace(/-/g, '+').replace(/_/g, '/'));
+      return JSON.parse(json);
+    } catch (_) {
+      return null;
+    }
+  }
+
+  function showJwtDialog(token) {
+    if (!els.jwtDialog) return;
+    const parts = token.trim().split('.');
+    const header = decodeJwtPart(parts[0]);
+    const payload = decodeJwtPart(parts[1]);
+    const signature = parts[2] || '';
+    const t = k => window.i18n ? window.i18n.t(k) : k;
+    if (!header && !payload) {
+      alert(t('jwt.invalid'));
+      return;
+    }
+    const headerStr = header ? JSON.stringify(header, null, 2) : parts[0];
+    const payloadStr = payload ? JSON.stringify(payload, null, 2) : parts[1];
+    const jwtContent = $('#jwt-content');
+    if (jwtContent) {
+      jwtContent.innerHTML = `
+        <div class="jwt-section">
+          <div class="jwt-section-label">${t('jwt.header')}</div>
+          <pre class="jwt-pre">${headerStr.replace(/</g, '&lt;')}</pre>
+        </div>
+        <div class="jwt-section">
+          <div class="jwt-section-label">${t('jwt.payload')}</div>
+          <pre class="jwt-pre">${payloadStr.replace(/</g, '&lt;')}</pre>
+        </div>
+        <div class="jwt-section">
+          <div class="jwt-section-label">${t('jwt.signature')}</div>
+          <pre class="jwt-pre">${signature.replace(/</g, '&lt;')}</pre>
+        </div>
+        <p class="jwt-note">${t('jwt.signature_note')}</p>
+      `;
+    }
+    els.jwtDialog.showModal();
+  }
+
+  // ── Phase 2.5 — TOML Export ───────────────────────────────────────
+  function jsonToToml(obj, sectionPath) {
+    if (typeof obj !== 'object' || obj === null || Array.isArray(obj)) return '';
+    const scalars = [], subsections = [];
+    for (const [key, val] of Object.entries(obj)) {
+      if (val === null) scalars.push(`${key} = ""`);
+      else if (typeof val === 'boolean') scalars.push(`${key} = ${val}`);
+      else if (typeof val === 'number') scalars.push(`${key} = ${val}`);
+      else if (typeof val === 'string') scalars.push(`${key} = ${JSON.stringify(val)}`);
+      else if (Array.isArray(val) && (val.length === 0 || typeof val[0] !== 'object' || val[0] === null)) {
+        const items = val.map(v => typeof v === 'string' ? JSON.stringify(v) : (v === null ? '""' : String(v)));
+        scalars.push(`${key} = [${items.join(', ')}]`);
+      } else {
+        subsections.push({ key, val });
+      }
+    }
+    let out = scalars.join('\n');
+    for (const { key, val } of subsections) {
+      const fullKey = sectionPath ? `${sectionPath}.${key}` : key;
+      if (Array.isArray(val)) {
+        for (const item of val) {
+          out += `\n\n[[${fullKey}]]\n${jsonToToml(item, fullKey)}`;
+        }
+      } else {
+        out += `\n\n[${fullKey}]\n${jsonToToml(val, fullKey)}`;
+      }
+    }
+    return out;
+  }
+
+  // ── Phase 2.5 — SQL INSERT Export ─────────────────────────────────
+  function jsonToSqlInsert(data) {
+    const arr = Array.isArray(data) ? data : [data];
+    if (!arr.length || typeof arr[0] !== 'object' || arr[0] === null) return null;
+    const cols = [...new Set(arr.flatMap(r => (typeof r === 'object' && r !== null ? Object.keys(r) : [])))];
+    if (!cols.length) return null;
+    const quoteVal = v => {
+      if (v === null || v === undefined) return 'NULL';
+      if (typeof v === 'boolean') return v ? '1' : '0';
+      if (typeof v === 'number') return String(v);
+      if (typeof v === 'object') return `'${JSON.stringify(v).replace(/'/g, "''")}'`;
+      return `'${String(v).replace(/'/g, "''")}'`;
+    };
+    const colList = cols.map(c => `\`${c}\``).join(', ');
+    return arr
+      .filter(r => typeof r === 'object' && r !== null)
+      .map(r => `INSERT INTO \`table_name\` (${colList}) VALUES (${cols.map(c => quoteVal(r[c])).join(', ')});`)
+      .join('\n');
+  }
+
   // ── Keyboard Shortcuts ────────────────────────────────────────────
   function initShortcuts() {
     document.addEventListener('keydown', e => {
@@ -1755,9 +2104,33 @@
         e.preventDefault();
         minifyJson();
       }
-      // Escape → close dialog
-      if (e.key === 'Escape' && els.urlDialog.open) {
-        els.urlDialog.close();
+      // Ctrl+Shift+S → Sort Keys
+      if (e.ctrlKey && e.shiftKey && e.key === 'S') {
+        e.preventDefault();
+        sortJson();
+      }
+      // Ctrl+Z → Undo (only when our history has a programmatic change to revert)
+      if (e.ctrlKey && !e.shiftKey && e.key.toLowerCase() === 'z') {
+        if (undoEdit()) e.preventDefault();
+      }
+      // Ctrl+Y or Ctrl+Shift+Z → Redo
+      if ((e.ctrlKey && !e.shiftKey && e.key.toLowerCase() === 'y') ||
+          (e.ctrlKey && e.shiftKey && e.key.toLowerCase() === 'z')) {
+        if (redoEdit()) e.preventDefault();
+      }
+      // ? → Open shortcuts modal (when not typing in an input)
+      if (e.key === '?' && !e.ctrlKey && !e.altKey &&
+          !(document.activeElement instanceof HTMLInputElement) &&
+          !(document.activeElement instanceof HTMLTextAreaElement) &&
+          !(document.activeElement instanceof HTMLSelectElement)) {
+        e.preventDefault();
+        if (els.shortcutsDialog) els.shortcutsDialog.showModal();
+      }
+      // Escape → close dialogs
+      if (e.key === 'Escape') {
+        if (els.urlDialog && els.urlDialog.open) els.urlDialog.close();
+        if (els.shortcutsDialog && els.shortcutsDialog.open) els.shortcutsDialog.close();
+        if (els.jwtDialog && els.jwtDialog.open) els.jwtDialog.close();
       }
     });
   }
@@ -1813,12 +2186,17 @@
     els.btnTheme.addEventListener('click', toggleTheme);
     els.btnFormat.addEventListener('click', formatJson);
     els.btnMinify.addEventListener('click', minifyJson);
+    if (els.btnSortKeys) els.btnSortKeys.addEventListener('click', sortJson);
+    if (els.btnShortcuts) els.btnShortcuts.addEventListener('click', () => els.shortcutsDialog && els.shortcutsDialog.showModal());
+    const shortcutsClose = $('#shortcuts-close');
+    if (shortcutsClose) shortcutsClose.addEventListener('click', () => els.shortcutsDialog && els.shortcutsDialog.close());
     els.btnCopy.addEventListener('click', copyToClipboard);
     els.btnClear.addEventListener('click', () => {
       els.input.value = '';
       parsedJson = null;
       updateLineNumbers();
       validate('');
+      pushHistory();
     });
     els.btnLoadFile.addEventListener('click', () => els.fileInput.click());
     els.fileInput.addEventListener('change', e => {
@@ -1957,6 +2335,45 @@
       els.validationBar.hidden = true;
     });
 
+    // Phase 2 — Repair button
+    if (els.btnRepair) {
+      els.btnRepair.addEventListener('click', () => {
+        const repaired = repairJson(els.input.value);
+        if (!repaired) {
+          alert(window.i18n ? window.i18n.t('alert.repair_failed') : 'Could not auto-repair this JSON. Please fix it manually.');
+          return;
+        }
+        els.input.value = repaired;
+        updateLineNumbers();
+        validate(els.input.value);
+        pushHistory();
+      });
+    }
+
+    // Phase 2 — JWT decode button (now an <a> link to /json-web-token/)
+    // Dynamically append the raw token to the URL hash so the page auto-decodes it
+    if (els.btnDecodeJwt) {
+      els.btnDecodeJwt.addEventListener('click', () => {
+        const token = els.input.value.trim();
+        if (token) {
+          els.btnDecodeJwt.href = `https://www.format-json.net/json-web-token/#${encodeURIComponent(token)}`;
+        }
+      });
+    }
+
+    // Phase 2 — JWT dialog close
+    const jwtClose = $('#jwt-close');
+    if (jwtClose) jwtClose.addEventListener('click', () => els.jwtDialog && els.jwtDialog.close());
+
+    // Phase 2 — CSV import button
+    if (els.btnImportCsv && els.csvInput) {
+      els.btnImportCsv.addEventListener('click', () => els.csvInput.click());
+      els.csvInput.addEventListener('change', e => {
+        if (e.target.files[0]) handleFileImport(e.target.files[0]);
+        e.target.value = '';
+      });
+    }
+
     // Code Gen
     els.btnCodegen.addEventListener('click', generateCode);
     els.btnCodegenCopy.addEventListener('click', async () => {
@@ -1970,15 +2387,24 @@
       }
     });
 
-    // Paste event - auto-format JSON
+    // Paste event - auto-format JSON or detect CSV
     els.input.addEventListener('paste', () => {
       setTimeout(() => {
-        try {
-          const obj = JSON.parse(els.input.value);
-          els.input.value = JSON.stringify(obj, null, 2);
-        } catch (_) {}
+        const raw = els.input.value;
+        if (looksLikeCsv(raw)) {
+          const json = csvToJson(raw);
+          if (json) {
+            els.input.value = JSON.stringify(json, null, getIndentValue());
+          }
+        } else {
+          try {
+            const obj = JSON.parse(raw);
+            els.input.value = JSON.stringify(obj, null, getIndentValue());
+          } catch (_) {}
+        }
         updateLineNumbers();
         validate(els.input.value);
+        pushHistory();
       }, 0);
     });
 
@@ -2011,6 +2437,8 @@
 
     // Load sample if empty
     updateLineNumbers();
+    // Establish initial history state
+    pushHistory();
   }
 
   // ── Start ─────────────────────────────────────────────────────────

@@ -1,0 +1,381 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <!-- Google Tag Manager -->
+  <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+  new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+  j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+  'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+  })(window,document,'script','dataLayer','GTM-KBB4RLGW');</script>
+  <!-- End Google Tag Manager -->
+
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <!-- Primary SEO -->
+  <title>Changelog — Format JSON</title>
+  <meta name="description" content="Full release history and changelog for Format JSON. See every new feature, improvement, and bug fix across all versions." />
+  <meta name="robots" content="index, follow" />
+  <link rel="canonical" href="https://www.format-json.net/changelog/" />
+  <meta name="author" content="format-json.net" />
+
+  <!-- Open Graph -->
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="Changelog — Format JSON" />
+  <meta property="og:description" content="Release history for Format JSON — every feature, improvement, and bug fix." />
+  <meta property="og:url" content="https://www.format-json.net/changelog/" />
+  <meta property="og:site_name" content="Format JSON" />
+  <meta property="og:locale" content="en_US" />
+
+  <!-- Twitter -->
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Changelog — Format JSON" />
+  <meta name="twitter:description" content="Release history for Format JSON — every feature, improvement, and bug fix." />
+
+  <!-- Structured Data: WebPage -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebPage",
+    "name": "Changelog — Format JSON",
+    "description": "Full release history and changelog for Format JSON.",
+    "url": "https://www.format-json.net/changelog/",
+    "isPartOf": { "@type": "WebSite", "url": "https://www.format-json.net/" }
+  }
+  </script>
+
+  <!-- Structured Data: BreadcrumbList -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      {
+        "@type": "ListItem",
+        "position": 1,
+        "name": "Format JSON",
+        "item": "https://www.format-json.net/"
+      },
+      {
+        "@type": "ListItem",
+        "position": 2,
+        "name": "Changelog",
+        "item": "https://www.format-json.net/changelog/"
+      }
+    ]
+  }
+  </script>
+
+  <link rel="preload" href="../css/styles.css" as="style" />
+  <link rel="icon" href="/favicon.ico" sizes="48x48" />
+  <link rel="icon" type="image/png" href="/icons/favicon-48.png" sizes="48x48" />
+  <link rel="apple-touch-icon" href="../icons/icon-192.png" />
+  <link rel="stylesheet" href="../css/styles.css" />
+  <link rel="manifest" href="../manifest.json" />
+  <meta name="theme-color" content="#1e1e2e" />
+  <meta name="mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+
+  <style>
+    .policy-wrap {
+      flex: 1;
+      overflow-y: auto;
+      background: var(--bg-secondary);
+    }
+    .policy-content {
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 40px 24px 60px;
+      color: var(--text-primary);
+      line-height: 1.7;
+    }
+    .policy-content h1 {
+      font-size: 28px;
+      font-weight: 700;
+      margin-bottom: 8px;
+      color: var(--text-primary);
+    }
+    .policy-content .last-updated {
+      font-size: 13px;
+      color: var(--text-muted);
+      margin-bottom: 32px;
+    }
+    .policy-content h2 {
+      font-size: 18px;
+      font-weight: 700;
+      margin-top: 36px;
+      margin-bottom: 10px;
+      color: var(--text-primary);
+      padding-bottom: 6px;
+      border-bottom: 1px solid var(--border);
+    }
+    .policy-content h3 {
+      font-size: 15px;
+      font-weight: 600;
+      margin-top: 20px;
+      margin-bottom: 8px;
+      color: var(--text-primary);
+    }
+    .policy-content p {
+      font-size: 14px;
+      color: var(--text-secondary);
+      margin-bottom: 12px;
+    }
+    .policy-content ul {
+      margin: 0 0 12px 20px;
+      padding: 0;
+    }
+    .policy-content li {
+      font-size: 14px;
+      color: var(--text-secondary);
+      margin-bottom: 6px;
+    }
+    .policy-content a {
+      color: var(--accent);
+      text-decoration: none;
+    }
+    .policy-content a:hover {
+      text-decoration: underline;
+    }
+    .breadcrumb {
+      font-size: 13px;
+      color: var(--text-muted);
+      margin-bottom: 24px;
+    }
+    .breadcrumb a {
+      color: var(--accent);
+      text-decoration: none;
+    }
+    .breadcrumb a:hover {
+      text-decoration: underline;
+    }
+    .breadcrumb span {
+      margin: 0 6px;
+    }
+
+    /* Changelog-specific styles */
+    .release {
+      margin-bottom: 48px;
+    }
+    .release-header {
+      display: flex;
+      align-items: baseline;
+      gap: 12px;
+      flex-wrap: wrap;
+      margin-bottom: 4px;
+    }
+    .release-version {
+      font-size: 22px;
+      font-weight: 700;
+      color: var(--text-primary);
+    }
+    .release-date {
+      font-size: 13px;
+      color: var(--text-muted);
+    }
+    .release-tag {
+      display: inline-block;
+      font-size: 11px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      padding: 2px 8px;
+      border-radius: 20px;
+      line-height: 1.6;
+    }
+    .tag-latest {
+      background: var(--accent);
+      color: #fff;
+    }
+    .tag-initial {
+      background: var(--bg-tertiary, var(--border));
+      color: var(--text-secondary);
+    }
+    .change-group {
+      margin-top: 16px;
+    }
+    .change-group-label {
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.07em;
+      color: var(--text-muted);
+      margin-bottom: 8px;
+    }
+    .change-group ul {
+      margin: 0 0 0 16px;
+      padding: 0;
+      list-style: none;
+    }
+    .change-group li {
+      font-size: 14px;
+      color: var(--text-secondary);
+      margin-bottom: 5px;
+      padding-left: 20px;
+      position: relative;
+    }
+    .change-group li::before {
+      position: absolute;
+      left: 0;
+      font-size: 13px;
+    }
+    .group-added li::before   { content: '✦'; color: #22c55e; }
+    .group-improved li::before { content: '▲'; color: #3b82f6; }
+    .group-fixed li::before   { content: '⬡'; color: #f59e0b; }
+    .group-removed li::before { content: '✕'; color: #ef4444; }
+    .release-divider {
+      border: none;
+      border-top: 1px solid var(--border);
+      margin: 0 0 48px;
+    }
+  </style>
+</head>
+<body>
+  <!-- Google Tag Manager (noscript) -->
+  <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-KBB4RLGW"
+  height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+  <!-- End Google Tag Manager (noscript) -->
+
+  <header class="toolbar" role="banner">
+    <div class="toolbar-left">
+      <a href="https://www.format-json.net/" class="logo" style="text-decoration:none;" aria-label="Format JSON Home">{ } <span>Format JSON</span></a>
+    </div>
+    <div class="toolbar-right">
+      <a href="https://www.format-json.net/" class="about-link" title="Back to Format JSON tool">← Home</a>
+      <button id="btn-theme" class="icon-btn" title="Toggle dark/light theme" aria-label="Toggle theme">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+      </button>
+    </div>
+  </header>
+
+  <div class="policy-wrap">
+    <main class="policy-content" id="main-content">
+
+      <nav class="breadcrumb" aria-label="Breadcrumb">
+        <a href="https://www.format-json.net/">Format JSON</a>
+        <span aria-hidden="true">›</span>
+        <span>Changelog</span>
+      </nav>
+
+      <h1>Changelog</h1>
+      <p class="last-updated">All notable changes to Format JSON are documented here.</p>
+
+      <!-- ─── v1.2.0 ─────────────────────────────────────────────── -->
+      <div class="release">
+        <div class="release-header">
+          <span class="release-version">v1.2.0</span>
+          <span class="release-date">May 25, 2026</span>
+          <span class="release-tag tag-latest">Latest</span>
+        </div>
+
+        <div class="change-group group-added">
+          <p class="change-group-label">Added</p>
+          <ul>
+            <li><strong>JSON Repair / Auto-Fix</strong> — A <em>Repair JSON</em> button appears in the validation bar whenever invalid JSON is detected. It automatically fixes the most common mistakes: trailing commas, JavaScript/Python-style comments, single-quoted strings, unquoted object keys, and Python constants (<code>True</code>, <code>False</code>, <code>None</code>).</li>
+            <li><strong>CSV → JSON import</strong> — Import any <code>.csv</code> file using the new CSV button in the toolbar. CSV data pasted directly into the editor is also auto-detected and converted to a JSON array of objects. Numbers, booleans, and nulls are inferred automatically from cell values.</li>
+            <li><strong>JSON Statistics panel</strong> — After a successful parse, a compact stats bar appears below the validation message showing: total key count, maximum nesting depth, byte size, and a type-breakdown (objects, arrays, strings, numbers, booleans, nulls).</li>
+            <li><strong>JWT Decoder</strong> — Paste a JSON Web Token into the editor and a <em>Decode JWT</em> button appears. Clicking it opens a modal showing the decoded header, payload, and raw signature. No secret key required; the signature is not verified.</li>
+            <li><strong>TOML export</strong> — Added TOML to the Export dropdown. Scalars are emitted as key = value, nested objects as <code>[section]</code> headers, and arrays of objects as <code>[[table-array]]</code> blocks.</li>
+            <li><strong>SQL INSERT export</strong> — Added SQL INSERT to the Export dropdown. Works best with arrays of objects; generates one <code>INSERT INTO</code> statement per row with proper SQL escaping.</li>
+          </ul>
+        </div>
+
+        <div class="change-group group-improved">
+          <p class="change-group-label">Improved</p>
+          <ul>
+            <li>Paste detection now converts CSV data automatically without requiring the Import button.</li>
+            <li>File import now accepts <code>.csv</code> files in addition to <code>.json</code> and <code>.txt</code>.</li>
+          </ul>
+        </div>
+      </div>
+
+      <hr class="release-divider" />
+
+      <!-- ─── v1.1.0 ─────────────────────────────────────────────── -->
+      <div class="release">
+        <div class="release-header">
+          <span class="release-version">v1.1.0</span>
+          <span class="release-date">May 25, 2026</span>
+        </div>
+
+        <div class="change-group group-added">
+          <p class="change-group-label">Added</p>
+          <ul>
+            <li><strong>Sort Keys</strong> — Recursively sorts all object keys alphabetically. Available via the <kbd>Ctrl+Shift+S</kbd> shortcut or the Sort Keys button in the editor toolbar.</li>
+            <li><strong>Indent size selector</strong> — Choose between 2 spaces, 4 spaces, or a tab character for JSON formatting. Selection is persisted across sessions.</li>
+            <li><strong>Undo / Redo</strong> — Up to 50 editor states are tracked. Use <kbd>Ctrl+Z</kbd> to undo and <kbd>Ctrl+Y</kbd> / <kbd>Ctrl+Shift+Z</kbd> to redo any Format, Minify, Sort, or paste action.</li>
+            <li><strong>Keyboard shortcuts modal</strong> — Press <kbd>?</kbd> or click the toolbar button to open a full reference of all keyboard shortcuts.</li>
+            <li><strong>URL Content-Type check</strong> — When loading JSON from a URL, the tool now warns if the server returns HTML instead of JSON (e.g. a login redirect).</li>
+            <li><strong>OS dark mode auto-detection</strong> — The theme now follows the operating system's dark/light preference automatically on first visit. Manually toggling the theme button overrides this for the session.</li>
+          </ul>
+        </div>
+
+        <div class="change-group group-improved">
+          <p class="change-group-label">Improved</p>
+          <ul>
+            <li>Format, Minify, Sort, file import, and URL load actions all integrate with undo history so no change is ever unrecoverable.</li>
+            <li>Paste events now respect the selected indent size instead of always defaulting to 2 spaces.</li>
+          </ul>
+        </div>
+      </div>
+
+      <hr class="release-divider" />
+
+      <!-- ─── v1.0.0 ─────────────────────────────────────────────── -->
+      <div class="release">
+        <div class="release-header">
+          <span class="release-version">v1.0.0</span>
+          <span class="release-date">January 2026</span>
+          <span class="release-tag tag-initial">Initial Release</span>
+        </div>
+
+        <div class="change-group group-added">
+          <p class="change-group-label">Added</p>
+          <ul>
+            <li><strong>JSON Formatter / Beautifier</strong> — Paste or type raw JSON and format it with one click.</li>
+            <li><strong>JSON Minifier</strong> — Strip all whitespace for compact output.</li>
+            <li><strong>JSON Validator</strong> — Real-time syntax validation with inline error messages.</li>
+            <li><strong>Tree Viewer</strong> — Interactive collapsible tree with expand/collapse all, search, and node highlighting.</li>
+            <li><strong>JSON Diff / Compare</strong> — Side-by-side comparison of two JSON documents with highlighted differences.</li>
+            <li><strong>Code Generator</strong> — Generate TypeScript interfaces, Python dataclasses, Go structs, and more from any JSON object.</li>
+            <li><strong>Export</strong> — Download formatted JSON, or convert to CSV, YAML, or XML.</li>
+            <li><strong>File import &amp; URL load</strong> — Load JSON from a local file or any public URL.</li>
+            <li><strong>Drag &amp; drop</strong> — Drop a JSON file directly onto the editor.</li>
+            <li><strong>Dark / light theme</strong> — Toggle between themes; preference is saved locally.</li>
+            <li><strong>Internationalization</strong> — UI available in English, Dutch (Nederlands), German (Deutsch), and Russian (Русский).</li>
+            <li><strong>PWA support</strong> — Installable as a Progressive Web App for offline use.</li>
+            <li><strong>100% client-side</strong> — No data is ever sent to a server.</li>
+          </ul>
+        </div>
+      </div>
+
+    </main>
+  </div>
+
+  <footer class="site-footer">
+    <p>&copy; 2026 Format JSON &middot; v1.2.0 &middot; <a href="https://www.format-json.net/">Home</a> &middot; <a href="https://www.format-json.net/changelog/" style="color:inherit;">Changelog</a> &middot; <a href="https://www.format-json.net/json-web-token/" style="color:inherit;">JWT Decoder</a> &middot; <a href="https://www.format-json.net/privacy-policy/" style="color:inherit;">Privacy Policy</a> &middot; <a href="https://www.format-json.net/terms/" style="color:inherit;">Terms of Service</a></p>
+  </footer>
+
+  <script>
+    (function () {
+      const THEME_KEY = 'jv-theme';
+      const btn = document.getElementById('btn-theme');
+      function applyTheme(t) {
+        document.documentElement.setAttribute('data-theme', t);
+        localStorage.setItem(THEME_KEY, t);
+      }
+      const saved = localStorage.getItem(THEME_KEY);
+      if (saved) {
+        applyTheme(saved);
+      } else if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        applyTheme('dark');
+      }
+      btn.addEventListener('click', function () {
+        const current = document.documentElement.getAttribute('data-theme');
+        applyTheme(current === 'dark' ? 'light' : 'dark');
+      });
+    })();
+  </script>
+</body>
+</html>
