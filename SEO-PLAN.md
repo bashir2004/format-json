@@ -66,12 +66,15 @@ For each new page:
 
 ## Phase 4: Performance (Weeks 2–4) — Medium priority
 
-- [ ] Split `app.js` (96 KB): lazy-load diff, JWT, and export code on demand.
-- [ ] Load `i18n.js` (37 KB) only when the language is non-English.
-- [ ] Defer the GTM load until first interaction, or after `load`.
-- [ ] Add a Cloudflare `_headers` file: long `Cache-Control` for versioned static assets, HSTS, `X-Content-Type-Options`.
-- [ ] Minify CSS/JS in the build or deploy step.
-- [ ] Target: LCP < 2.5s, INP < 200ms, CLS < 0.1 on mobile (PageSpeed Insights).
+**Baseline (Lighthouse, mobile, lab, 2026-09-30, live homepage):** Performance 98, Accessibility 100, Best Practices 100, SEO 100. FCP 1.8s, LCP 1.8s, TBT 100ms, CLS 0, 198 KB transferred. The Core Web Vitals targets were already met, so this phase was scoped down to low-risk changes.
+
+- [x] Defer the GTM load until first interaction, or 4s after `load` (all 12 pages). Trade-off: visits that leave in under 4s with no interaction are no longer counted in analytics.
+- [x] Add a Cloudflare `_headers` file: security headers (HSTS without includeSubDomains, nosniff, Referrer-Policy, X-Frame-Options) and cache lifetimes (10 min for CSS/JS since they are not fingerprinted; 1 week for images and icons).
+- [x] Add `.assetsignore`: `PLAN.md`, `SEO-PLAN.md`, `README.md`, `scripts/` and `wrangler.jsonc` were publicly served.
+- [x] Target: LCP < 2.5s, INP < 200ms, CLS < 0.1 (met at baseline; re-measure after deploy).
+- [ ] ~~Split `app.js` (96 KB)~~ **Deferred.** It is one closure with shared state and there is no test suite, so splitting it risks regressions for a small gain (Lighthouse estimates 70 KB unused JS, but TBT is only 100ms). Revisit if INP or TBT regress in field data.
+- [ ] ~~Load `i18n.js` (37 KB) only when the language is non-English~~ **Deferred**, same reason: `app.js` reads `window.i18n` in many places.
+- [ ] ~~Minify CSS/JS~~ **Skipped.** Cloudflare already serves Brotli, so minifying saves only about 9 KB and would add a build step to a build-free repo.
 
 ## Phase 5: Off-page and promotion (Weeks 3–8) — Medium priority
 
@@ -84,8 +87,8 @@ For each new page:
 
 ## Phase 6: UX and engagement (Ongoing) — Low/Medium priority
 
-- [ ] Add sample JSON and "try an example" buttons.
-- [ ] Remember the last input in `localStorage`.
+- [x] Add sample JSON and "try an example" buttons. An **Example** button sits next to Clear (EN/NL/DE/RU labels) on the homepage and every tool page.
+- [x] Remember the last input in `localStorage` (`jv-input`, skipped above 512 KB, removed by **Clear**). Privacy policy section 2.3 updated to say so. Verified end to end in headless Edge (load, reload, clear, typing, oversize, diff page).
 - [ ] Check mobile layout at 360px and tap targets ≥ 48px.
 - [ ] Add Microsoft Clarity (or similar) to review heatmaps.
 
@@ -96,7 +99,8 @@ For each new page:
 | Indexed pages | Search Console | TBD | All sitemap URLs indexed |
 | Impressions / clicks | Search Console | TBD | +200% |
 | Avg. position, top 10 queries | Search Console | TBD | Top 20 for long-tail terms |
-| Core Web Vitals | PageSpeed / CrUX | TBD | All "Good" |
+| Lighthouse mobile (perf / a11y / BP / SEO) | Lighthouse | 98 / 100 / 100 / 100 (lab, 2026-09-30) | Hold at 95+ |
+| Core Web Vitals (field) | PageSpeed / CrUX | TBD (need field data) | All "Good" |
 | Referring domains | Ahrefs Webmaster Tools | TBD | 20+ |
 | Engagement rate | GA4 | TBD | +15% |
 
