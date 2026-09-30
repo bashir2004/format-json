@@ -32,6 +32,7 @@
     btnMinify: $('#btn-minify'),
     btnCopy: $('#btn-copy'),
     btnClear: $('#btn-clear'),
+    btnSample: $('#btn-sample'),
     btnLoadFile: $('#btn-load-file'),
     btnLoadUrl: $('#btn-load-url'),
     fileInput: $('#file-input'),
@@ -328,7 +329,44 @@
   }
 
   // ── Undo / Redo ───────────────────────────────────────────────────
+  // ── Remember the last input (localStorage, device-only) ───────────
+  const INPUT_KEY = 'jv-input';
+  const INPUT_MAX = 512 * 1024; // skip very large documents
+
+  function persistInput() {
+    try {
+      const val = els.input.value;
+      if (val && val.length <= INPUT_MAX) localStorage.setItem(INPUT_KEY, val);
+      else localStorage.removeItem(INPUT_KEY);
+    } catch (_) { /* storage unavailable or full — not critical */ }
+  }
+
+  function restoreInput() {
+    try {
+      const saved = localStorage.getItem(INPUT_KEY);
+      if (saved && els.input.value.trim() === '') {
+        els.input.value = saved;
+        return true;
+      }
+    } catch (_) { /* ignore */ }
+    return false;
+  }
+
+  const SAMPLE_JSON = {
+    id: 1042,
+    name: 'Ada Lovelace',
+    email: 'ada@example.com',
+    active: true,
+    roles: ['admin', 'editor'],
+    address: { city: 'London', country: 'UK', postcode: null },
+    orders: [
+      { id: 'A-1', total: 42.5, paid: true },
+      { id: 'A-2', total: 19.99, paid: false }
+    ]
+  };
+
   function pushHistory() {
+    persistInput();
     const val = els.input.value;
     editHistory = editHistory.slice(0, historyIndex + 1);
     if (editHistory.length > 0 && editHistory[editHistory.length - 1] === val) return;
@@ -2164,9 +2202,11 @@
 
     // Editor input
     const debouncedValidate = debounce(text => validate(text), 200);
+    const debouncedPersist = debounce(persistInput, 500);
     els.input.addEventListener('input', () => {
       updateLineNumbers();
       debouncedValidate(els.input.value);
+      debouncedPersist();
     });
     els.input.addEventListener('scroll', syncScroll);
 
@@ -2198,6 +2238,14 @@
       validate('');
       pushHistory();
     });
+    if (els.btnSample) {
+      els.btnSample.addEventListener('click', () => {
+        els.input.value = JSON.stringify(SAMPLE_JSON, null, getIndentValue());
+        updateLineNumbers();
+        validate(els.input.value);
+        pushHistory();
+      });
+    }
     els.btnLoadFile.addEventListener('click', () => els.fileInput.click());
     els.fileInput.addEventListener('change', e => {
       if (e.target.files[0]) handleFileImport(e.target.files[0]);
@@ -2435,11 +2483,14 @@
       });
     }
 
+    // Restore the last input from this device, if the editor is empty
+    const restored = restoreInput();
+    if (restored) validate(els.input.value);
+
     // Landing pages can open on a specific tab (e.g. <body data-default-tab="diff">)
     const defaultTab = document.body.dataset.defaultTab;
     if (defaultTab) switchTab(defaultTab);
 
-    // Load sample if empty
     updateLineNumbers();
     // Establish initial history state
     pushHistory();

@@ -87,8 +87,8 @@ For each new page:
 
 ## Phase 6: UX and engagement (Ongoing) — Low/Medium priority
 
-- [ ] Add sample JSON and "try an example" buttons.
-- [ ] Remember the last input in `localStorage`.
+- [x] Add sample JSON and "try an example" buttons. An **Example** button sits next to Clear (EN/NL/DE/RU labels) on the homepage and every tool page.
+- [x] Remember the last input in `localStorage` (`jv-input`, skipped above 512 KB, removed by **Clear**). Privacy policy section 2.3 updated to say so. Verified end to end in headless Edge (load, reload, clear, typing, oversize, diff page).
 - [ ] Check mobile layout at 360px and tap targets ≥ 48px.
 - [ ] Add Microsoft Clarity (or similar) to review heatmaps.
 
