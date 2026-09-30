@@ -12,16 +12,16 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-  <title>JSON Prettier — Pretty Print &amp; Fix Invalid JSON Online</title>
-  <meta name="description" content="Pretty print JSON online and fix invalid JSON. Choose 2-space, 4-space or tab indent, repair trailing commas, single quotes and comments, and see exact error positions. Runs in your browser." />
+  <title>JSON Minifier — Minify &amp; Compress JSON Online</title>
+  <meta name="description" content="Minify JSON online. Remove all whitespace to get the smallest valid JSON for APIs, config and storage. One click or Ctrl+Shift+M. Free and runs in your browser." />
   <meta name="author" content="format-json.net" />
   <meta name="robots" content="index, follow" />
-  <link rel="canonical" href="https://www.format-json.net/json-prettier/" />
+  <link rel="canonical" href="https://www.format-json.net/json-minify/" />
 
   <meta property="og:type" content="website" />
-  <meta property="og:title" content="JSON Prettier — Pretty Print &amp; Fix Invalid JSON" />
-  <meta property="og:description" content="Pretty print JSON with custom indentation and repair invalid JSON — trailing commas, single quotes, comments — right in your browser." />
-  <meta property="og:url" content="https://www.format-json.net/json-prettier/" />
+  <meta property="og:title" content="JSON Minifier — Minify JSON Online" />
+  <meta property="og:description" content="Strip whitespace from JSON in one click. Free, private, and runs in your browser." />
+  <meta property="og:url" content="https://www.format-json.net/json-minify/" />
   <meta property="og:site_name" content="Format JSON" />
   <meta property="og:locale" content="en_US" />
   <meta property="og:image" content="https://www.format-json.net/og-image.png" />
@@ -29,17 +29,17 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
   <meta property="og:image:height" content="630" />
 
   <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:title" content="JSON Prettier — Pretty Print &amp; Fix Invalid JSON" />
-  <meta name="twitter:description" content="Pretty print JSON with custom indentation and repair invalid JSON — trailing commas, single quotes, comments — right in your browser." />
+  <meta name="twitter:title" content="JSON Minifier — Minify JSON Online" />
+  <meta name="twitter:description" content="Strip whitespace from JSON in one click. Free, private, and runs in your browser." />
   <meta name="twitter:image" content="https://www.format-json.net/og-image.png" />
 
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
     "@type": "WebApplication",
-    "name": "JSON Prettier",
-    "url": "https://www.format-json.net/json-prettier/",
-    "description": "JSON Prettier pretty prints JSON with custom indentation and repairs invalid JSON such as trailing commas, single quotes and comments, entirely in your browser.",
+    "name": "JSON Minifier",
+    "url": "https://www.format-json.net/json-minify/",
+    "description": "A free online JSON minifier that removes whitespace to produce compact JSON, entirely in your browser.",
     "applicationCategory": "DeveloperApplication",
     "operatingSystem": "Any",
     "browserRequirements": "Requires a modern web browser",
@@ -58,42 +58,42 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
     "mainEntity": [
       {
         "@type": "Question",
-        "name": "What does pretty printing JSON do?",
+        "name": "How do I minify JSON?",
         "acceptedAnswer": {
           "@type": "Answer",
-          "text": "It re-indents your JSON with line breaks so it is easy to read. Only whitespace changes, so the data itself is identical."
+          "text": "Paste it into the editor and click Minify, or press Ctrl+Shift+M."
         }
       },
       {
         "@type": "Question",
-        "name": "Can it fix invalid JSON?",
+        "name": "Does minifying change my data?",
         "acceptedAnswer": {
           "@type": "Answer",
-          "text": "Often, yes. Repair JSON removes comments and trailing commas, quotes bare keys, converts single quotes, and maps Python and JavaScript values to JSON. It cannot restore missing brackets or lost data."
+          "text": "No. Only whitespace outside strings is removed. Keys, values, and order stay the same."
         }
       },
       {
         "@type": "Question",
-        "name": "Which indentation can I use?",
+        "name": "How do I undo minification?",
         "acceptedAnswer": {
           "@type": "Answer",
-          "text": "2 spaces, 4 spaces, or a tab. Your choice is applied when you click Format."
+          "text": "Click Format to re-indent the JSON, or use Undo."
         }
       },
       {
         "@type": "Question",
-        "name": "Is my JSON uploaded anywhere?",
+        "name": "Is minified JSON the same as compressed JSON?",
         "acceptedAnswer": {
           "@type": "Answer",
-          "text": "No. Formatting, validation, and repair all run in your browser. Nothing is sent to a server."
+          "text": "No. Minifying removes whitespace. Compression such as gzip is applied separately by the server and can be combined with it."
         }
       },
       {
         "@type": "Question",
-        "name": "Does it work offline?",
+        "name": "Is my data uploaded?",
         "acceptedAnswer": {
           "@type": "Answer",
-          "text": "Yes. After the first visit the app is cached as a Progressive Web App and works without a connection."
+          "text": "No. Minification runs entirely in your browser."
         }
       }
     ]
@@ -114,8 +114,8 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
       {
         "@type": "ListItem",
         "position": 2,
-        "name": "JSON Prettier",
-        "item": "https://www.format-json.net/json-prettier/"
+        "name": "JSON Minifier",
+        "item": "https://www.format-json.net/json-minify/"
       }
     ]
   }
@@ -143,7 +143,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   <!-- Top toolbar -->
   <header class="toolbar" role="toolbar" aria-label="Main toolbar">
     <div class="toolbar-left">
-      <div class="logo">{ } <span>JSON Prettier</span></div>
+      <div class="logo">{ } <span>JSON Minifier</span></div>
     </div>
     <div class="toolbar-center">
       <div class="tab-bar" role="tablist">
@@ -398,66 +398,81 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   <!-- SEO: visible, crawlable content below the tool (generated by scripts/build-pages.js) -->
   <article id="about" class="seo-content" aria-label="About this tool">
     <button id="btn-close-about" class="about-close-btn" title="Close" aria-label="Close about section">&times;</button>
-    <h1>JSON Prettier: Pretty Print &amp; Fix Invalid JSON Online</h1>
-    <p class="lead">Pretty print minified or messy JSON into clean, indented code, and repair the mistakes that make JSON invalid. Paste your data, choose an indent, and get readable output in one click. It runs entirely in your browser.</p>
+    <h1>JSON Minifier: Minify JSON Online</h1>
+    <p class="lead">Remove every unnecessary space and line break from your JSON in one click. The output is the same data in the smallest valid form, produced in your browser.</p>
 
     <section>
-      <h2>Pretty print JSON</h2>
-      <p>Pretty printing adds line breaks and consistent indentation so nested objects and arrays are easy to read. Choose 2 spaces, 4 spaces, or tabs, then click <strong>Format</strong> or press <kbd>Ctrl</kbd>+<kbd>Shift</kbd>+<kbd>F</kbd>. Pretty printing only changes whitespace: keys, values, and their order stay exactly as you wrote them. If you also want a stable order, <strong>Sort Keys</strong> alphabetizes every object. Need it compact again? <strong>Minify</strong> removes all whitespace.</p>
+      <h2>How to minify JSON</h2>
+      <ol>
+        <li>Paste your JSON into the editor.</li>
+        <li>Click <strong>Minify</strong> or press <kbd>Ctrl</kbd>+<kbd>Shift</kbd>+<kbd>M</kbd>.</li>
+        <li>Copy the result, or open <strong>Export</strong> and choose <strong>JSON (minified)</strong> to download <code>data.min.json</code>.</li>
+      </ol>
+      <p>Invalid JSON cannot be minified, so fix any error shown in the status bar first. The <a href="/json-validator/">JSON validator</a> explains common errors.</p>
     </section>
 
     <section>
-      <h2>Fix invalid JSON</h2>
-      <p>If your JSON will not parse, the editor shows the error with its line and column. A <strong>Repair JSON</strong> button then appears and tries to fix the common causes automatically:</p>
+      <h2>What minifying changes</h2>
+      <p>Minifying removes whitespace outside of strings: indentation, line breaks, and spaces after colons and commas. Keys, values, and their order are untouched, and whitespace inside strings is preserved, so the data is identical. To make it readable again, click <strong>Format</strong>.</p>
+    </section>
+
+    <section>
+      <h2>Example</h2>
+      <p>This formatted JSON:</p>
+      <pre><code>{
+  "id": 7,
+  "tags": ["a", "b"],
+  "active": true
+}</code></pre>
+      <p>becomes this minified JSON:</p>
+      <pre><code>{"id":7,"tags":["a","b"],"active":true}</code></pre>
+      <p>Same data, 14 characters shorter here. The saving grows with nesting depth and indent size.</p>
+    </section>
+
+    <section>
+      <h2>When to minify JSON</h2>
       <ul>
-        <li>Removes <code>//</code> and <code>/* */</code> comments.</li>
-        <li>Removes trailing commas before <code>]</code> and <code>}</code>.</li>
-        <li>Adds double quotes around unquoted keys.</li>
-        <li>Converts single-quoted strings to double quotes.</li>
-        <li>Replaces <code>True</code>, <code>False</code>, <code>None</code>, <code>undefined</code>, <code>NaN</code>, and <code>Infinity</code> with valid JSON values (<code>true</code>, <code>false</code>, or <code>null</code>).</li>
+        <li>API responses and request bodies, to send fewer bytes.</li>
+        <li>JSON embedded in HTML, environment variables, or command-line arguments, where line breaks are awkward.</li>
+        <li>Values stored in a database column, cache, or <code>localStorage</code>.</li>
       </ul>
-      <p>Repair cannot guess missing brackets or lost data. If the result still does not parse, your text is left as it was so you can fix it by hand using the error position.</p>
+      <p>The saving depends on how much whitespace the original had. Deeply indented JSON shrinks more than JSON that was already compact. Minifying is different from compression: servers usually also apply gzip or Brotli, and the two work together.</p>
     </section>
 
     <section>
-      <h2>Why JSON is invalid: common errors</h2>
-      <p><strong>Unexpected token</strong> usually means a stray character, a trailing comma, or a single quote. <strong>Unexpected end of JSON input</strong> means a closing brace or bracket is missing. <strong>Unterminated string</strong> means a quote was never closed, often because of an unescaped line break or a backslash. Paste the JSON here and the error position tells you where to look.</p>
-    </section>
-
-    <section>
-      <h2>Beyond pretty printing</h2>
-      <p>Explore the result in the collapsible tree viewer, compare two documents in the Diff tab, or export to CSV or YAML. For a full overview of every feature, see the <a href="/">JSON formatter, validator and diff tool</a>. Working with tokens? Try the <a href="/json-web-token/">JWT Decoder</a>.</p>
+      <h2>Related tools</h2>
+      <p>Need the opposite? <a href="/json-prettier/">JSON Prettier</a> pretty prints with 2 spaces, 4 spaces, or tabs. You can also <a href="/json-to-csv/">export to CSV</a> or <a href="/json-to-yaml/">YAML</a>, or <a href="/json-diff/">compare two documents</a>.</p>
     </section>
 
     <section>
       <h2>More JSON tools</h2>
       <ul>
         <li><a href="/">Format JSON</a>: formatter, validator, tree viewer and diff.</li>
+        <li><a href="/json-prettier/">JSON Prettier</a>: pretty print JSON and repair invalid JSON.</li>
         <li><a href="/json-validator/">JSON Validator</a>: check JSON syntax and find errors.</li>
         <li><a href="/json-diff/">JSON Diff</a>: compare two JSON documents.</li>
         <li><a href="/json-to-csv/">JSON to CSV</a>: convert JSON to CSV (and CSV back to JSON).</li>
         <li><a href="/json-to-yaml/">JSON to YAML</a>: convert JSON to YAML.</li>
-        <li><a href="/json-minify/">JSON Minifier</a>: minify JSON and remove whitespace.</li>
         <li><a href="/json-web-token/">JWT Decoder</a>: decode and inspect JSON Web Tokens.</li>
       </ul>
     </section>
 
     <section id="faq">
       <h2>Frequently asked questions</h2>
-      <h3>What does pretty printing JSON do?</h3>
-      <p>It re-indents your JSON with line breaks so it is easy to read. Only whitespace changes, so the data itself is identical.</p>
+      <h3>How do I minify JSON?</h3>
+      <p>Paste it into the editor and click Minify, or press Ctrl+Shift+M.</p>
 
-      <h3>Can it fix invalid JSON?</h3>
-      <p>Often, yes. Repair JSON removes comments and trailing commas, quotes bare keys, converts single quotes, and maps Python and JavaScript values to JSON. It cannot restore missing brackets or lost data.</p>
+      <h3>Does minifying change my data?</h3>
+      <p>No. Only whitespace outside strings is removed. Keys, values, and order stay the same.</p>
 
-      <h3>Which indentation can I use?</h3>
-      <p>2 spaces, 4 spaces, or a tab. Your choice is applied when you click Format.</p>
+      <h3>How do I undo minification?</h3>
+      <p>Click Format to re-indent the JSON, or use Undo.</p>
 
-      <h3>Is my JSON uploaded anywhere?</h3>
-      <p>No. Formatting, validation, and repair all run in your browser. Nothing is sent to a server.</p>
+      <h3>Is minified JSON the same as compressed JSON?</h3>
+      <p>No. Minifying removes whitespace. Compression such as gzip is applied separately by the server and can be combined with it.</p>
 
-      <h3>Does it work offline?</h3>
-      <p>Yes. After the first visit the app is cached as a Progressive Web App and works without a connection.</p>
+      <h3>Is my data uploaded?</h3>
+      <p>No. Minification runs entirely in your browser.</p>
     </section>
   </article>
 

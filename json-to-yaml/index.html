@@ -12,16 +12,16 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-  <title>JSON Prettier — Pretty Print &amp; Fix Invalid JSON Online</title>
-  <meta name="description" content="Pretty print JSON online and fix invalid JSON. Choose 2-space, 4-space or tab indent, repair trailing commas, single quotes and comments, and see exact error positions. Runs in your browser." />
+  <title>JSON to YAML Converter — Convert JSON to YAML Online</title>
+  <meta name="description" content="Convert JSON to YAML online. Paste JSON, export a YAML file for Kubernetes, GitHub Actions, OpenAPI or Docker Compose configs. Free and runs in your browser." />
   <meta name="author" content="format-json.net" />
   <meta name="robots" content="index, follow" />
-  <link rel="canonical" href="https://www.format-json.net/json-prettier/" />
+  <link rel="canonical" href="https://www.format-json.net/json-to-yaml/" />
 
   <meta property="og:type" content="website" />
-  <meta property="og:title" content="JSON Prettier — Pretty Print &amp; Fix Invalid JSON" />
-  <meta property="og:description" content="Pretty print JSON with custom indentation and repair invalid JSON — trailing commas, single quotes, comments — right in your browser." />
-  <meta property="og:url" content="https://www.format-json.net/json-prettier/" />
+  <meta property="og:title" content="JSON to YAML Converter — Free &amp; Private" />
+  <meta property="og:description" content="Convert JSON to clean, 2-space-indented YAML in your browser. Free and private." />
+  <meta property="og:url" content="https://www.format-json.net/json-to-yaml/" />
   <meta property="og:site_name" content="Format JSON" />
   <meta property="og:locale" content="en_US" />
   <meta property="og:image" content="https://www.format-json.net/og-image.png" />
@@ -29,17 +29,17 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
   <meta property="og:image:height" content="630" />
 
   <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:title" content="JSON Prettier — Pretty Print &amp; Fix Invalid JSON" />
-  <meta name="twitter:description" content="Pretty print JSON with custom indentation and repair invalid JSON — trailing commas, single quotes, comments — right in your browser." />
+  <meta name="twitter:title" content="JSON to YAML Converter — Free &amp; Private" />
+  <meta name="twitter:description" content="Convert JSON to clean, 2-space-indented YAML in your browser. Free and private." />
   <meta name="twitter:image" content="https://www.format-json.net/og-image.png" />
 
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
     "@type": "WebApplication",
-    "name": "JSON Prettier",
-    "url": "https://www.format-json.net/json-prettier/",
-    "description": "JSON Prettier pretty prints JSON with custom indentation and repairs invalid JSON such as trailing commas, single quotes and comments, entirely in your browser.",
+    "name": "JSON to YAML",
+    "url": "https://www.format-json.net/json-to-yaml/",
+    "description": "A free online converter that turns JSON into YAML files, entirely in your browser.",
     "applicationCategory": "DeveloperApplication",
     "operatingSystem": "Any",
     "browserRequirements": "Requires a modern web browser",
@@ -58,42 +58,42 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
     "mainEntity": [
       {
         "@type": "Question",
-        "name": "What does pretty printing JSON do?",
+        "name": "How do I convert JSON to YAML?",
         "acceptedAnswer": {
           "@type": "Answer",
-          "text": "It re-indents your JSON with line breaks so it is easy to read. Only whitespace changes, so the data itself is identical."
+          "text": "Paste valid JSON, open the Export menu, and choose YAML. A data.yaml file downloads."
         }
       },
       {
         "@type": "Question",
-        "name": "Can it fix invalid JSON?",
+        "name": "Can I convert YAML to JSON?",
         "acceptedAnswer": {
           "@type": "Answer",
-          "text": "Often, yes. Repair JSON removes comments and trailing commas, quotes bare keys, converts single quotes, and maps Python and JavaScript values to JSON. It cannot restore missing brackets or lost data."
+          "text": "Not with this tool. It exports JSON to YAML only."
         }
       },
       {
         "@type": "Question",
-        "name": "Which indentation can I use?",
+        "name": "Which indentation does the YAML use?",
         "acceptedAnswer": {
           "@type": "Answer",
-          "text": "2 spaces, 4 spaces, or a tab. Your choice is applied when you click Format."
+          "text": "Two spaces per level."
         }
       },
       {
         "@type": "Question",
-        "name": "Is my JSON uploaded anywhere?",
+        "name": "Are types preserved?",
         "acceptedAnswer": {
           "@type": "Answer",
-          "text": "No. Formatting, validation, and repair all run in your browser. Nothing is sent to a server."
+          "text": "Yes. Numbers, booleans, and null stay as such, and strings with special characters are quoted."
         }
       },
       {
         "@type": "Question",
-        "name": "Does it work offline?",
+        "name": "Is my data uploaded?",
         "acceptedAnswer": {
           "@type": "Answer",
-          "text": "Yes. After the first visit the app is cached as a Progressive Web App and works without a connection."
+          "text": "No. The conversion runs entirely in your browser."
         }
       }
     ]
@@ -114,8 +114,8 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
       {
         "@type": "ListItem",
         "position": 2,
-        "name": "JSON Prettier",
-        "item": "https://www.format-json.net/json-prettier/"
+        "name": "JSON to YAML",
+        "item": "https://www.format-json.net/json-to-yaml/"
       }
     ]
   }
@@ -143,7 +143,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   <!-- Top toolbar -->
   <header class="toolbar" role="toolbar" aria-label="Main toolbar">
     <div class="toolbar-left">
-      <div class="logo">{ } <span>JSON Prettier</span></div>
+      <div class="logo">{ } <span>JSON to YAML</span></div>
     </div>
     <div class="toolbar-center">
       <div class="tab-bar" role="tablist">
@@ -398,45 +398,57 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   <!-- SEO: visible, crawlable content below the tool (generated by scripts/build-pages.js) -->
   <article id="about" class="seo-content" aria-label="About this tool">
     <button id="btn-close-about" class="about-close-btn" title="Close" aria-label="Close about section">&times;</button>
-    <h1>JSON Prettier: Pretty Print &amp; Fix Invalid JSON Online</h1>
-    <p class="lead">Pretty print minified or messy JSON into clean, indented code, and repair the mistakes that make JSON invalid. Paste your data, choose an indent, and get readable output in one click. It runs entirely in your browser.</p>
+    <h1>JSON to YAML Converter Online</h1>
+    <p class="lead">Paste JSON and export it as YAML for config files. The conversion runs in your browser, so nothing you paste is uploaded.</p>
 
     <section>
-      <h2>Pretty print JSON</h2>
-      <p>Pretty printing adds line breaks and consistent indentation so nested objects and arrays are easy to read. Choose 2 spaces, 4 spaces, or tabs, then click <strong>Format</strong> or press <kbd>Ctrl</kbd>+<kbd>Shift</kbd>+<kbd>F</kbd>. Pretty printing only changes whitespace: keys, values, and their order stay exactly as you wrote them. If you also want a stable order, <strong>Sort Keys</strong> alphabetizes every object. Need it compact again? <strong>Minify</strong> removes all whitespace.</p>
+      <h2>How to convert JSON to YAML</h2>
+      <ol>
+        <li>Paste your JSON into the editor. It must be valid, so check the status bar.</li>
+        <li>Open the <strong>Export</strong> menu and choose <strong>YAML</strong>.</li>
+        <li>A file named <code>data.yaml</code> downloads.</li>
+      </ol>
+      <p>For example, <code>{"name":"app","ports":[80,443]}</code> becomes:</p>
+      <pre><code>name: app
+ports:
+  - 80
+  - 443</code></pre>
     </section>
 
     <section>
-      <h2>Fix invalid JSON</h2>
-      <p>If your JSON will not parse, the editor shows the error with its line and column. A <strong>Repair JSON</strong> button then appears and tries to fix the common causes automatically:</p>
+      <h2>What the output looks like</h2>
       <ul>
-        <li>Removes <code>//</code> and <code>/* */</code> comments.</li>
-        <li>Removes trailing commas before <code>]</code> and <code>}</code>.</li>
-        <li>Adds double quotes around unquoted keys.</li>
-        <li>Converts single-quoted strings to double quotes.</li>
-        <li>Replaces <code>True</code>, <code>False</code>, <code>None</code>, <code>undefined</code>, <code>NaN</code>, and <code>Infinity</code> with valid JSON values (<code>true</code>, <code>false</code>, or <code>null</code>).</li>
+        <li>Nesting uses 2-space indentation.</li>
+        <li>Numbers, booleans, and <code>null</code> keep their types.</li>
+        <li>Empty arrays are written as <code>[]</code>.</li>
+        <li>Strings that contain a colon, <code>#</code>, quotes, a line break, or leading or trailing spaces are double-quoted so they stay strings.</li>
       </ul>
-      <p>Repair cannot guess missing brackets or lost data. If the result still does not parse, your text is left as it was so you can fix it by hand using the error position.</p>
+      <p>Review the result before committing it. YAML has many dialects, and strings such as <code>yes</code> or <code>on</code> can be read as booleans by some parsers.</p>
     </section>
 
     <section>
-      <h2>Why JSON is invalid: common errors</h2>
-      <p><strong>Unexpected token</strong> usually means a stray character, a trailing comma, or a single quote. <strong>Unexpected end of JSON input</strong> means a closing brace or bracket is missing. <strong>Unterminated string</strong> means a quote was never closed, often because of an unescaped line break or a backslash. Paste the JSON here and the error position tells you where to look.</p>
+      <h2>Where YAML is used</h2>
+      <p>YAML is the usual format for Kubernetes manifests, GitHub Actions workflows, Docker Compose files, OpenAPI specifications, and many CI and application configs. JSON is a good starting point for these when your data comes from an API or a generator.</p>
     </section>
 
     <section>
-      <h2>Beyond pretty printing</h2>
-      <p>Explore the result in the collapsible tree viewer, compare two documents in the Diff tab, or export to CSV or YAML. For a full overview of every feature, see the <a href="/">JSON formatter, validator and diff tool</a>. Working with tokens? Try the <a href="/json-web-token/">JWT Decoder</a>.</p>
+      <h2>JSON vs YAML: which to use</h2>
+      <p>JSON is strict and unambiguous, which makes it ideal for APIs and machine-to-machine data. YAML trades that strictness for readability: no braces or quotes for most values, and it supports comments, which JSON does not. That is why configuration files are usually written in YAML while the same data travels between services as JSON. YAML is a superset of JSON in most parsers, so valid JSON can often be pasted into a YAML file unchanged, but converting it gives you the readable form.</p>
+    </section>
+
+    <section>
+      <h2>Other formats</h2>
+      <p>The Export menu also produces <a href="/json-to-csv/">CSV</a>, TOML, and SQL INSERT statements, and formatted or minified JSON. This tool converts from JSON to YAML; it does not convert YAML back to JSON. To tidy your JSON first, use <strong>Format</strong> or see the <a href="/json-prettier/">JSON Prettier</a>.</p>
     </section>
 
     <section>
       <h2>More JSON tools</h2>
       <ul>
         <li><a href="/">Format JSON</a>: formatter, validator, tree viewer and diff.</li>
+        <li><a href="/json-prettier/">JSON Prettier</a>: pretty print JSON and repair invalid JSON.</li>
         <li><a href="/json-validator/">JSON Validator</a>: check JSON syntax and find errors.</li>
         <li><a href="/json-diff/">JSON Diff</a>: compare two JSON documents.</li>
         <li><a href="/json-to-csv/">JSON to CSV</a>: convert JSON to CSV (and CSV back to JSON).</li>
-        <li><a href="/json-to-yaml/">JSON to YAML</a>: convert JSON to YAML.</li>
         <li><a href="/json-minify/">JSON Minifier</a>: minify JSON and remove whitespace.</li>
         <li><a href="/json-web-token/">JWT Decoder</a>: decode and inspect JSON Web Tokens.</li>
       </ul>
@@ -444,20 +456,20 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
     <section id="faq">
       <h2>Frequently asked questions</h2>
-      <h3>What does pretty printing JSON do?</h3>
-      <p>It re-indents your JSON with line breaks so it is easy to read. Only whitespace changes, so the data itself is identical.</p>
+      <h3>How do I convert JSON to YAML?</h3>
+      <p>Paste valid JSON, open the Export menu, and choose YAML. A data.yaml file downloads.</p>
 
-      <h3>Can it fix invalid JSON?</h3>
-      <p>Often, yes. Repair JSON removes comments and trailing commas, quotes bare keys, converts single quotes, and maps Python and JavaScript values to JSON. It cannot restore missing brackets or lost data.</p>
+      <h3>Can I convert YAML to JSON?</h3>
+      <p>Not with this tool. It exports JSON to YAML only.</p>
 
-      <h3>Which indentation can I use?</h3>
-      <p>2 spaces, 4 spaces, or a tab. Your choice is applied when you click Format.</p>
+      <h3>Which indentation does the YAML use?</h3>
+      <p>Two spaces per level.</p>
 
-      <h3>Is my JSON uploaded anywhere?</h3>
-      <p>No. Formatting, validation, and repair all run in your browser. Nothing is sent to a server.</p>
+      <h3>Are types preserved?</h3>
+      <p>Yes. Numbers, booleans, and null stay as such, and strings with special characters are quoted.</p>
 
-      <h3>Does it work offline?</h3>
-      <p>Yes. After the first visit the app is cached as a Progressive Web App and works without a connection.</p>
+      <h3>Is my data uploaded?</h3>
+      <p>No. The conversion runs entirely in your browser.</p>
     </section>
   </article>
 

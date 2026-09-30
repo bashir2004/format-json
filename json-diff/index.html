@@ -12,16 +12,16 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-  <title>JSON Prettier — Pretty Print &amp; Fix Invalid JSON Online</title>
-  <meta name="description" content="Pretty print JSON online and fix invalid JSON. Choose 2-space, 4-space or tab indent, repair trailing commas, single quotes and comments, and see exact error positions. Runs in your browser." />
+  <title>JSON Diff — Compare Two JSON Files Online</title>
+  <meta name="description" content="Compare two JSON documents online. Paste both sides, click Compare, and see every added, removed and changed value with its full path. Free and runs in your browser." />
   <meta name="author" content="format-json.net" />
   <meta name="robots" content="index, follow" />
-  <link rel="canonical" href="https://www.format-json.net/json-prettier/" />
+  <link rel="canonical" href="https://www.format-json.net/json-diff/" />
 
   <meta property="og:type" content="website" />
-  <meta property="og:title" content="JSON Prettier — Pretty Print &amp; Fix Invalid JSON" />
-  <meta property="og:description" content="Pretty print JSON with custom indentation and repair invalid JSON — trailing commas, single quotes, comments — right in your browser." />
-  <meta property="og:url" content="https://www.format-json.net/json-prettier/" />
+  <meta property="og:title" content="JSON Diff — Compare Two JSON Documents Online" />
+  <meta property="og:description" content="Paste two JSON documents and see added, removed and changed values with their paths. Free, private, browser-based." />
+  <meta property="og:url" content="https://www.format-json.net/json-diff/" />
   <meta property="og:site_name" content="Format JSON" />
   <meta property="og:locale" content="en_US" />
   <meta property="og:image" content="https://www.format-json.net/og-image.png" />
@@ -29,17 +29,17 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
   <meta property="og:image:height" content="630" />
 
   <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:title" content="JSON Prettier — Pretty Print &amp; Fix Invalid JSON" />
-  <meta name="twitter:description" content="Pretty print JSON with custom indentation and repair invalid JSON — trailing commas, single quotes, comments — right in your browser." />
+  <meta name="twitter:title" content="JSON Diff — Compare Two JSON Documents Online" />
+  <meta name="twitter:description" content="Paste two JSON documents and see added, removed and changed values with their paths. Free, private, browser-based." />
   <meta name="twitter:image" content="https://www.format-json.net/og-image.png" />
 
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
     "@type": "WebApplication",
-    "name": "JSON Prettier",
-    "url": "https://www.format-json.net/json-prettier/",
-    "description": "JSON Prettier pretty prints JSON with custom indentation and repairs invalid JSON such as trailing commas, single quotes and comments, entirely in your browser.",
+    "name": "JSON Diff",
+    "url": "https://www.format-json.net/json-diff/",
+    "description": "A free online JSON diff tool that compares two JSON documents and lists added, removed and changed values with their paths, entirely in your browser.",
     "applicationCategory": "DeveloperApplication",
     "operatingSystem": "Any",
     "browserRequirements": "Requires a modern web browser",
@@ -58,42 +58,42 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
     "mainEntity": [
       {
         "@type": "Question",
-        "name": "What does pretty printing JSON do?",
+        "name": "How do I compare two JSON files?",
         "acceptedAnswer": {
           "@type": "Answer",
-          "text": "It re-indents your JSON with line breaks so it is easy to read. Only whitespace changes, so the data itself is identical."
+          "text": "Open the Diff tab, paste one document on each side, and click Compare. Differences are listed with their paths."
         }
       },
       {
         "@type": "Question",
-        "name": "Can it fix invalid JSON?",
+        "name": "Does key order matter?",
         "acceptedAnswer": {
           "@type": "Answer",
-          "text": "Often, yes. Repair JSON removes comments and trailing commas, quotes bare keys, converts single quotes, and maps Python and JavaScript values to JSON. It cannot restore missing brackets or lost data."
+          "text": "No. Objects are compared key by key, so the same data in a different key order is reported as identical."
         }
       },
       {
         "@type": "Question",
-        "name": "Which indentation can I use?",
+        "name": "How are arrays compared?",
         "acceptedAnswer": {
           "@type": "Answer",
-          "text": "2 spaces, 4 spaces, or a tab. Your choice is applied when you click Format."
+          "text": "By position. Item 0 is compared with item 0, item 1 with item 1, and so on, so inserting an item early in an array shows later items as changed."
         }
       },
       {
         "@type": "Question",
-        "name": "Is my JSON uploaded anywhere?",
+        "name": "Can I compare files instead of pasting?",
         "acceptedAnswer": {
           "@type": "Answer",
-          "text": "No. Formatting, validation, and repair all run in your browser. Nothing is sent to a server."
+          "text": "Load a file into the editor and it fills the left side of the diff. For the right side, paste the contents."
         }
       },
       {
         "@type": "Question",
-        "name": "Does it work offline?",
+        "name": "Is my data uploaded?",
         "acceptedAnswer": {
           "@type": "Answer",
-          "text": "Yes. After the first visit the app is cached as a Progressive Web App and works without a connection."
+          "text": "No. The comparison runs in your browser and nothing is sent to a server."
         }
       }
     ]
@@ -114,8 +114,8 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
       {
         "@type": "ListItem",
         "position": 2,
-        "name": "JSON Prettier",
-        "item": "https://www.format-json.net/json-prettier/"
+        "name": "JSON Diff",
+        "item": "https://www.format-json.net/json-diff/"
       }
     ]
   }
@@ -135,7 +135,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
 </head>
-<body>
+<body data-default-tab="diff">
   <!-- Google Tag Manager (noscript) -->
 <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-KBB4RLGW"
 height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
@@ -143,7 +143,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   <!-- Top toolbar -->
   <header class="toolbar" role="toolbar" aria-label="Main toolbar">
     <div class="toolbar-left">
-      <div class="logo">{ } <span>JSON Prettier</span></div>
+      <div class="logo">{ } <span>JSON Diff</span></div>
     </div>
     <div class="toolbar-center">
       <div class="tab-bar" role="tablist">
@@ -398,43 +398,51 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   <!-- SEO: visible, crawlable content below the tool (generated by scripts/build-pages.js) -->
   <article id="about" class="seo-content" aria-label="About this tool">
     <button id="btn-close-about" class="about-close-btn" title="Close" aria-label="Close about section">&times;</button>
-    <h1>JSON Prettier: Pretty Print &amp; Fix Invalid JSON Online</h1>
-    <p class="lead">Pretty print minified or messy JSON into clean, indented code, and repair the mistakes that make JSON invalid. Paste your data, choose an indent, and get readable output in one click. It runs entirely in your browser.</p>
+    <h1>JSON Diff: Compare Two JSON Documents Online</h1>
+    <p class="lead">Paste two JSON documents side by side and see exactly what changed: added, removed, or modified values, each with its full path. Nothing is uploaded, so it is safe for real API responses and config files.</p>
 
     <section>
-      <h2>Pretty print JSON</h2>
-      <p>Pretty printing adds line breaks and consistent indentation so nested objects and arrays are easy to read. Choose 2 spaces, 4 spaces, or tabs, then click <strong>Format</strong> or press <kbd>Ctrl</kbd>+<kbd>Shift</kbd>+<kbd>F</kbd>. Pretty printing only changes whitespace: keys, values, and their order stay exactly as you wrote them. If you also want a stable order, <strong>Sort Keys</strong> alphabetizes every object. Need it compact again? <strong>Minify</strong> removes all whitespace.</p>
+      <h2>How to compare JSON</h2>
+      <ol>
+        <li>The <strong>Diff</strong> tab is open for you. The left panel is pre-filled with whatever is in the editor, and you can overwrite it.</li>
+        <li>Paste the second document into the right panel.</li>
+        <li>Click <strong>Compare</strong>.</li>
+      </ol>
+      <p>Both sides must be valid JSON. If one is not, you are told which side has the problem. Use the <a href="/json-validator/">JSON validator</a> to find the error.</p>
     </section>
 
     <section>
-      <h2>Fix invalid JSON</h2>
-      <p>If your JSON will not parse, the editor shows the error with its line and column. A <strong>Repair JSON</strong> button then appears and tries to fix the common causes automatically:</p>
+      <h2>Reading the results</h2>
+      <p>Each difference is one line, with the path from the root (<code>$</code>) to the value:</p>
       <ul>
-        <li>Removes <code>//</code> and <code>/* */</code> comments.</li>
-        <li>Removes trailing commas before <code>]</code> and <code>}</code>.</li>
-        <li>Adds double quotes around unquoted keys.</li>
-        <li>Converts single-quoted strings to double quotes.</li>
-        <li>Replaces <code>True</code>, <code>False</code>, <code>None</code>, <code>undefined</code>, <code>NaN</code>, and <code>Infinity</code> with valid JSON values (<code>true</code>, <code>false</code>, or <code>null</code>).</li>
+        <li><strong>+ added</strong> (green): the key exists only in the right document.</li>
+        <li><strong>- removed</strong> (red): the key exists only in the left document.</li>
+        <li><strong>~ changed</strong> (yellow): the value differs, shown as old value → new value. A change of type, such as a string becoming a number, is reported as a change.</li>
       </ul>
-      <p>Repair cannot guess missing brackets or lost data. If the result still does not parse, your text is left as it was so you can fix it by hand using the error position.</p>
+      <p>Paths look like <code>$.user.address.city</code>. Array items are addressed by index, such as <code>$.items.2.price</code>, so inserting an item near the start of an array shifts the indexes after it. Objects are compared by key, so the order of keys does not matter. If the documents match, you see "Documents are identical".</p>
     </section>
 
     <section>
-      <h2>Why JSON is invalid: common errors</h2>
-      <p><strong>Unexpected token</strong> usually means a stray character, a trailing comma, or a single quote. <strong>Unexpected end of JSON input</strong> means a closing brace or bracket is missing. <strong>Unterminated string</strong> means a quote was never closed, often because of an unescaped line break or a backslash. Paste the JSON here and the error position tells you where to look.</p>
+      <h2>What to use it for</h2>
+      <ul>
+        <li>Compare an API response between staging and production.</li>
+        <li>Check what changed in a configuration file before you deploy.</li>
+        <li>Review a data export against last week's export.</li>
+        <li>Confirm that a refactor still returns the same payload.</li>
+      </ul>
     </section>
 
     <section>
-      <h2>Beyond pretty printing</h2>
-      <p>Explore the result in the collapsible tree viewer, compare two documents in the Diff tab, or export to CSV or YAML. For a full overview of every feature, see the <a href="/">JSON formatter, validator and diff tool</a>. Working with tokens? Try the <a href="/json-web-token/">JWT Decoder</a>.</p>
+      <h2>Tips for cleaner comparisons</h2>
+      <p>Run both documents through <strong>Format</strong> first so they are easy to read alongside the results, and use <strong>Sort Keys</strong> if you want to eyeball them in the same order. For a broader tour of the tool, see the <a href="/">JSON formatter and viewer</a>.</p>
     </section>
 
     <section>
       <h2>More JSON tools</h2>
       <ul>
         <li><a href="/">Format JSON</a>: formatter, validator, tree viewer and diff.</li>
+        <li><a href="/json-prettier/">JSON Prettier</a>: pretty print JSON and repair invalid JSON.</li>
         <li><a href="/json-validator/">JSON Validator</a>: check JSON syntax and find errors.</li>
-        <li><a href="/json-diff/">JSON Diff</a>: compare two JSON documents.</li>
         <li><a href="/json-to-csv/">JSON to CSV</a>: convert JSON to CSV (and CSV back to JSON).</li>
         <li><a href="/json-to-yaml/">JSON to YAML</a>: convert JSON to YAML.</li>
         <li><a href="/json-minify/">JSON Minifier</a>: minify JSON and remove whitespace.</li>
@@ -444,20 +452,20 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
     <section id="faq">
       <h2>Frequently asked questions</h2>
-      <h3>What does pretty printing JSON do?</h3>
-      <p>It re-indents your JSON with line breaks so it is easy to read. Only whitespace changes, so the data itself is identical.</p>
+      <h3>How do I compare two JSON files?</h3>
+      <p>Open the Diff tab, paste one document on each side, and click Compare. Differences are listed with their paths.</p>
 
-      <h3>Can it fix invalid JSON?</h3>
-      <p>Often, yes. Repair JSON removes comments and trailing commas, quotes bare keys, converts single quotes, and maps Python and JavaScript values to JSON. It cannot restore missing brackets or lost data.</p>
+      <h3>Does key order matter?</h3>
+      <p>No. Objects are compared key by key, so the same data in a different key order is reported as identical.</p>
 
-      <h3>Which indentation can I use?</h3>
-      <p>2 spaces, 4 spaces, or a tab. Your choice is applied when you click Format.</p>
+      <h3>How are arrays compared?</h3>
+      <p>By position. Item 0 is compared with item 0, item 1 with item 1, and so on, so inserting an item early in an array shows later items as changed.</p>
 
-      <h3>Is my JSON uploaded anywhere?</h3>
-      <p>No. Formatting, validation, and repair all run in your browser. Nothing is sent to a server.</p>
+      <h3>Can I compare files instead of pasting?</h3>
+      <p>Load a file into the editor and it fills the left side of the diff. For the right side, paste the contents.</p>
 
-      <h3>Does it work offline?</h3>
-      <p>Yes. After the first visit the app is cached as a Progressive Web App and works without a connection.</p>
+      <h3>Is my data uploaded?</h3>
+      <p>No. The comparison runs in your browser and nothing is sent to a server.</p>
     </section>
   </article>
 

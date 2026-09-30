@@ -12,16 +12,16 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-  <title>JSON Prettier — Pretty Print &amp; Fix Invalid JSON Online</title>
-  <meta name="description" content="Pretty print JSON online and fix invalid JSON. Choose 2-space, 4-space or tab indent, repair trailing commas, single quotes and comments, and see exact error positions. Runs in your browser." />
+  <title>JSON Validator — Check &amp; Validate JSON Syntax Online</title>
+  <meta name="description" content="Free online JSON validator. Paste JSON to check its syntax instantly, see the exact line and column of any error, and repair common mistakes. Private — runs in your browser." />
   <meta name="author" content="format-json.net" />
   <meta name="robots" content="index, follow" />
-  <link rel="canonical" href="https://www.format-json.net/json-prettier/" />
+  <link rel="canonical" href="https://www.format-json.net/json-validator/" />
 
   <meta property="og:type" content="website" />
-  <meta property="og:title" content="JSON Prettier — Pretty Print &amp; Fix Invalid JSON" />
-  <meta property="og:description" content="Pretty print JSON with custom indentation and repair invalid JSON — trailing commas, single quotes, comments — right in your browser." />
-  <meta property="og:url" content="https://www.format-json.net/json-prettier/" />
+  <meta property="og:title" content="JSON Validator — Check JSON Syntax Online" />
+  <meta property="og:description" content="Validate JSON as you type and find the exact line and column of syntax errors. Free, private, and runs in your browser." />
+  <meta property="og:url" content="https://www.format-json.net/json-validator/" />
   <meta property="og:site_name" content="Format JSON" />
   <meta property="og:locale" content="en_US" />
   <meta property="og:image" content="https://www.format-json.net/og-image.png" />
@@ -29,17 +29,17 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
   <meta property="og:image:height" content="630" />
 
   <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:title" content="JSON Prettier — Pretty Print &amp; Fix Invalid JSON" />
-  <meta name="twitter:description" content="Pretty print JSON with custom indentation and repair invalid JSON — trailing commas, single quotes, comments — right in your browser." />
+  <meta name="twitter:title" content="JSON Validator — Check JSON Syntax Online" />
+  <meta name="twitter:description" content="Validate JSON as you type and find the exact line and column of syntax errors. Free, private, and runs in your browser." />
   <meta name="twitter:image" content="https://www.format-json.net/og-image.png" />
 
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
     "@type": "WebApplication",
-    "name": "JSON Prettier",
-    "url": "https://www.format-json.net/json-prettier/",
-    "description": "JSON Prettier pretty prints JSON with custom indentation and repairs invalid JSON such as trailing commas, single quotes and comments, entirely in your browser.",
+    "name": "JSON Validator",
+    "url": "https://www.format-json.net/json-validator/",
+    "description": "A free online JSON validator that checks syntax as you type, reports the line and column of errors, and can repair common mistakes, entirely in your browser.",
     "applicationCategory": "DeveloperApplication",
     "operatingSystem": "Any",
     "browserRequirements": "Requires a modern web browser",
@@ -58,42 +58,42 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
     "mainEntity": [
       {
         "@type": "Question",
-        "name": "What does pretty printing JSON do?",
+        "name": "How do I validate JSON?",
         "acceptedAnswer": {
           "@type": "Answer",
-          "text": "It re-indents your JSON with line breaks so it is easy to read. Only whitespace changes, so the data itself is identical."
+          "text": "Paste it into the editor. It is validated as you type, and errors appear with a message and, when available, the line and column."
         }
       },
       {
         "@type": "Question",
-        "name": "Can it fix invalid JSON?",
+        "name": "Does it validate against a JSON Schema?",
         "acceptedAnswer": {
           "@type": "Answer",
-          "text": "Often, yes. Repair JSON removes comments and trailing commas, quotes bare keys, converts single quotes, and maps Python and JavaScript values to JSON. It cannot restore missing brackets or lost data."
+          "text": "No. It checks JSON syntax only, using the same rules as JSON.parse in your browser."
         }
       },
       {
         "@type": "Question",
-        "name": "Which indentation can I use?",
+        "name": "Why does my JSON with comments fail?",
         "acceptedAnswer": {
           "@type": "Answer",
-          "text": "2 spaces, 4 spaces, or a tab. Your choice is applied when you click Format."
+          "text": "Standard JSON does not allow comments. Remove them, or use Repair JSON to strip them automatically."
         }
       },
       {
         "@type": "Question",
-        "name": "Is my JSON uploaded anywhere?",
+        "name": "Is my JSON sent to a server?",
         "acceptedAnswer": {
           "@type": "Answer",
-          "text": "No. Formatting, validation, and repair all run in your browser. Nothing is sent to a server."
+          "text": "No. Everything happens in your browser, so your data never leaves your device."
         }
       },
       {
         "@type": "Question",
-        "name": "Does it work offline?",
+        "name": "Is there a size limit?",
         "acceptedAnswer": {
           "@type": "Answer",
-          "text": "Yes. After the first visit the app is cached as a Progressive Web App and works without a connection."
+          "text": "There is no server-side limit because nothing is uploaded. Very large documents are limited only by your browser and device memory."
         }
       }
     ]
@@ -114,8 +114,8 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
       {
         "@type": "ListItem",
         "position": 2,
-        "name": "JSON Prettier",
-        "item": "https://www.format-json.net/json-prettier/"
+        "name": "JSON Validator",
+        "item": "https://www.format-json.net/json-validator/"
       }
     ]
   }
@@ -143,7 +143,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   <!-- Top toolbar -->
   <header class="toolbar" role="toolbar" aria-label="Main toolbar">
     <div class="toolbar-left">
-      <div class="logo">{ } <span>JSON Prettier</span></div>
+      <div class="logo">{ } <span>JSON Validator</span></div>
     </div>
     <div class="toolbar-center">
       <div class="tab-bar" role="tablist">
@@ -398,42 +398,46 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   <!-- SEO: visible, crawlable content below the tool (generated by scripts/build-pages.js) -->
   <article id="about" class="seo-content" aria-label="About this tool">
     <button id="btn-close-about" class="about-close-btn" title="Close" aria-label="Close about section">&times;</button>
-    <h1>JSON Prettier: Pretty Print &amp; Fix Invalid JSON Online</h1>
-    <p class="lead">Pretty print minified or messy JSON into clean, indented code, and repair the mistakes that make JSON invalid. Paste your data, choose an indent, and get readable output in one click. It runs entirely in your browser.</p>
+    <h1>JSON Validator: Check JSON Syntax Online</h1>
+    <p class="lead">Paste your JSON and it is checked instantly. If something is wrong, you see what and where. Nothing is uploaded: validation runs in your browser.</p>
 
     <section>
-      <h2>Pretty print JSON</h2>
-      <p>Pretty printing adds line breaks and consistent indentation so nested objects and arrays are easy to read. Choose 2 spaces, 4 spaces, or tabs, then click <strong>Format</strong> or press <kbd>Ctrl</kbd>+<kbd>Shift</kbd>+<kbd>F</kbd>. Pretty printing only changes whitespace: keys, values, and their order stay exactly as you wrote them. If you also want a stable order, <strong>Sort Keys</strong> alphabetizes every object. Need it compact again? <strong>Minify</strong> removes all whitespace.</p>
+      <h2>How to validate JSON</h2>
+      <ol>
+        <li>Paste your JSON into the editor, drop a <code>.json</code> file on the page, or load it from a URL.</li>
+        <li>The status bar updates as you type. Valid JSON is confirmed, and invalid JSON shows an error message.</li>
+        <li>When the parser reports a position, the message includes the line and column so you can go straight to it.</li>
+        <li>Fix the problem, or click <strong>Repair JSON</strong> to try an automatic fix.</li>
+      </ol>
     </section>
 
     <section>
-      <h2>Fix invalid JSON</h2>
-      <p>If your JSON will not parse, the editor shows the error with its line and column. A <strong>Repair JSON</strong> button then appears and tries to fix the common causes automatically:</p>
+      <h2>What the validator checks</h2>
+      <p>Validation uses your browser's built-in JSON parser, so it accepts exactly what <code>JSON.parse</code> accepts: strict JSON syntax. Strings and keys must use double quotes, values must be an object, array, string, number, <code>true</code>, <code>false</code>, or <code>null</code>, and there can be no comments or trailing commas. This is a <strong>syntax</strong> check. It does not validate your data against a JSON Schema.</p>
+    </section>
+
+    <section>
+      <h2>Common JSON errors and what they mean</h2>
       <ul>
-        <li>Removes <code>//</code> and <code>/* */</code> comments.</li>
-        <li>Removes trailing commas before <code>]</code> and <code>}</code>.</li>
-        <li>Adds double quotes around unquoted keys.</li>
-        <li>Converts single-quoted strings to double quotes.</li>
-        <li>Replaces <code>True</code>, <code>False</code>, <code>None</code>, <code>undefined</code>, <code>NaN</code>, and <code>Infinity</code> with valid JSON values (<code>true</code>, <code>false</code>, or <code>null</code>).</li>
+        <li><strong>Unexpected token</strong>: a character that JSON does not allow at that position, such as a single quote, a trailing comma, or a comment.</li>
+        <li><strong>Unexpected end of JSON input</strong>: the text stops early, usually because a closing <code>}</code> or <code>]</code> is missing.</li>
+        <li><strong>Expected property name</strong>: an object key is unquoted, or there is a comma after the last property.</li>
+        <li><strong>Unterminated string</strong>: a string was opened but never closed, often from a raw line break or an unescaped quote inside it.</li>
+        <li><strong>Bad control character</strong>: a tab or newline inside a string that should be written as <code>\t</code> or <code>\n</code>.</li>
       </ul>
-      <p>Repair cannot guess missing brackets or lost data. If the result still does not parse, your text is left as it was so you can fix it by hand using the error position.</p>
+      <p>Exact wording varies by browser, because each engine writes its own messages.</p>
     </section>
 
     <section>
-      <h2>Why JSON is invalid: common errors</h2>
-      <p><strong>Unexpected token</strong> usually means a stray character, a trailing comma, or a single quote. <strong>Unexpected end of JSON input</strong> means a closing brace or bracket is missing. <strong>Unterminated string</strong> means a quote was never closed, often because of an unescaped line break or a backslash. Paste the JSON here and the error position tells you where to look.</p>
-    </section>
-
-    <section>
-      <h2>Beyond pretty printing</h2>
-      <p>Explore the result in the collapsible tree viewer, compare two documents in the Diff tab, or export to CSV or YAML. For a full overview of every feature, see the <a href="/">JSON formatter, validator and diff tool</a>. Working with tokens? Try the <a href="/json-web-token/">JWT Decoder</a>.</p>
+      <h2>Repair invalid JSON</h2>
+      <p>The <strong>Repair JSON</strong> button removes comments and trailing commas, quotes bare keys, converts single quotes, and replaces <code>True</code>, <code>False</code>, <code>None</code>, <code>undefined</code>, <code>NaN</code>, and <code>Infinity</code>. It cannot recover missing brackets or lost data, and it leaves your text unchanged if the result still is not valid. Once your JSON is valid, <strong>Format</strong> re-indents it and the tree viewer lets you inspect it.</p>
     </section>
 
     <section>
       <h2>More JSON tools</h2>
       <ul>
         <li><a href="/">Format JSON</a>: formatter, validator, tree viewer and diff.</li>
-        <li><a href="/json-validator/">JSON Validator</a>: check JSON syntax and find errors.</li>
+        <li><a href="/json-prettier/">JSON Prettier</a>: pretty print JSON and repair invalid JSON.</li>
         <li><a href="/json-diff/">JSON Diff</a>: compare two JSON documents.</li>
         <li><a href="/json-to-csv/">JSON to CSV</a>: convert JSON to CSV (and CSV back to JSON).</li>
         <li><a href="/json-to-yaml/">JSON to YAML</a>: convert JSON to YAML.</li>
@@ -444,20 +448,20 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
     <section id="faq">
       <h2>Frequently asked questions</h2>
-      <h3>What does pretty printing JSON do?</h3>
-      <p>It re-indents your JSON with line breaks so it is easy to read. Only whitespace changes, so the data itself is identical.</p>
+      <h3>How do I validate JSON?</h3>
+      <p>Paste it into the editor. It is validated as you type, and errors appear with a message and, when available, the line and column.</p>
 
-      <h3>Can it fix invalid JSON?</h3>
-      <p>Often, yes. Repair JSON removes comments and trailing commas, quotes bare keys, converts single quotes, and maps Python and JavaScript values to JSON. It cannot restore missing brackets or lost data.</p>
+      <h3>Does it validate against a JSON Schema?</h3>
+      <p>No. It checks JSON syntax only, using the same rules as JSON.parse in your browser.</p>
 
-      <h3>Which indentation can I use?</h3>
-      <p>2 spaces, 4 spaces, or a tab. Your choice is applied when you click Format.</p>
+      <h3>Why does my JSON with comments fail?</h3>
+      <p>Standard JSON does not allow comments. Remove them, or use Repair JSON to strip them automatically.</p>
 
-      <h3>Is my JSON uploaded anywhere?</h3>
-      <p>No. Formatting, validation, and repair all run in your browser. Nothing is sent to a server.</p>
+      <h3>Is my JSON sent to a server?</h3>
+      <p>No. Everything happens in your browser, so your data never leaves your device.</p>
 
-      <h3>Does it work offline?</h3>
-      <p>Yes. After the first visit the app is cached as a Progressive Web App and works without a connection.</p>
+      <h3>Is there a size limit?</h3>
+      <p>There is no server-side limit because nothing is uploaded. Very large documents are limited only by your browser and device memory.</p>
     </section>
   </article>
 

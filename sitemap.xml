@@ -2,11 +2,11 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
     <loc>https://www.format-json.net/</loc>
-    <lastmod>2026-05-25</lastmod>
+    <lastmod>2026-09-30</lastmod>
   </url>
   <url>
     <loc>https://www.format-json.net/json-prettier/</loc>
-    <lastmod>2026-05-25</lastmod>
+    <lastmod>2026-09-30</lastmod>
   </url>
   <url>
     <loc>https://www.format-json.net/privacy-policy/</loc>
@@ -23,5 +23,25 @@
   <url>
     <loc>https://www.format-json.net/json-web-token/</loc>
     <lastmod>2026-05-25</lastmod>
+  </url>
+  <url>
+    <loc>https://www.format-json.net/json-validator/</loc>
+    <lastmod>2026-09-30</lastmod>
+  </url>
+  <url>
+    <loc>https://www.format-json.net/json-diff/</loc>
+    <lastmod>2026-09-30</lastmod>
+  </url>
+  <url>
+    <loc>https://www.format-json.net/json-to-csv/</loc>
+    <lastmod>2026-09-30</lastmod>
+  </url>
+  <url>
+    <loc>https://www.format-json.net/json-to-yaml/</loc>
+    <lastmod>2026-09-30</lastmod>
+  </url>
+  <url>
+    <loc>https://www.format-json.net/json-minify/</loc>
+    <lastmod>2026-09-30</lastmod>
   </url>
 </urlset>

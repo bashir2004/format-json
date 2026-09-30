@@ -45,20 +45,22 @@ Based on the SEO audit (health score **58/100**, target **80+**). `PLAN.md` is u
 
 Create one page per intent, each with a working tool state, 500+ words of unique copy, worked examples, an FAQ, and its own title/description/canonical/JSON-LD (`WebApplication` or `HowTo`).
 
+**Status:** pages 1–5 are built. Copy lives in `scripts/build-pages.js`; run `node scripts/build-pages.js` after editing it or the tool shell in `index.html`. Pages 6–7 are open: #6 needs the escape/unescape feature, #7 is a long-form article. Pages 4–5 are ~400–450 words, below the 500 target; they are short intents and were not padded.
+
 | # | URL | Target query | Notes |
 |---|---|---|---|
-| 1 | `/json-validator/` (or `/json-lint/`) | json validator, json lint | Ties into current `feature/json-lint` branch |
-| 2 | `/json-diff/` | json diff, compare json | Preloads the diff tab |
-| 3 | `/json-to-csv/` | json to csv | Existing export feature |
-| 4 | `/json-to-yaml/` | json to yaml | Existing export feature |
-| 5 | `/json-minify/` | minify json | Short, focused page |
-| 6 | `/json-escape/` | json escape / unescape | New small feature |
+| 1 ✅ | `/json-validator/` (or `/json-lint/`) | json validator, json lint | Ties into current `feature/json-lint` branch |
+| 2 ✅ | `/json-diff/` | json diff, compare json | Preloads the diff tab |
+| 3 ✅ | `/json-to-csv/` | json to csv | Existing export feature |
+| 4 ✅ | `/json-to-yaml/` | json to yaml | Existing export feature |
+| 5 ✅ | `/json-minify/` | minify json | Short, focused page |
+| 6 | `/json-escape/` | json escape / unescape | Needs a new escape/unescape feature first |
 | 7 | `/blog/common-json-errors/` | fix invalid json, unexpected token | Long-form guide |
 
 For each new page:
-- [ ] Add to `sitemap.xml`, `sw.js` precache, and the site nav/footer.
-- [ ] Cross-link to at least 3 sibling pages.
-- [ ] Verify the H1 is unique and the canonical is self-referencing.
+- [x] Add to `sitemap.xml`, `sw.js` precache, and the site nav/footer. (pages 1–5; via `scripts/build-pages.js`, which also rebuilds `/json-prettier/`)
+- [x] Cross-link to at least 3 sibling pages.
+- [x] Verify the H1 is unique and the canonical is self-referencing.
 
 **Decision needed:** whether to ship real localized URLs (`/es/`, `/de/` with `hreflang`) or leave i18n as a UI-only feature (no SEO value as-is).
 

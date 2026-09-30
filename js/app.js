@@ -2435,6 +2435,10 @@
       });
     }
 
+    // Landing pages can open on a specific tab (e.g. <body data-default-tab="diff">)
+    const defaultTab = document.body.dataset.defaultTab;
+    if (defaultTab) switchTab(defaultTab);
+
     // Load sample if empty
     updateLineNumbers();
     // Establish initial history state
